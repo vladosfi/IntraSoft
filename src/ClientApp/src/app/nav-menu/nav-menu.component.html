@@ -1,7 +1,10 @@
 <header>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #f2f2f2;">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">Интранет</a>
+      <a class="navbar-brand" [routerLink]="['/']">
+        <img src="/assets/brand/asparuhovo-logo.png" alt="" width="500" >
+      </a>
+
       <button class="navbar-toggler"
               type="button"
               data-toggle="collapse"
@@ -18,6 +21,11 @@
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+          </li>
+          <li class="nav-item"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-dark" [routerLink]="['/']">Начало</a>
           </li>
         </ul>
       </div>

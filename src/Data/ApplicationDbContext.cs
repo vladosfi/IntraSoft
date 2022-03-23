@@ -1,7 +1,7 @@
-﻿namespace WorldCities.Data
+﻿namespace IntraSoft.Data
 {
+    using IntraSoft.Data.Models;
     using Microsoft.EntityFrameworkCore;
-    using WorldCities.Data.Models;
 
     public class ApplicationDbContext : DbContext
     {
@@ -18,5 +18,20 @@
         public DbSet<City> Cities { get; set; }
 
         public DbSet<Country> Countries { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Menu>()
+                .HasMany(m => m.SubMenus)
+                .WithOne(m => m.ParentMenu)
+                .HasForeignKey(m => m.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Menu>()
+                .Property(f => f.ParentId)
+                .IsRequired(false);
+        }
     }
 }

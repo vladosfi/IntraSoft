@@ -22,6 +22,28 @@ namespace IntraSoft.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Menus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Action = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
+                    ParentId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Menus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Menus_Menus_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Menus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
@@ -48,12 +70,20 @@ namespace IntraSoft.Data.Migrations
                 name: "IX_Cities_CountryId",
                 table: "Cities",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_ParentId",
+                table: "Menus",
+                column: "ParentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "Menus");
 
             migrationBuilder.DropTable(
                 name: "Countries");

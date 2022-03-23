@@ -1,4 +1,4 @@
-﻿namespace WorldCities.Data.Models
+﻿namespace IntraSoft.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

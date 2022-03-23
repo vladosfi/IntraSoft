@@ -1,5 +1,6 @@
 namespace IntraSoft
 {
+    using IntraSoft.Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -7,7 +8,6 @@ namespace IntraSoft
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using WorldCities.Data;
 
     public class Startup
     {
@@ -33,6 +33,12 @@ namespace IntraSoft
             {
                 services.AddDbContext<ApplicationDbContext>(x => x.UseSqlite(this.Configuration.GetConnectionString("DefaultConnection")));
             }
+
+            object p = services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
+
+            services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
 
             services.AddControllersWithViews();
 
