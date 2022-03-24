@@ -30,6 +30,8 @@
         {
             return await this.context.Menus.ToListAsync();
             //return await this.context.Menus.Include(x => x.SubMenus).Where(x => x.ParentId == null).ToListAsync();
+            //return await this.context.Menus.AsSplitQuery().Include(x => x.SubMenus).ToListAsync();
+            //return await this.context.Menus.Where(x => x.ParentId == null).Include(x => x.SubMenus).ToListAsync();
         }
 
         //public async Task<IEnumerable<Menu>> GetAllSubMenusAsync(int parrentMenuId)

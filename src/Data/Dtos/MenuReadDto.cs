@@ -1,5 +1,6 @@
 ﻿namespace IntraSoft.Data.Dtos
 {
+    using System.Collections.Generic;
     using IntraSoft.Data.Models;
 
     public class MenuReadDto
@@ -14,6 +15,6 @@
 
         public string Description { get; set; }
 
-        public Menu ParrentMenu { get; set; }
+        public virtual ICollection<MenuReadDto> SubMenus { get; set; }
     }
 }

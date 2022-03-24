@@ -10,7 +10,6 @@
         public Menu()
         {
             this.SubMenus = new HashSet<Menu>();
-            this.ParentId = null;
         }
 
         [Key]

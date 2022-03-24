@@ -38,7 +38,16 @@
             //List<Menu> newMenuItems = new List<Menu>();
             //this.AddNodes(null, newMenuItems, menuItems);
 
-            return this.Ok(menuItems);
+            var menuReadDto = this.mapper.Map<IEnumerable<MenuReadDto>>(menuItems);
+
+
+            var serialized = JsonConvert.SerializeObject(
+                menuReadDto,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, Formatting = Formatting.Indented });
+
+            Console.WriteLine(serialized);
+
+            return this.Ok(serialized);
             //return Content(JsonConvert.SerializeObject(new { data = this.GetAll(menuItems) }, Formatting.Indented), "application/json");
         }
 
