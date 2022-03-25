@@ -4,5 +4,5 @@ export interface Menu {
   title: string;
   action: string;
   description: string;
-  subMenus: Menu[];
+  subMenus?: Menu[];
 }

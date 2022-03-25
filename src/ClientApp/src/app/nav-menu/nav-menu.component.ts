@@ -8,7 +8,7 @@ import { Menu } from '../_interfaces/menu';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  public navItems: Menu[];
+  public menu: Menu[];
   isExpanded = false;
 
   constructor(
@@ -28,7 +28,7 @@ export class NavMenuComponent implements OnInit {
   ngOnInit(): void {
     this.http.get<Menu[]>(this.baseUrl + 'api/menu')
       .subscribe(result => {
-        this.navItems = result;
+        this.menu = result;
       }, error => console.error(error));
   }
 
