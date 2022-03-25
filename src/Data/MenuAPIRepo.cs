@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using IntraSoft.Data.Models;
     using Microsoft.EntityFrameworkCore;
@@ -28,16 +29,13 @@
 
         public async Task<IEnumerable<Menu>> GetAllAsync()
         {
-            return await this.context.Menus.ToListAsync();
-            //return await this.context.Menus.Include(x => x.SubMenus).Where(x => x.ParentId == null).ToListAsync();
-            //return await this.context.Menus.AsSplitQuery().Include(x => x.SubMenus).ToListAsync();
-            //return await this.context.Menus.Where(x => x.ParentId == null).Include(x => x.SubMenus).ToListAsync();
-        }
+            var fullMenus = await this.context.Menus.Include(x => x.SubMenus).ToListAsync();
+            return fullMenus.Where(x => x.ParentMenu == null).ToList();
 
-        //public async Task<IEnumerable<Menu>> GetAllSubMenusAsync(int parrentMenuId)
-        //{
-        //    return await this.context.Menus.Where(x => x.ParentId == parrentMenuId).ToListAsync();
-        //}
+            //var query = "SELECT * FROM Menus";
+            //var employees = this.context.Menus.FromSqlRaw(query).ToArray();
+            //return employees;
+        }
 
         public async Task<Menu> GetByIdAsync(int id)
         {

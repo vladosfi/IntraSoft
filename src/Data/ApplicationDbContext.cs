@@ -27,11 +27,8 @@
                 .HasMany(m => m.SubMenus)
                 .WithOne(m => m.ParentMenu)
                 .HasForeignKey(m => m.ParentId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Menu>()
-                .Property(f => f.ParentId)
-                .IsRequired(false);
         }
     }
 }

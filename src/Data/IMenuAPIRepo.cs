@@ -10,8 +10,6 @@
 
         Task<IEnumerable<Menu>> GetAllAsync();
 
-        //Task<IEnumerable<Menu>> GetAllSubMenusAsync(int parrentMenuId);
-
         Task<Menu> GetByIdAsync(int id);
 
         Task CreateAsync(Menu item);

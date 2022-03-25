@@ -35,39 +35,9 @@
                 return this.NoContent();
             }
 
-            //List<Menu> newMenuItems = new List<Menu>();
-            //this.AddNodes(null, newMenuItems, menuItems);
-
             var menuReadDto = this.mapper.Map<IEnumerable<MenuReadDto>>(menuItems);
 
-
-            var serialized = JsonConvert.SerializeObject(
-                menuReadDto,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, Formatting = Formatting.Indented });
-
-            Console.WriteLine(serialized);
-
-            return this.Ok(serialized);
-            //return Content(JsonConvert.SerializeObject(new { data = this.GetAll(menuItems) }, Formatting.Indented), "application/json");
-        }
-
-        private void AddNodes(int? id, ICollection<Menu> newMenuItems, IEnumerable<Menu> menuItems)
-        {
-            foreach (Menu menu in menuItems)
-            {
-                Menu sub = new Menu
-                {
-                    Id = menu.Id,
-                    Title = menu.Title,
-                    Action = menu.Action,
-                    Description = menu.Description,
-                    ParentId = menu.ParentId,
-                    ParentMenu = menu.ParentMenu,
-                };
-
-                newMenuItems.Add(sub);
-                this.AddNodes(sub.Id, sub.SubMenus, menuItems);
-            }
+            return this.Ok(menuReadDto);
         }
 
         // GET api/<ValuesController>/5
