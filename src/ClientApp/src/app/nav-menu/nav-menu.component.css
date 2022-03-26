@@ -7,6 +7,7 @@ a.navbar-brand {
 html {
   font-size: 14px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -23,16 +24,10 @@ html {
   padding: 0 0 400px 0;
 }
 
-  .basic-container .menu-bar {
+.basic-container .menu-bar {
     min-height: auto;
-  }
+}
 
-    .basic-container .menu-bar .mat-toolbar-row {
+.basic-container .menu-bar .mat-toolbar-row {
       height: auto;
-    }
-
-.version-info {
-  font-size: 8pt;
-  float: right;
-  padding: 8px;
 }

@@ -41,6 +41,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Script Remove="ClientApp\src\app\app.component.css" />
+	  <Script Remove="ClientApp\src\app\home\home.component.css" />
 	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.ts" />

@@ -9,7 +9,8 @@ import { Menu } from '../_interfaces/menu';
 })
 export class MenuItemComponent implements OnInit {
   @Input() items: Menu[];
-  @ViewChild('childMenu') public childMenu;
+  @ViewChild('childMenu', { static: true }) public childMenu: any;
+
 
   constructor(public router: Router) {
   }
