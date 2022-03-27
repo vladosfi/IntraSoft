@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IMenu } from '../_interfaces/menu';
 
 @Component({
   selector: 'app-home',
@@ -6,13 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  
+  constructor() {  }
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   public executeSelectedChange = (event) => {
     console.log(event);
   }
+
 }
+
+
+
+
+
+

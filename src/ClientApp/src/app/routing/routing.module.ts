@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
     MatButtonModule,
     MatListModule,
     MatMenuModule,
+    MatTreeModule,
     FlexLayoutModule,
     RouterModule.forRoot(routes),
   ],
@@ -37,6 +39,7 @@ const routes: Routes = [
     MatButtonModule,
     MatListModule,
     MatMenuModule,
+    MatTreeModule,
     FlexLayoutModule,
   ],
   declarations: []

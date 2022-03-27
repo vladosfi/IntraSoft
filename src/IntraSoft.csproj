@@ -43,15 +43,22 @@
 	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
 	  <Script Remove="ClientApp\src\app\home\home.component.css" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.css" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.html" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.html" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
 	  <Script Remove="ClientApp\src\app\nav-menu\imenu.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
 	  <Script Remove="ClientApp\src\app\_interfaces\menu.ts" />
+	  <Script Remove="ClientApp\src\app\_services\share-menu-data.service.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ClientApp\src\app\_services\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

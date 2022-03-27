@@ -1,8 +1,8 @@
-export interface Menu {
+export interface IMenu {
   id: number;
   parentId: number;
   title: string;
   action: string;
   description: string;
-  subMenus?: Menu[];
+  subMenus?: IMenu[];
 }

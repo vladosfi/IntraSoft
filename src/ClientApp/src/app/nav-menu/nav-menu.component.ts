@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Menu } from '../_interfaces/menu';
+import { IMenu } from '../_interfaces/menu';
 
 @Component({
   selector: 'app-nav-menu',
@@ -8,7 +8,7 @@ import { Menu } from '../_interfaces/menu';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  public menu: Menu[];
+  public menu: IMenu[];
   isExpanded = false;
 
   constructor(
@@ -26,11 +26,10 @@ export class NavMenuComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.http.get<Menu[]>(this.baseUrl + 'api/menu')
+    this.http.get<IMenu[]>(this.baseUrl + 'api/menu')
       .subscribe(result => {
         this.menu = result;
       }, error => console.error(error));
   }
-
 
 }

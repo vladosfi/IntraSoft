@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MenuItemComponent } from './menu-item/menu-item.component';
+import { MenuItemComponent } from './navigation/menu-item/menu-item.component';
 import { RoutingModule } from './routing/routing.module';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
