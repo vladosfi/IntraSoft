@@ -16,12 +16,12 @@
         <span *ngFor="let item of (menuList$ | async)">
           <span *ngIf="item.subMenus && item.subMenus.length > 0">
             <!--<a [routerLink]="['{{item.action}}']" [matMenuTriggerFor]="menu.childMenu"> {{item.title}} </a>-->
-            <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.title}}</button>
+            <button mat-button [matMenuTriggerFor]="menu.childMenu">{{item.title}}</button>
             <app-menu-item #menu [items]="item.subMenus"></app-menu-item>
           </span>
           <span *ngIf="!item.subMenus || item.subMenus.length === 0">
             <!--<a [routerLink]="['{{item.action}}']">{{item.title}}</a>-->
-            <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.title}}</button>
+            <button mat-button [matMenuTriggerFor]="item.childMenu">{{item.title}}</button>
           </span>
         </span>
       </span>
@@ -32,4 +32,6 @@
     <h1>{{(menuList$ | async) | json}}</h1>
   </div>-->
 </header>
+
+
 
