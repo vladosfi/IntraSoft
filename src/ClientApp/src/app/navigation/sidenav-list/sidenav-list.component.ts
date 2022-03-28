@@ -46,27 +46,37 @@ const TREE_DATA: FoodNode[] = [
 export class SidenavListComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
   menuList$ = this.shareDataService.menuList$;
-
   treeControl = new NestedTreeControl<IMenu>(node => node.subMenus);
   dataSource = new MatTreeNestedDataSource<IMenu>();
+  menuItem: IMenu[];
+  hasChild = (_: number, node: IMenu) => !!node.subMenus && node.subMenus.length > 0;
 
   constructor(
     private menuService: MenuService,
     private shareDataService: ShareNavigationDataService
   ) {
-    //this.dataSource.data = TREE_DATA;
-    this.dataSource.data = this.menuList$;
+    
   }
 
-  hasChild = (_: number, node: IMenu) => !!node.subMenus && node.subMenus.length > 0;
 
 
   ngOnInit(): void {
+
+    //this.dataSource.data = TREE_DATA;
+
+
   }
 
 
   public onSidenavClose = () => {
     this.sidenavClose.emit();
+
+    this.menuList$
+      .subscribe(countries => {
+        this.menuItem = countries as IMenu[]
+      })
+
+    this.dataSource.data = this.menuItem;
   }
 
 

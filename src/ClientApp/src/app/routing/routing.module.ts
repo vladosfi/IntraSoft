@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -27,7 +26,6 @@ const routes: Routes = [
     MatListModule,
     MatMenuModule,
     MatTreeModule,
-    FlexLayoutModule,
     RouterModule.forRoot(routes),
   ],
   exports: [
@@ -40,7 +38,6 @@ const routes: Routes = [
     MatListModule,
     MatMenuModule,
     MatTreeModule,
-    FlexLayoutModule,
   ],
   declarations: []
 })
