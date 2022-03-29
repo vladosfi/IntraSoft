@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IMenu } from '../../_interfaces/menu';
+import { Menu } from '../../core/interfaces/Menu';
 
 @Component({
   selector: 'app-menu-item',
@@ -8,7 +8,7 @@ import { IMenu } from '../../_interfaces/menu';
   styleUrls: ['./menu-item.component.css']
 })
 export class NavMenuItemComponent implements OnInit {
-  @Input() items: IMenu[];
+  @Input() items: Menu[];
   @ViewChild('childMenu', { static: true }) public childMenu: any;
 
 

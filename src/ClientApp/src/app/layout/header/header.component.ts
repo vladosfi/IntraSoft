@@ -1,8 +1,7 @@
 
 import { Component, OnInit, EventEmitter, Output} from '@angular/core';
-import { IMenu } from '../../_interfaces/menu';
-import { MenuService } from '../menu.service';
-import { ShareNavigationDataService } from '../share-navigation-data.service';
+import { MenuService } from '../../navigation/menu.service';
+import { ShareNavigationDataService } from '../../navigation/share-navigation-data.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +10,7 @@ import { ShareNavigationDataService } from '../share-navigation-data.service';
 })
 export class HeaderComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
-  /*public menu: IMenu[];*/
+  /*public menu: Menu[];*/
   menuList$ = this.shareDataService.menuList$;
   
 

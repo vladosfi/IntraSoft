@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IMenu } from '../_interfaces/menu';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

@@ -3,8 +3,9 @@ import { ShareNavigationDataService } from '../share-navigation-data.service';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { IMenu } from '../../_interfaces/menu';
 import { map } from 'rxjs';
+import { Menu } from '../../core/interfaces/Menu';
+
 
 
 /**
@@ -46,10 +47,10 @@ const TREE_DATA: FoodNode[] = [
 export class SidenavListComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
   menuList$ = this.shareDataService.menuList$;
-  treeControl = new NestedTreeControl<IMenu>(node => node.subMenus);
-  dataSource = new MatTreeNestedDataSource<IMenu>();
-  menuItem: IMenu[];
-  hasChild = (_: number, node: IMenu) => !!node.subMenus && node.subMenus.length > 0;
+  treeControl = new NestedTreeControl<Menu>(node => node.subMenus);
+  dataSource = new MatTreeNestedDataSource<Menu>();
+  menuItem: Menu[];
+  hasChild = (_: number, node: Menu) => !!node.subMenus && node.subMenus.length > 0;
 
   constructor(
     private menuService: MenuService,
@@ -73,7 +74,7 @@ export class SidenavListComponent implements OnInit {
 
     this.menuList$
       .subscribe(countries => {
-        this.menuItem = countries as IMenu[]
+        this.menuItem = countries as Menu[]
       })
 
     this.dataSource.data = this.menuItem;
