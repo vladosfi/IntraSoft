@@ -30,10 +30,18 @@
 
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Compile Remove="ClientApp\src\app\_services\**" />
 		<Content Remove="$(SpaRoot)**" />
+		<Content Remove="ClientApp\src\app\_services\**" />
+		<EmbeddedResource Remove="ClientApp\src\app\_services\**" />
 		<None Remove="$(SpaRoot)**" />
+		<None Remove="ClientApp\src\app\_services\**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<Script Include="**" Exclude="*.esproj;node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Script Remove="ClientApp\src\app\_services\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -42,7 +50,8 @@
 
 	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
-	  <Script Remove="ClientApp\src\app\home\home.component.css" />
+	  <Script Remove="ClientApp\src\app\core\interfaces\Menu.ts" />
+	  <Script Remove="ClientApp\src\app\components\home\home.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\nav-menu-item\menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\nav-menu-item\menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\navigation\nav-menu-item\menu-item.component.ts" />
@@ -52,8 +61,6 @@
 	  <Script Remove="ClientApp\src\app\navigation\side-menu-item\side-menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\side-menu-item\side-menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\navigation\side-menu-item\side-menu-item.component.ts" />
-	  <Script Remove="ClientApp\src\app\_interfaces\menu.ts" />
-	  <Script Remove="ClientApp\src\app\_services\share-menu-data.service.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -61,7 +68,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ClientApp\src\app\_services\" />
+	  <Folder Include="ClientApp\src\app\core\services\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

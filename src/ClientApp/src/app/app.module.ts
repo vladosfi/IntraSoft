@@ -12,6 +12,8 @@ import { NavMenuItemComponent } from './navigation/nav-menu-item/menu-item.compo
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
+import { SideNavbarComponent } from './layout/side-navbar/side-navbar.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import { HomeComponent } from './components/home/home.component';
     NavMenuItemComponent,
     SideMenuItemComponent,
     SidenavListComponent,
+    SideNavbarComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
