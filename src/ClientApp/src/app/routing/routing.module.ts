@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from '../components/home/home.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
     MatMenuModule,
     MatTreeModule,
     FlexLayoutModule,
+    MatExpansionModule,
     RouterModule.forRoot(routes),
   ],
   exports: [
@@ -40,6 +42,7 @@ const routes: Routes = [
     MatListModule,
     MatMenuModule,
     MatTreeModule,
+    MatExpansionModule,
     FlexLayoutModule
   ],
   declarations: []
