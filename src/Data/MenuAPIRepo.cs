@@ -29,7 +29,7 @@
 
         public async Task<IEnumerable<Menu>> GetAllAsync()
         {
-            var fullMenus = await this.context.Menus.Include(x => x.SubMenus).ToListAsync();
+            var fullMenus = await this.context.Menus.Include(x => x.Children).ToListAsync();
             return fullMenus.Where(x => x.ParentMenu == null).ToList();
 
             //var query = "SELECT * FROM Menus";

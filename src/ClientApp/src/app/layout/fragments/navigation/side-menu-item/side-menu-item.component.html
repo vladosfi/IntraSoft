@@ -1,0 +1,14 @@
+<mat-nav-list >
+  <mat-list-item *ngFor="let child of items">
+    <span *ngIf="child.children && child.children.length > 0">
+      <span class="nav-caption">
+        <a matLine href="{{ child.routerLink }}">{{ child.text }}</a>
+        <app-side-menu-item #menu [items]="child.children"></app-side-menu-item>
+      </span>
+      <app-menu-item #menu [items]="child.children"></app-menu-item>
+    </span>
+    <span *ngIf="!child.children || child.children.length === 0">
+      <a matLine href="{{ child.routerLink }}">{{ child.text }}</a>
+    </span>
+  </mat-list-item>
+</mat-nav-list>

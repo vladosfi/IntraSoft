@@ -24,7 +24,7 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Menu>()
-                .HasMany(m => m.SubMenus)
+                .HasMany(m => m.Children)
                 .WithOne(m => m.ParentMenu)
                 .HasForeignKey(m => m.ParentId)
                 .IsRequired(false)

@@ -7,14 +7,15 @@
         public int? ParentId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Title { get; set; }
+        [MaxLength(100)]
+        public string Text { get; set; }
+
+        [MaxLength(200)]
+        public string Icon { get; set; }
 
         [Required]
         [MaxLength(250)]
-        public string Action { get; set; }
-
-        [MaxLength(200)]
-        public string Description { get; set; }
+        public string RouterLink { get; set; }
     }
 }
+

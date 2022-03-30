@@ -12,11 +12,24 @@ import { MatTreeModule } from '@angular/material/tree';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from '../components/home/home.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MainShellComponent } from '../layout/fragments/main-shell/main-shell.component';
+
+//const routes: Routes = [
+//  { path: 'home', component: HomeComponent },
+//  { path: '', redirectTo: '/home', pathMatch: 'full' }
+//];
+
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
-];
+  {
+    path: '',
+    component: MainShellComponent,
+    children: [
+      {
+        path: '', pathMatch: 'full',
+        component: HomeComponent
+      }]
+  }]
 
 @NgModule({
   imports: [
@@ -47,4 +60,4 @@ const routes: Routes = [
   ],
   declarations: []
 })
-export class RoutingModule { }
+export class AppRoutingModule { }
