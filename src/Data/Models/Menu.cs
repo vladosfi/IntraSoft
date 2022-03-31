@@ -9,7 +9,7 @@
     {
         public Menu()
         {
-            this.Children = new HashSet<Menu>();
+            this.SubMenus = new HashSet<Menu>();
         }
 
         [Key]
@@ -17,20 +17,20 @@
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Text { get; set; }
-
-        [MaxLength(200)]
-        public string Icon { get; set; }
+        [MaxLength(50)]
+        public string Title { get; set; }
 
         [Required]
         [MaxLength(250)]
-        public string RouterLink { get; set; }
+        public string Action { get; set; }
+
+        [MaxLength(200)]
+        public string Description { get; set; }
 
         public int? ParentId { get; set; }
 
         public virtual Menu ParentMenu { get; set; }
 
-        public virtual ICollection<Menu> Children { get; set; }
+        public virtual ICollection<Menu> SubMenus { get; set; }
     }
 }

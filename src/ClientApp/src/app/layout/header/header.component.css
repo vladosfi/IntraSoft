@@ -1,0 +1,36 @@
+a {
+  text-decoration: none;
+  color: #946666;
+}
+
+a:hover, a:active {
+    color: deepskyblue;
+}
+
+.navigation-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+mat-toolbar {
+  border-radius: 3px;
+}
+
+@media(max-width: 959px) {
+  mat-toolbar {
+    border-radius: 0px;
+  }
+}
+
+img{
+    max-height: 64px;
+}
+
+.mat-toolbar.mat-primary {
+  background-color: #F2F2F2;
+}
+
+.mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {
+  color: #946666;
+}

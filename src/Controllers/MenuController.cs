@@ -71,7 +71,7 @@
 
                 if (parenMenuItem != null)
                 {
-                    parenMenuItem.Children.Add(newMenuItem);
+                    parenMenuItem.SubMenus.Add(newMenuItem);
                 }
             }
 
