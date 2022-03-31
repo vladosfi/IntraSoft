@@ -30,24 +30,32 @@
 
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Compile Remove="ClientApp\src\app\_services\**" />
 		<Content Remove="$(SpaRoot)**" />
+		<Content Remove="ClientApp\src\app\_services\**" />
+		<EmbeddedResource Remove="ClientApp\src\app\_services\**" />
 		<None Remove="$(SpaRoot)**" />
+		<None Remove="ClientApp\src\app\_services\**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 		<Script Include="**" Exclude="*.esproj;node_modules\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="ClientApp\src\app\nav-menu\imenu.ts" />
+	  <Script Remove="ClientApp\src\app\_services\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="ClientApp\src\app\navigation\1nav-menu\imenu.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
-	  <Script Remove="ClientApp\src\app\home\home.component.css" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.css" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.html" />
-	  <Script Remove="ClientApp\src\app\menu-item\menu-item.component.ts" />
-	  <Script Remove="ClientApp\src\app\nav-menu\imenu.ts" />
-	  <Script Remove="ClientApp\src\app\_interfaces\menu.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.html" />
+	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\1nav-menu\imenu.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
+	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
 	</ItemGroup>
 
 	<ItemGroup>

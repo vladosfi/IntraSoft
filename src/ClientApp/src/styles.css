@@ -11,12 +11,19 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+  body .container {
+    padding: 0;
+  }
+
 /* Provide sufficient contrast against white background */
 header {
   /*font-family: 'Anonymous Pro', monospace;*/
   /*font-weight: bold;*/
 }
 
+.container, .container-lg, .container-md, .container-sm{
+    max-width: 100%;
+}
 
 a {
   color: #0366d6;
@@ -31,5 +38,3 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-
-

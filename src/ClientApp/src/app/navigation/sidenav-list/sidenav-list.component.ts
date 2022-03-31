@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ShareNavigationDataService } from '../share-navigation-data.service';
 
 @Component({
   selector: 'app-sidenav-list',
@@ -7,11 +8,18 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class SidenavListComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
+  menuList$ = this.shareDataService.menuList$;
 
-  constructor() { }
 
-  ngOnInit() {
+  constructor(
+    private shareDataService: ShareNavigationDataService
+  ) {
+
   }
+
+  ngOnInit(): void {
+  }
+
 
   public onSidenavClose = () => {
     this.sidenavClose.emit();
