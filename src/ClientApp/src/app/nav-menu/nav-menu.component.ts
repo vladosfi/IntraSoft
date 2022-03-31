@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { Menu } from '../core/interfaces/Menu';
-
+import { Menu } from '../_interfaces/menu';
 
 @Component({
   selector: 'app-nav-menu',
@@ -32,5 +31,6 @@ export class NavMenuComponent implements OnInit {
         this.menu = result;
       }, error => console.error(error));
   }
+
 
 }

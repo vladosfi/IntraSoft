@@ -1,0 +1,19 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
+  <div *ngFor="let child of items">
+    <!-- Handle branch node menu items -->
+    <div *ngIf="child.subMenus && child.subMenus.length > 0">
+      <div mat-menu-item color="primary" [matMenuTriggerFor]="menu.childMenu">
+        <!--<mat-icon>{{child.iconName}}</mat-icon>-->
+        <button [routerLink]="['{{child.action}}']">{{child.title}}</button>
+      </div>
+      <app-menu-item #menu [items]="child.subMenus"></app-menu-item>
+    </div>
+    <!-- Handle leaf node menu items -->
+    <div *ngIf="!child.subMenus || child.subMenus.length === 0">
+        <!--<mat-icon>{{child.iconName}}</mat-icon>-->
+        <div>
+          <button mat-button color="primary" [routerLink]="['{{child.action}}']">{{child.title}}</button>
+        </div>      
+    </div>
+  </div>
+</mat-menu>
