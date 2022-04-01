@@ -20,29 +20,30 @@
 
 
 
-      <div *ngFor="let item of (menuList$ | async)">
-        <span *ngIf="item.children && item.children.length > 0">
-          <mat-list-item mat-button [matMenuTriggerFor]="menu.childMenu">
-            <mat-icon>{{item.icon}}</mat-icon>
-            <span>{{item.text}}</span>
-          </mat-list-item>
-          <app-sidenav-list-item #menu [items]="item.children"></app-sidenav-list-item>
-        </span>
-        <span *ngIf="!item.children || item.children.length === 0">
-            <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
-        </span>
-      </div>
-
-
-
+  <div *ngFor="let item of (menuList$ | async)">
+    <span *ngIf="item.children && item.children.length > 0">
+      <mat-list-item mat-button [matMenuTriggerFor]="menu.childMenu">
+        <mat-icon>{{item.icon}}</mat-icon>
+        <span>{{item.text}}</span>
+      </mat-list-item>
+      <app-sidenav-list-item #menu [items]="item.children"></app-sidenav-list-item>
+    </span>
+    <span *ngIf="!item.children || item.children.length === 0">
+      <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
+    </span>
+  </div>
 
 
 </mat-nav-list>
 
+
+<h4>Angular material</h4>
+<app-angular-material-menu [menu]="finalMenu"></app-angular-material-menu>
+
+
 <!--<div *ngIf="(menuList$ | async) as IMenu">
   <h1>{{(menuList$ | async) | json}}</h1>
 </div>-->
-
 <!--<mat-nav-list class="side-navnar">
   <ng-container *ngFor="let menu of (menuList$ | async); index as i;">
     <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
@@ -71,4 +72,3 @@
     </mat-nav-list>
   </mat-expansion-panel>
 </ng-template>-->
-

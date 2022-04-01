@@ -9,8 +9,11 @@
 
 
 export interface Menu {
-  text: string,
-  icon: string,
-  routerLink?: string;
-  children: Menu[]
+  id: number;
+  text: string;
+  icon: string;
+  routerLink: string;
+  parentId?: number;
+  children?: Menu[];
+  opacity: number;
 }

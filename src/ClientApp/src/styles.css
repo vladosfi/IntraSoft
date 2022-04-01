@@ -38,3 +38,8 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+
+.mat-expansion-panel-body {
+  padding: 0px 0px 0px 0px !important;
+}

@@ -14,7 +14,8 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { MaterialModule } from './material/material.module';
 import { SidenavListItemComponent } from './navigation/sidenav-list-item/sidenav-list-item.component';
-
+import { AngularMaterialMenuComponent } from './navigation/angular-material-menu/angular-material-menu.component';
+import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-item/menu-item.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,8 @@ import { SidenavListItemComponent } from './navigation/sidenav-list-item/sidenav
     HeaderComponent,
     SidenavListComponent,
     SidenavListItemComponent,
+    AngularMaterialMenuComponent,
+    MenuItemAMComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

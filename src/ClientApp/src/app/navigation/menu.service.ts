@@ -13,12 +13,12 @@ export class MenuService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  //getData<IMenu>(): Observable<IMenu> {
-  //  var url = this.baseUrl + 'api/menu';
-  //  var params = new HttpParams();
-  //  var currentMenu = this.http.get<IMenu>(url, { params });
-  //  return currentMenu;
-  //}
+  getData<IMenu>(): Observable<IMenu> {
+    var url = this.baseUrl + 'api/menu';
+    var params = new HttpParams();
+    var currentMenu = this.http.get<IMenu>(url, { params });
+    return currentMenu;
+  }
 
 
   //get<Menu>(id): Observable<Menu> {

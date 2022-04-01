@@ -1,22 +1,24 @@
-
-<!--<mat-nav-list #childMenu="matMenu" [overlapTrigger]="false">
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
   <div *ngFor="let child of items">
-     Handle branch node menu items 
+    <!-- Handle branch node menu items -->
     <span *ngIf="child.children && child.children.length > 0">
       <span>
-        <a [routerLink]="['{{child.routerLink}}']"> {{child.text}} </a>
-        <mat-nav-list mat-menu-item [matMenuTriggerFor]="menu.childMenu">{{child.text}}</mat-nav-list>
+        <!--<a [routerLink]="['{{child.routerLink}}']"> {{child.text}} </a>-->
+        <button mat-menu-item [matMenuTriggerFor]="menu.childMenu">{{child.text}}</button>
       </span>
-      <mat-nav-list #menu [items]="child.childMenu"></mat-nav-list>
+      <app-menu-item #menu [items]="child.children"></app-menu-item>
     </span>
-     Handle leaf node menu items 
+    <!-- Handle leaf node menu items -->
     <span *ngIf="!child.children || child.children.length === 0">
       <span>
 
-        <a mat-button color="primary" [routerLink]="['{{child.routerLink}}']">{{child.text}}</a>
-        <mat-nav-list mat-menu-item routerLink="['{{child.routerLink}}']" routerLinkActive="active">{{child.text}}</mat-nav-list>
+        <!--<a mat-button color="primary" [routerLink]="['{{child.routerLink}}']">{{child.text}}</a>-->
+        <button mat-menu-item routerLink="['{{child.routerLink}}']" routerLinkActive="active">{{child.text}}</button>
 
       </span>
     </span>
   </div>
-</mat-nav-list>-->
+</mat-menu>
+
+
+

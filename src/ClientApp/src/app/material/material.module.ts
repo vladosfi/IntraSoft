@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,12 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatExpansionModule
   ],
   exports: [
     MatTabsModule,
@@ -28,7 +34,12 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule { }
