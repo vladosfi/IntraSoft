@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Menu } from '../../../core/interfaces/Menu';
 
 @Component({
   selector: 'app-menu-item-am',
@@ -11,12 +12,19 @@ export class MenuItemAMComponent implements OnInit {
   style;
   styleLink;
   ngOnInit(): void {
-    this.style = {
-      "background-color": `rgb(155,155,155,${this.menuitem.opacity / 10})`,
-    };
-    this.styleLink = {
-      "background-color": `rgb(155,155,155,${this.menuitem.opacity + 1 / 10})`,
-    };
+
+    if (this.menuitem.children.length === 0) {
+      this.styleLink = {
+        "background-color": `rgb(155,155,155,${1 / 10})`,
+      };
+    }
+
+    //this.style = {
+    //  "background-color": `rgb(155,155,155,${this.menuitem.opacity / 10})`,
+    //};
+    //this.styleLink = {
+    //  "background-color": `rgb(155,155,155,${this.menuitem.opacity + 1 / 10})`,
+    //};
   }
 
 }

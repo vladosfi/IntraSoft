@@ -16,6 +16,8 @@ import { MaterialModule } from './material/material.module';
 import { SidenavListItemComponent } from './navigation/sidenav-list-item/sidenav-list-item.component';
 import { AngularMaterialMenuComponent } from './navigation/angular-material-menu/angular-material-menu.component';
 import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-item/menu-item.component';
+import { MenuComponent } from './admin/components/menu/menu.component';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-ite
     SidenavListItemComponent,
     AngularMaterialMenuComponent,
     MenuItemAMComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

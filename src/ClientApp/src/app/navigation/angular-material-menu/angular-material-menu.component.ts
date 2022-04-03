@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Menu } from '../../core/interfaces/Menu';
+import { ShareNavigationDataService } from '../share-navigation-data.service';
 
 @Component({
   selector: 'app-angular-material-menu',
@@ -8,14 +9,12 @@ import { Menu } from '../../core/interfaces/Menu';
 })
 export class AngularMaterialMenuComponent implements OnInit {
   @Input("menu") menu: Menu[];
+  menuList$ = this.shareDataService.menuList$;
 
-  constructor() { }
+  constructor(private shareDataService: ShareNavigationDataService,) { }
 
 
   ngOnInit(): void {
-    console.log(this.menu);
+    //console.log(this.menu);
   }
-
-
-
 }

@@ -45,15 +45,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="ClientApp\src\app\navigation\1nav-menu\imenu.ts" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
-	  <Script Remove="ClientApp\src\app\navigation\1nav-menu\imenu.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
 	</ItemGroup>

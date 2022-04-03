@@ -15,5 +15,4 @@ export interface Menu {
   routerLink: string;
   parentId?: number;
   children?: Menu[];
-  opacity: number;
 }

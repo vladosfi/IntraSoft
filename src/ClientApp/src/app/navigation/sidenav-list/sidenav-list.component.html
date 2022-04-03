@@ -1,4 +1,4 @@
-<mat-nav-list>
+<!--<mat-nav-list>
   <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
     <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
   </a>
@@ -17,58 +17,15 @@
     <button mat-menu-item (click)="onSidenavClose()">Add contact</button>
   </mat-menu>
 
+</mat-nav-list>-->
+
+<mat-toolbar color="primary">
+  <button mat-icon-button class="example-icon" (click)="onSidenavClose()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Menu</span>
+</mat-toolbar>
+<app-angular-material-menu></app-angular-material-menu>
 
 
 
-  <div *ngFor="let item of (menuList$ | async)">
-    <span *ngIf="item.children && item.children.length > 0">
-      <mat-list-item mat-button [matMenuTriggerFor]="menu.childMenu">
-        <mat-icon>{{item.icon}}</mat-icon>
-        <span>{{item.text}}</span>
-      </mat-list-item>
-      <app-sidenav-list-item #menu [items]="item.children"></app-sidenav-list-item>
-    </span>
-    <span *ngIf="!item.children || item.children.length === 0">
-      <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
-    </span>
-  </div>
-
-
-</mat-nav-list>
-
-
-<h4>Angular material</h4>
-<app-angular-material-menu [menu]="finalMenu"></app-angular-material-menu>
-
-
-<!--<div *ngIf="(menuList$ | async) as IMenu">
-  <h1>{{(menuList$ | async) | json}}</h1>
-</div>-->
-<!--<mat-nav-list class="side-navnar">
-  <ng-container *ngFor="let menu of (menuList$ | async); index as i;">
-    <ng-container [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
-                  [ngTemplateOutletContext]="{menu:menu}">
-    </ng-container>
-  </ng-container>
-</mat-nav-list>
-
-<ng-template #parentMenu let-menu="menu">
-  <mat-list-item [routerLink]="menu.routerLink" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:
-        true}">
-    <mat-icon>{{menu.icon}}</mat-icon> {{menu.text}}
-  </mat-list-item>
-</ng-template>
-
-<ng-template #childMenu let-menu="menu">
-  <mat-expansion-panel [class.mat-elevation-z0]="true">
-    <mat-expansion-panel-header>
-      <mat-icon mat-list-icon>{{menu.icon}}</mat-icon>{{menu.text}}12
-    </mat-expansion-panel-header>
-    <mat-nav-list>
-      <mat-list-item [routerLink]="submenu.routerLink" *ngFor="let submenu of menu.children" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:
-                true}">
-        <mat-icon>{{submenu.icon}}</mat-icon> {{submenu.text}}
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-expansion-panel>
-</ng-template>-->
