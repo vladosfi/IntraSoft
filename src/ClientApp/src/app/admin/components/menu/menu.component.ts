@@ -1,6 +1,7 @@
-import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { map } from 'rxjs';
 import { Menu } from '../../../core/interfaces/Menu';
 import { ShareNavigationDataService } from '../../../navigation/share-navigation-data.service';
 
@@ -20,25 +21,27 @@ interface ExampleFlatNode {
 })
 export class MenuComponent implements OnInit{
   menuList$ = this.shareDataService.menuList$;
-  treeControl = new NestedTreeControl<Menu>(node => node.children);
   dataSource = new MatTreeNestedDataSource<Menu>();
+  treeControl = new NestedTreeControl<Menu>(node => node.children);
   menuItem: Menu[];
 
   constructor(private shareDataService: ShareNavigationDataService) {
+  }
+
+  ngOnInit(): void {
+    //this.dataSource.data = this.menuItem;
     //this.dataSource.data = TREE_DATA;
     //this.dataSource.data = this.menuList$;
 
     this.menuList$
-      .subscribe(countries => {
-        this.menuItem = countries as Menu[]
+      .subscribe(items => {
+        this.dataSource.data = items as Menu[]
       });
+
+
   }
 
-  ngOnInit(): void {
-    this.dataSource.data = this.menuItem;
-  }
-
-  hasChild = (_: number, node: Menu) => !!node.children && node.children.length > 0;
+  hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
 }
 
 
