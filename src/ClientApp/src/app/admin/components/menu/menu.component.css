@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+}
+.content {
+  margin-top: 35px;
+}
+
+.mat-tree-node :hover{
+  /*background-color: aqua;
+  cursor:pointer;*/
+}
+
+.mat-tree-node :hover {
+  background-color: aqua;
+}
