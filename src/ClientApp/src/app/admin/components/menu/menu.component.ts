@@ -38,9 +38,9 @@ export class MenuComponent implements OnInit {
 
     this.menuList$
       .subscribe(item => {
-        if (item !== null) {  
-          
-          this.createFlatArrayUsingMap(item);          
+        if (item !== null) {
+
+          var flatedMenu = this.createFlatArrayUsingMap(item);
           this.dataSource.data = item as Menu[];
         }
         //console.log("item: " + JSON.stringify(item));
@@ -49,27 +49,33 @@ export class MenuComponent implements OnInit {
   }
 
   createFlatArrayUsingMap(item) {
+    var flatedMenusItems: Menu[] = [];
+
     for (var i = 0; i < item.length; i++) {
 
-      let recursiveFn = (obj) => {
+      let recursiveFn = (mnuItem) => {
 
-        if (obj.id && obj.text) {
-          console.log(obj.id);
+        if (mnuItem.id && mnuItem.text) {
+          const { children, parentId, ...rest } = mnuItem;
+          //console.log(rest);
+          flatedMenusItems.push(rest);
         }
 
-        obj.children.map(recursiveFn)
+        mnuItem.children.map(recursiveFn)
       }
 
       recursiveFn(item[i]);
     }
+
+    return flatedMenusItems;
   }
 
-hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
+  hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
 
 
-getMenuItem(id: number) {
-  this.shareDataService.getSingleItem(id);
-}
+  getMenuItem(id: number) {
+    this.shareDataService.getSingleItem(id);
+  }
 }
 
 
