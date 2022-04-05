@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 /*import { AppRoutingModule } from './app-routing.module';*/
@@ -17,6 +17,7 @@ import { SidenavListItemComponent } from './navigation/sidenav-list-item/sidenav
 import { AngularMaterialMenuComponent } from './navigation/angular-material-menu/angular-material-menu.component';
 import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-item/menu-item.component';
 import { MenuComponent } from './admin/components/menu/menu.component';
+import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { MenuComponent } from './admin/components/menu/menu.component';
     SidenavListItemComponent,
     AngularMaterialMenuComponent,
     MenuItemAMComponent,
-    MenuComponent
+    MenuComponent,
+    SingleMenuItemComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -37,7 +39,8 @@ import { MenuComponent } from './admin/components/menu/menu.component';
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    RoutingModule
+    RoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { map } from 'rxjs';
 import { Menu } from '../../../core/interfaces/Menu';
+import { MenuService } from '../../../navigation/menu.service';
 import { ShareNavigationDataService } from '../../../navigation/share-navigation-data.service';
 
 
@@ -19,13 +20,15 @@ interface ExampleFlatNode {
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnInit{
+export class MenuComponent implements OnInit {
   menuList$ = this.shareDataService.menuList$;
   dataSource = new MatTreeNestedDataSource<Menu>();
   treeControl = new NestedTreeControl<Menu>(node => node.children);
   menuItem: Menu[];
 
-  constructor(private shareDataService: ShareNavigationDataService) {
+
+  constructor(private shareDataService: ShareNavigationDataService,
+    private menuService: MenuService) {
   }
 
   ngOnInit(): void {
@@ -34,14 +37,39 @@ export class MenuComponent implements OnInit{
     //this.dataSource.data = this.menuList$;
 
     this.menuList$
-      .subscribe(items => {
-        this.dataSource.data = items as Menu[]
+      .subscribe(item => {
+        if (item !== null) {  
+          
+          this.createFlatArrayUsingMap(item);          
+          this.dataSource.data = item as Menu[];
+        }
+        //console.log("item: " + JSON.stringify(item));
       });
-
 
   }
 
-  hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
+  createFlatArrayUsingMap(item) {
+    for (var i = 0; i < item.length; i++) {
+
+      let recursiveFn = (obj) => {
+
+        if (obj.id && obj.text) {
+          console.log(obj.id);
+        }
+
+        obj.children.map(recursiveFn)
+      }
+
+      recursiveFn(item[i]);
+    }
+  }
+
+hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
+
+
+getMenuItem(id: number) {
+  this.shareDataService.getSingleItem(id);
+}
 }
 
 

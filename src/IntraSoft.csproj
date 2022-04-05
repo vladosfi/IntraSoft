@@ -51,6 +51,7 @@
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
+	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

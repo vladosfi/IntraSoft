@@ -11,6 +11,7 @@
             // Source ➤ Target
             this.CreateMap<MenuCreateDto, Menu>();
             this.CreateMap<Menu, MenuReadDto>();
+            this.CreateMap<Menu, MenuSingleItemReadDto>();
         }
     }
 }
