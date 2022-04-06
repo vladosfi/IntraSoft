@@ -3,6 +3,8 @@ import { ShareNavigationDataService } from '../../../navigation/share-navigation
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Menu } from '../../../core/interfaces/Menu';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-single-menu-item',
@@ -19,7 +21,8 @@ export class SingleMenuItemComponent implements OnInit {
 
   constructor(
     private shareDataService: ShareNavigationDataService,
-    private snackbar: SnackbarService) { }
+    private snackbar: SnackbarService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -53,7 +56,14 @@ export class SingleMenuItemComponent implements OnInit {
 
   }
 
-  onDelete(message, action){
+  openDialog(){
+    let dialogRef = this.dialog.open(DialogComponent, {data: {name: 'Vlad'}});
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result is: ${result}`);
+    });
+  }
+
+  onDelete(message){
     // //let snackBarRef = this.snackBar.open(message,action, {duration: 2000});
     // let snackBarRef = this.snackBar.open(message,action,{panelClass: ["color:white;"]});
 
@@ -65,7 +75,7 @@ export class SingleMenuItemComponent implements OnInit {
     //   console.log('The snackbar action was triggered!');
     // });
 
-    this.snackbar.confirm(message, action);
+    this.snackbar.info(message);
   }
 
   private _getAllMenuItems(){

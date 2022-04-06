@@ -74,7 +74,7 @@
       </button>
       <button *ngIf="menu" type="submit"
               mat-button
-              (click)="onDelete('Are you sure you want to delete?', 'Yes')"
+              (click)="onDelete('Are you sure you want to delete?')"
               [disabled]="form.invalid"
               class="btn btn-danger">
         Delete
@@ -90,6 +90,12 @@
               class="btn">
         Cancel
       </button>
+
+      <button mat-raised-button (click)="openDialog()"
+              class="btn">
+        Open Dialog
+      </button>
+
     </div>
   </div>
 </div>

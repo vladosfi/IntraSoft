@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [],
@@ -40,6 +41,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatTableModule,
     MatTreeModule,
     MatSnackBarModule,
+    MatDialogModule,
   ],
   exports: [
     MatTabsModule,
@@ -60,6 +62,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatTableModule,
     MatTreeModule,
     MatSnackBarModule,
+    MatDialogModule 
   ]
 })
 export class MaterialModule { }

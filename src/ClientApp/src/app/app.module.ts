@@ -18,6 +18,7 @@ import { AngularMaterialMenuComponent } from './navigation/angular-material-menu
 import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-item/menu-item.component';
 import { MenuComponent } from './admin/components/menu/menu.component';
 import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 
 @NgModule({
@@ -31,7 +32,11 @@ import { SingleMenuItemComponent } from './admin/components/single-menu-item/sin
     AngularMaterialMenuComponent,
     MenuItemAMComponent,
     MenuComponent,
-    SingleMenuItemComponent
+    SingleMenuItemComponent,
+    DialogComponent
+  ],
+  entryComponents:[
+    DialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -22,7 +22,4 @@ export class SnackbarService {
     return this._snackBar.open(message, undefined, {panelClass: ['snackbar-info']});
   }
 
-  confirm(message: string, action: string) {
-    return this._snackBar.open(message, action, {panelClass: ['snackbar-confirm']});
-  }
 }
