@@ -39,35 +39,10 @@ export class MenuComponent implements OnInit {
     this.menuList$
       .subscribe(item => {
         if (item !== null) {
-
-          var flatedMenu = this.createFlatArrayUsingMap(item);
           this.dataSource.data = item as Menu[];
         }
-        //console.log("item: " + JSON.stringify(item));
       });
 
-  }
-
-  createFlatArrayUsingMap(item) {
-    var flatedMenusItems: Menu[] = [];
-
-    for (var i = 0; i < item.length; i++) {
-
-      let recursiveFn = (mnuItem) => {
-
-        if (mnuItem.id && mnuItem.text) {
-          const { children, parentId, ...rest } = mnuItem;
-          //console.log(rest);
-          flatedMenusItems.push(rest);
-        }
-
-        mnuItem.children.map(recursiveFn)
-      }
-
-      recursiveFn(item[i]);
-    }
-
-    return flatedMenusItems;
   }
 
   hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
