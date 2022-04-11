@@ -12,6 +12,7 @@
             this.CreateMap<MenuCreateDto, Menu>();
             this.CreateMap<Menu, MenuReadDto>();
             this.CreateMap<Menu, MenuSingleItemReadDto>();
+            this.CreateMap<MenuUpdateDto, Menu>();
         }
     }
 }

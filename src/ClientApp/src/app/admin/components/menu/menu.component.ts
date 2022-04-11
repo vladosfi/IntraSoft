@@ -1,11 +1,8 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { map } from 'rxjs';
 import { Menu } from '../../../core/interfaces/Menu';
-import { MenuService } from '../../../navigation/menu.service';
 import { ShareNavigationDataService } from '../../../navigation/share-navigation-data.service';
-
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -24,26 +21,29 @@ export class MenuComponent implements OnInit {
   menuList$ = this.shareDataService.menuList$;
   dataSource = new MatTreeNestedDataSource<Menu>();
   treeControl = new NestedTreeControl<Menu>(node => node.children);
-  menuItem: Menu[];
 
-
-  constructor(private shareDataService: ShareNavigationDataService,
-    private menuService: MenuService) {
+  constructor(private shareDataService: ShareNavigationDataService) {
   }
 
   ngOnInit(): void {
-    //this.dataSource.data = this.menuItem;
-    //this.dataSource.data = TREE_DATA;
-    //this.dataSource.data = this.menuList$;
+    this.loadMenu();
+  }
 
+  loadMenu() {
+    this.reloadCurrentData();
+    
     this.menuList$
       .subscribe(item => {
         if (item !== null) {
           this.dataSource.data = item as Menu[];
         }
       });
-
   }
+
+  reloadCurrentData() {
+    this.shareDataService.getAllData();
+  }
+
 
   hasChild = (index: number, node: Menu) => !!node?.children && node?.children?.length > 0;
 

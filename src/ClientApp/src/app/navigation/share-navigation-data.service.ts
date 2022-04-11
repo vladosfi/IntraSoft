@@ -17,6 +17,10 @@ export class ShareNavigationDataService {
     return this.menuSingleItemSubject.asObservable();
   }
 
+  set menuItem$(menuItem) {
+    this.menuSingleItemSubject.next(menuItem);
+  }
+
   
   constructor(
     private http: HttpClient,

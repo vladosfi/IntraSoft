@@ -1,30 +1,25 @@
 <div class="form-container">
-  <p *ngIf="menu"><em><h1>Edit - {{this.menu?.text}}</h1></em></p>
-  <p *ngIf="!menu"><em><h1>Create - Menu Item</h1></em></p>
+  <p *ngIf="!menu || (menu | json) === '{}'"><em>
+      <h1>Create - Menu Item</h1>
+    </em></p>
+  <p *ngIf="menu && (menu | json) !== '{}'"><em>
+      <h1>Edit - {{this.menu?.text}}</h1>
+    </em></p>
 
-  <div class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form" [formGroup]="form">
 
     <div class="form-group">
       <label for="id">Menu Id:</label>
       <br />
-      <input type="text" id="id"
-             formControlName="id"
-             readonly
-             placeholder="Menu id..."
-             class="form-control" />
+      <input type="text" id="id" formControlName="id" readonly placeholder="Menu id..." class="form-control" />
     </div>
 
     <div class="form-group">
       <label for="text">Menu text:</label>
       <br />
-      <input type="text" id="text"
-             formControlName="text"
-             required
-             placeholder="Text..."
-             class="form-control" />
+      <input type="text" id="text" formControlName="text" required placeholder="Text..." class="form-control" />
       <div *ngIf="form.get('text').invalid &&
-                (form.get('text').dirty || form.get('text').touched)"
-           class="invalid-feedback">
+                (form.get('text').dirty || form.get('text').touched)" class="invalid-feedback">
         <div *ngIf="form.get('text').errors?.required">
           Text is required.
         </div>
@@ -34,29 +29,27 @@
     <div class="form-group">
       <label for="icon">Menu icon:</label>
       <br />
-      <input type="text" id="icon"
-             formControlName="icon"
-             placeholder="Icon..."
-             class="form-control" />
+      <input type="text" id="icon" formControlName="icon" placeholder="Icon..." class="form-control" />
 
     </div>
 
     <div class="form-group">
       <label for="routerLink">Menu routerLink:</label>
       <br />
-      <input type="text" id="routerLink"
-             formControlName="routerLink"
-             placeholder="RouterLink..."
-             class="form-control" />
+      <input type="text" id="routerLink" formControlName="routerLink" placeholder="RouterLink..."
+        class="form-control" />
     </div>
 
 
-    <div *ngIf="menu" class="form-group">
+    <div *ngIf="menu && (menu | json) !== '{}'" class="form-group">
       <label for="parentId">Item Parent Id:</label>
       <br />
       <mat-form-field *ngIf="flatedMenu">
         <mat-label>Select a Parent Id...</mat-label>
         <mat-select id="parentId" formControlName="parentId">
+          <mat-option [value]="null">
+            Root Menu
+          </mat-option>
           <mat-option *ngFor="let menu of flatedMenu" [value]="menu.id">
             Name: {{menu.text}} | Id = {{menu.id}}
           </mat-option>
@@ -66,34 +59,20 @@
 
 
     <div class="form-group commands">
-      <button *ngIf="menu" type="submit"
-              (click)="onSubmit()"
-              [disabled]="form.invalid"
-              class="btn btn-success">
+      <button *ngIf="menu && (menu | json) !== '{}'" type="button" (click)="saveMenuItem()" [disabled]="form.invalid"
+        class="btn btn-success">
         Save
       </button>
-      <button *ngIf="menu" type="submit"
-              mat-button
-              (click)="onDelete('Are you sure you want to delete?')"
-              [disabled]="form.invalid"
-              class="btn btn-danger">
+      <button *ngIf="menu && (menu | json) !== '{}'" type="button" mat-button (click)="delete()"
+        [disabled]="form.invalid" class="btn btn-danger">
         Delete
       </button>
-      <button *ngIf="!menu" type="submit"
-              (click)="onSubmit()"
-              [disabled]="form.invalid"
-              class="btn btn-success">
+      <button *ngIf="!menu || (menu | json) === '{}'" type="button" (click)="onSubmit('Menu have been saved')"
+        [disabled]="form.invalid" class="btn btn-success">
         Create
       </button>
-      <button type="button"
-              [routerLink]="['/']"
-              class="btn">
+      <button type="button" [routerLink]="['/']" class="btn">
         Cancel
-      </button>
-
-      <button mat-raised-button (click)="openDialog()"
-              class="btn">
-        Open Dialog
       </button>
 
     </div>

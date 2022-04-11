@@ -11,15 +11,15 @@ export class SnackbarService {
   }
 
   error(message: string) {
-    return this._snackBar.open(message, undefined, {panelClass: ['snackbar-error']});
+    return this._snackBar.open(message, undefined, {panelClass: ['snackbar-error'], duration: 5000});
   }
 
   success(message: string) {
-    return this._snackBar.open(message, undefined, {panelClass: ['snackbar-success']});
+    return this._snackBar.open(message, undefined, {panelClass: ['snackbar-success'], duration: 5000});
   }
 
   info(message: string) {
-    return this._snackBar.open(message, undefined, {panelClass: ['snackbar-info']});
+    return this._snackBar.open(message, 'Ok', {panelClass: ['snackbar-info']});
   }
 
 }

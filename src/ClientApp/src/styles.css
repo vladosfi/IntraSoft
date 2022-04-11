@@ -17,8 +17,8 @@ body {
 
 /* Provide sufficient contrast against white background */
 header {
-  /*font-family: 'Anonymous Pro', monospace;*/
-  /*font-weight: bold;*/
+  font-family: 'Anonymous Pro', monospace;
+  font-weight: bold;
 }
 
 .container, .container-lg, .container-md, .container-sm{
@@ -61,4 +61,8 @@ code {
 
 .snackbar-info {
   background-color: blue;
+}
+
+.mat-simple-snackbar-action{
+  color: white;
 }
