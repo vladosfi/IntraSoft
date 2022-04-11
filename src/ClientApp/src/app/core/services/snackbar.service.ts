@@ -19,7 +19,7 @@ export class SnackbarService {
   }
 
   info(message: string) {
-    return this._snackBar.open(message, 'Ok', {panelClass: ['snackbar-info']});
+    return this._snackBar.open(message, 'OK', {panelClass: ['snackbar-info']});
   }
 
 }

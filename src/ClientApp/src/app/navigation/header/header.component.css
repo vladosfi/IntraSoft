@@ -34,3 +34,7 @@ img {
 .mat-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button {
   color: #946666;
 }
+
+.mat-menu-panel{
+  min-height: 56px
+}

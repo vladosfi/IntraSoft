@@ -112,14 +112,6 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     }
 
     let flatedMenusItems: Menu[] = [];
-    // const rootMenu = {
-    //   "id": null,
-    //   "parentId": null,
-    //   "text": null,
-    //   "icon": null,
-    //   "routerLink": null,
-    // };
-    // flatedMenusItems.push(rootMenu);
 
     for (var i = 0; i < item.length; i++) {
       let recursiveFn = (mnuItem) => {
@@ -128,7 +120,6 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
           const { ...rest } = mnuItem;
           if (menuId !== rest.id) {
             flatedMenusItems.push(rest);
-            console.log(rest);
           }
         }
         mnuItem.children.map(recursiveFn)

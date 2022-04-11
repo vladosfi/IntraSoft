@@ -5,8 +5,13 @@
       <!-- There is inline padding applied to this node using styles.
         This padding value depends on the mat-icon-button width. -->
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle (click)="getMenuItem(node.id)" class="mat-tree-node">
-        <mat-icon>last_page</mat-icon>
-        {{node.text}}
+        <button mat-icon-button 
+                    [attr.aria-label]="'Toggle ' + node.text">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'last_page'}}
+              </mat-icon>
+            </button>
+            {{node.text}}
       </mat-tree-node>
       <!-- This is the tree node template for expandable nodes -->
       <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">

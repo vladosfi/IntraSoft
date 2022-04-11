@@ -7,7 +7,7 @@
     </div>
     <div>
       <a class="navbar-brand" [routerLink]="['/']">
-        <img class="img-fluid" alt="Rajon Asparuhovo" src="/assets/brand/asparuhovo-logo.png">
+        <img class="img-fluid" alt="Район Аспарухово" src="/assets/brand/asparuhovo-logo.png">
       </a>
       <!--<a routerLink="/home">Owner-Account</a>-->
     </div>
@@ -16,12 +16,12 @@
         <span *ngFor="let item of (menuList$ | async)">
           <span *ngIf="item.children && item.children.length > 0">
             <!--<a [routerLink]="['{{item.routerLink}}']" [matMenuTriggerFor]="menu.childMenu"> {{item.text}} </a>-->
-            <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
+            <button mat-menu-item [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
             <app-menu-item #menu [items]="item.children"></app-menu-item>
           </span>
           <span *ngIf="!item.children || item.children.length === 0">
             <!--<a [routerLink]="['{{item.routerLink}}']">{{item.text}}</a>-->
-            <button mat-button [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
+            <button mat-menu-item>{{item.text}}</button>
           </span>
         </span>
       </span>
