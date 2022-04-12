@@ -33,7 +33,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     MenuItemAMComponent,
     MenuComponent,
     SingleMenuItemComponent,
-    DialogComponent
+    DialogComponent,
   ],
   entryComponents:[
     DialogComponent
@@ -43,9 +43,9 @@ import { DialogComponent } from './components/dialog/dialog.component';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    MaterialModule,
     RoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

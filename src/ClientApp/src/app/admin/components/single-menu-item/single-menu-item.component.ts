@@ -18,9 +18,9 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   menuList$ = this.shareDataService.menuList$;
   // the form model
   form: FormGroup;
-  menu: Menu;
+  currentMenu: Menu;
   flatedMenu: Menu[];
-  @Output() deletedMenuItem = new EventEmitter();
+  @Output() reloadMenu = new EventEmitter();
 
   constructor(
     private shareDataService: ShareNavigationDataService,
@@ -44,8 +44,8 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     this.menuItem$.subscribe(
       {
         next: (result) => {
-          this.menu = result;
-          this.form.patchValue(this.menu);
+          this.currentMenu = result;
+          this.form.patchValue(this.currentMenu);
           this._getAllMenuItems();
         },
         error: (error) => console.error(error),
@@ -60,8 +60,9 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     this.menuService.updateMenuItem(updatedMenu)
       .subscribe({
         next: () => {
-          this.menu = updatedMenu;
-          this.snackbar.success('Menu have been saved');
+          this.currentMenu = updatedMenu;
+          this.snackbar.success('Menu has been saved');
+          this.reloadMenu.emit();
         },
         error: (error) => {
           this.snackbar.error('Failed to save Menu!');
@@ -69,15 +70,33 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
       });
   }
 
+  createMenu(){
+    var newMenu = Object.assign({}, this.form.value);
+
+    this.menuService.createMenuItem(newMenu)
+      .subscribe({
+        next: () => {
+          this.currentMenu = newMenu;
+          this.snackbar.success('Menu has been created');
+          this.currentMenu = null;
+          this.form.reset();
+          this.reloadMenu.emit();
+        },
+        error: (error) => {
+          this.snackbar.error('Failed to create Menu!');
+        }
+      });
+  }
+
   delete() {
-    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Are you sure you want to delete menu ' + this.menu.text + '?' } });
+    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Are you sure you want to delete menu ' + this.currentMenu.text + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
-        var res = this.menuService.deleteMenuItem(this.menu.id)
+        var res = this.menuService.deleteMenuItem(this.currentMenu.id)
           .subscribe({
             next: () => {
-              this.deletedMenuItem.emit();
-              this.menu = null;
+              this.reloadMenu.emit();
+              this.currentMenu = null;
               this.form.reset();
               this.snackbar.success('Menu has been deleted');
             },
@@ -99,8 +118,8 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     this.menuList$.subscribe(
       {
         next: (items) => {
-          this.flatedMenu = this._createFlatArrayUsingMap(items, this.menu?.id);
-          this.form.controls['parentId'].setValue(this.menu?.parentId, { onlySelf: true });
+          this.flatedMenu = this._createFlatArrayUsingMap(items, this.currentMenu?.id);
+          this.form.controls['parentId'].setValue(this.currentMenu?.parentId, { onlySelf: true });
         },
         error: (error) => console.error(error)
       });
@@ -118,9 +137,9 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
         if (mnuItem.id && mnuItem.text) {
           //const { children, parentId, ...rest } = mnuItem;
           const { ...rest } = mnuItem;
-          if (menuId !== rest.id) {
+          //if (menuId !== rest.id) {
             flatedMenusItems.push(rest);
-          }
+          //}
         }
         mnuItem.children.map(recursiveFn)
       }

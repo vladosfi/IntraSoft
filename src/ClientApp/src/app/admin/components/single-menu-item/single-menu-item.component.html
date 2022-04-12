@@ -1,9 +1,9 @@
 <div class="form-container">
-  <p *ngIf="!menu || (menu | json) === '{}'"><em>
+  <p *ngIf="!currentMenu || (currentMenu | json) === '{}'"><em>
       <h1>Create - Menu Item</h1>
     </em></p>
-  <p *ngIf="menu && (menu | json) !== '{}'"><em>
-      <h1>Edit - {{this.menu?.text}}</h1>
+  <p *ngIf="currentMenu && (currentMenu | json) !== '{}'"><em>
+      <h1>Edit - {{this.currentMenu?.text}}</h1>
     </em></p>
 
   <div class="form" [formGroup]="form">
@@ -41,34 +41,34 @@
     </div>
 
 
-    <div *ngIf="menu && (menu | json) !== '{}'" class="form-group">
+    <div class="form-group">
       <label for="parentId">Item Parent Id:</label>
       <br />
-      <mat-form-field *ngIf="flatedMenu">
+      <mat-form-field appearance="fill" *ngIf="flatedMenu" aria-expanded="true">
         <mat-label>Select a Parent Id...</mat-label>
         <mat-select id="parentId" formControlName="parentId">
           <mat-option [value]="null">
             Root Menu
           </mat-option>
-          <mat-option *ngFor="let menu of flatedMenu" [value]="menu.id">
+          <mat-option *ngFor="let menu of flatedMenu" [value]="menu.id" [disabled]="menu.id === currentMenu?.id ? true : false">
             Name: {{menu.text}} | Id = {{menu.id}}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-
+    
 
     <div class="form-group commands">
-      <button *ngIf="menu && (menu | json) !== '{}'" type="button" (click)="saveMenuItem()" [disabled]="form.invalid"
-        class="btn btn-success">
+      <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="saveMenuItem()"
+        [disabled]="form.invalid || !form.touched" class="btn btn-success">
         Save
       </button>
-      <button *ngIf="menu && (menu | json) !== '{}'" type="button" mat-button (click)="delete()"
+      <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="delete()" mat-button
         [disabled]="form.invalid" class="btn btn-danger">
         Delete
       </button>
-      <button *ngIf="!menu || (menu | json) === '{}'" type="button" (click)="onSubmit('Menu have been saved')"
-        [disabled]="form.invalid" class="btn btn-success">
+      <button *ngIf="!currentMenu || (currentMenu | json) === '{}'" type="button" (click)="createMenu()" [disabled]="form.invalid"
+        class="btn btn-success">
         Create
       </button>
       <button type="button" [routerLink]="['/']" class="btn">
@@ -78,3 +78,4 @@
     </div>
   </div>
 </div>
+

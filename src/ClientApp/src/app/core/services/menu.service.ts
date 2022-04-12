@@ -20,20 +20,15 @@ export class MenuService {
     return currentMenu;
   }
 
-
-  deleteMenuItem(menuId: number) {
+  deleteMenuItem(menuId: number): any {
     return this.http.delete(this.url + `/${menuId}`);
   }
 
-  updateMenuItem(menuItem: Menu) {
+  updateMenuItem(menuItem: Menu): any {
     return this.http.put(this.url + `/${menuItem.id}`, menuItem);
   }
 
-  //get<Menu>(id): Observable<Menu> {
-  //  var url = this.baseUrl + "api/menu/" + id;
-  //  return this.http.get<Menu>(url);
-  //}
-
-
-  
+  createMenuItem(menuItem: Menu): any {
+    return this.http.post(this.url, menuItem);
+  }
 }
