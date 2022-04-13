@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Menu } from '../../core/interfaces/Menu';
 
 @Component({
-  selector: 'app-sidenav-list-item',
+  selector: 'app-sidenav-list-item1',
   templateUrl: './sidenav-list-item.component.html',
   styleUrls: ['./sidenav-list-item.component.css']
 })

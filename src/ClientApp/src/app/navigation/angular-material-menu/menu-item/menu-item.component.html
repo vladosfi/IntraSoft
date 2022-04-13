@@ -7,17 +7,24 @@
     </mat-expansion-panel-header>
 
     <ng-container *ngIf="menuitem.children; else elseTemplate">
-      <app-menu-item-am *ngFor="let child of menuitem.children"
-                        [menuitem]="child"></app-menu-item-am>
+      <app-menu-item-am *ngFor="let child of menuitem.children" [menuitem]="child"></app-menu-item-am>
     </ng-container>
 
     <ng-template #elseTemplate>
-      <mat-action-list *ngIf="menuitem.routerLink" [ngStyle]="styleLink">
-        <button mat-list-item routerLink="{{ menuitem.routerLink }}">
-          <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
-        </button>
-      </mat-action-list>
+      <section *ngIf="menuitem.parentId === null">
+        <mat-action-list [ngStyle]="style">
+          <button mat-list-item [routerLink]="menuitem.routerLink">
+            <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
+          </button>
+        </mat-action-list>
+      </section>
+      <section *ngIf="menuitem.parentId !== null">
+        <mat-action-list [ngStyle]="styleLink">
+          <button mat-list-item [routerLink]="menuitem.routerLink" class="padleft">
+            <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
+          </button>
+        </mat-action-list>
+      </section>
     </ng-template>
   </mat-expansion-panel>
 </mat-accordion>
-

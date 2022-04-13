@@ -15,13 +15,11 @@
       <span fxLayout fxLayoutGap="15px" class="navigation-items">
         <span *ngFor="let item of (menuList$ | async)">
           <span *ngIf="item.children && item.children.length > 0">
-            <!--<a [routerLink]="['{{item.routerLink}}']" [matMenuTriggerFor]="menu.childMenu"> {{item.text}} </a>-->
-            <button mat-menu-item [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
+            <button  mat-menu-item [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
             <app-menu-item #menu [items]="item.children"></app-menu-item>
           </span>
           <span *ngIf="!item.children || item.children.length === 0">
-            <!--<a [routerLink]="['{{item.routerLink}}']">{{item.text}}</a>-->
-            <button mat-menu-item>{{item.text}}</button>
+            <button mat-menu-item [routerLink]="item.routerLink">{{item.text}}</button>
           </span>
         </span>
       </span>

@@ -8,7 +8,7 @@
         <button mat-icon-button 
                     [attr.aria-label]="'Toggle ' + node.text">
               <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'last_page'}}
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
               </mat-icon>
             </button>
             {{node.text}}

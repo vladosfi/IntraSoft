@@ -62,6 +62,8 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
         next: () => {
           this.currentMenu = updatedMenu;
           this.snackbar.success('Menu has been saved');
+          this.form.reset();
+          this.currentMenu = null;
           this.reloadMenu.emit();
         },
         error: (error) => {

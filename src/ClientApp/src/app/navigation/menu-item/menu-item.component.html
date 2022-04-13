@@ -13,7 +13,9 @@
       <span>
 
         <!--<a mat-button color="primary" [routerLink]="['{{child.routerLink}}']">{{child.text}}</a>-->
-        <button mat-menu-item routerLink="['{{child.routerLink}}']" routerLinkActive="active">{{child.text}}</button>
+        <button matTooltip="{{child.text}}"
+                matTooltipPosition="left"
+        mat-menu-item routerLink="['{{child.routerLink}}']" routerLinkActive="active">{{child.text}}</button>
 
       </span>
     </span>
