@@ -1,5 +1,6 @@
 ﻿namespace IntraSoft.Data
 {
+    using IntraSoft.Data.Dtos.Document;
     using IntraSoft.Data.Models;
     using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,8 @@
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
+
+        public DbSet<Document> Documents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

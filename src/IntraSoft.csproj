@@ -53,7 +53,10 @@
 	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
 	  <Script Remove="Controllers\SeedController.cs" />
+	  <Script Remove="Data\Dtos\Document\DocumentInputModelDto.cs" />
+	  <Script Remove="Data\Dtos\FileInputModel.cs" />
 	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
+	  <Script Remove="Data\Models\Document.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
