@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Menu } from '../../core/interfaces/Menu';
 import { ShareNavigationDataService } from '../share-navigation-data.service';
 
@@ -10,6 +10,11 @@ import { ShareNavigationDataService } from '../share-navigation-data.service';
 export class AngularMaterialMenuComponent implements OnInit {
   @Input("menu") menu: Menu[];
   menuList$ = this.shareDataService.menuList$;
+  @Output() sidenavClose = new EventEmitter();
+
+  public onSidenavClose = () => {
+    this.sidenavClose.emit();
+  }
 
   constructor(private shareDataService: ShareNavigationDataService,) { }
 
@@ -18,3 +23,11 @@ export class AngularMaterialMenuComponent implements OnInit {
     //console.log(this.menu);
   }
 }
+
+
+
+
+
+
+
+  

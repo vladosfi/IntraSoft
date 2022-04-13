@@ -42,7 +42,7 @@
   <div class="container" fxFlex="100">
     <mat-sidenav-container fxLayout="column" fxFlexFill>
       <mat-sidenav #sidenav role="navigation">
-        <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
+        <app-angular-material-menu (sidenavClose)="sidenav.close()"></app-angular-material-menu>
       </mat-sidenav>
       <mat-sidenav-content>
         <app-header (sidenavToggle)="sidenav.toggle()"></app-header>

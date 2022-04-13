@@ -1,19 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap');
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
 }
 
 body {
-  margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-  body .container {
-    padding: 0;
-  }
+body .container {
+  padding: 0;
+}
+
+main {
+  margin: 0 auto;
+  padding: 15px;
+}
 
 /* Provide sufficient contrast against white background */
 header {
@@ -21,8 +26,11 @@ header {
   font-weight: bold;
 }
 
-.container, .container-lg, .container-md, .container-sm{
-    max-width: 100%;
+.container,
+.container-lg,
+.container-md,
+.container-sm {
+  max-width: 100%;
 }
 
 a {
@@ -63,8 +71,7 @@ code {
   background-color: blue;
 }
 
-.mat-simple-snackbar-action{
+.mat-simple-snackbar-action {
   color: white;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

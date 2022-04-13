@@ -1,4 +1,9 @@
-<app-menu-item-am *ngFor="let menuitem of (menuList$ | async)"
-                  [menuitem]="menuitem">
-</app-menu-item-am>
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" (click)="onSidenavClose()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>Menu</span>
+</mat-toolbar>
 
+<app-menu-item-am *ngFor="let menuitem of (menuList$ | async)" [menuitem]="menuitem">
+</app-menu-item-am>

@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuItemComponent } from './navigation/menu-item/menu-item.component';
 import { RoutingModule } from './routing/routing.module';
-import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { MaterialModule } from './material/material.module';
@@ -26,7 +25,6 @@ import { DialogComponent } from './components/dialog/dialog.component';
     HomeComponent,
     MenuItemComponent,
     HeaderComponent,
-    SidenavListComponent,
     AngularMaterialMenuComponent,
     MenuItemAMComponent,
     MenuComponent,
