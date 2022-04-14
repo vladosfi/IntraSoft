@@ -1,6 +1,13 @@
 namespace IntraSoft
 {
+    using System.Reflection;
     using IntraSoft.Data;
+    using IntraSoft.Data.Common;
+    using IntraSoft.Data.Common.Repositories;
+    using IntraSoft.Data.Models;
+    using IntraSoft.Data.Repositories;
+    using IntraSoft.Services.Data;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -38,7 +45,16 @@ namespace IntraSoft
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
 
+
+            // Data repositories
+            services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
             services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
+
+            // Application services
+            //services.AddTransient<IMenuService, MenuService>();
+
 
             services.AddControllersWithViews();
 
@@ -63,6 +79,8 @@ namespace IntraSoft
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            AutoMapperConfig.RegisterMappings(typeof(Menu).GetTypeInfo().Assembly);
 
             app.UseHttpsRedirection();
 

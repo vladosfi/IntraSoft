@@ -3,24 +3,21 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using IntraSoft.Data.Common.Models;
 
     [Table("Menus")]
-    public class Menu
+    public class Menu : BaseDeletableModel<int>
     {
         public Menu()
         {
             this.Children = new HashSet<Menu>();
         }
 
-        [Key]
-        [Required]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(100)]
         public string Text { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string Icon { get; set; }
 
         [Required]

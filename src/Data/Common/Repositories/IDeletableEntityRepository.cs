@@ -14,8 +14,6 @@ namespace IntraSoft.Data.Common.Repositories
 
         Task<TEntity> GetByIdWithDeletedAsync(params object[] id);
 
-        IQueryable<TEntity> FullTextSearch(string propertyReference, string freeText);
-
         void HardDelete(TEntity entity);
 
         void Undelete(TEntity entity);

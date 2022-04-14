@@ -1,28 +1,20 @@
 ﻿namespace IntraSoft.Data.Dtos.Document
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Http;
+    using IntraSoft.Data.Common.Models;
 
-    public class Document
+    public class Document : BaseDeletableModel<int>
     {
-        public Document()
-        {
-            DateAdded = DateTime.UtcNow;
-        }
-
-        [Key]
-        [Required]
-        public int Id { get; set; }
-
+        [MaxLength(250)]
         public string FileName { get; set; }
 
+        [MaxLength(250)]
         public string FilePath { get; set; }
 
+        [MaxLength(250)]
         public string Description { get; set; }
 
+        [MaxLength(50)]
         public string UserName { get; set; }
-
-        public DateTime DateAdded { get; set; }
     }
 }
