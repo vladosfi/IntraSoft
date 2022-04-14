@@ -10,17 +10,17 @@
 
     [Route("api/[controller]")]
     [ApiController]
-    public class FileController : ControllerBase
+    public class DocumentController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
 
-        public FileController(IWebHostEnvironment hostingEnvironment)
+        public DocumentController(IWebHostEnvironment hostingEnvironment)
         {
             this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Download(string DocumentPath)
+        public async Task<IActionResult> GetDocument(string DocumentPath)
         {
             //To do check for recor in database 
             //if(path == null) return this.NotFound();
@@ -43,7 +43,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> AddFile([FromForm] DocumentInputModelDto fileInput)
+        public async Task<IActionResult> AddDocument([FromForm] DocumentInputModelDto fileInput)
         {
             if (fileInput.DataFile != null)
             {
