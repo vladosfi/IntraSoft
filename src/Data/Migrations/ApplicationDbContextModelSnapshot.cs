@@ -53,7 +53,7 @@ namespace IntraSoft.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("IntraSoft.Data.Models.City", b =>
@@ -81,7 +81,7 @@ namespace IntraSoft.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("IntraSoft.Data.Models.Country", b =>
@@ -101,7 +101,7 @@ namespace IntraSoft.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("IntraSoft.Data.Models.Menu", b =>
@@ -143,7 +143,7 @@ namespace IntraSoft.Data.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menus", (string)null);
                 });
 
             modelBuilder.Entity("IntraSoft.Data.Models.City", b =>

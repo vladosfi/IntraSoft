@@ -8,6 +8,7 @@
     using IntraSoft.Data;
     using IntraSoft.Data.Dtos;
     using IntraSoft.Data.Models;
+    using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Mvc;
     using Newtonsoft.Json;
 
@@ -17,11 +18,13 @@
     {
         private readonly IMenuAPIRepo repo;
         private readonly IMapper mapper;
+        private readonly IMenuService menuService;
 
-        public MenuController(IMenuAPIRepo repo, IMapper mapper)
+        public MenuController(IMenuAPIRepo repo, IMapper mapper, IMenuService menuService)
         {
             this.repo = repo;
             this.mapper = mapper;
+            this.menuService = menuService;
         }
 
         // GET: api/<ValuesController>
@@ -105,6 +108,10 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
+            // var menuItemFromRepo = await this.menuService.GetById(id);
+            // this.menuService.Delete();
+
+            //Old repo
             var menuItemFromRepo = await this.repo.GetByIdAsync(id);
 
             if (menuItemFromRepo == null)

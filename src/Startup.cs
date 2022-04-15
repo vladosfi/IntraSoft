@@ -53,7 +53,7 @@ namespace IntraSoft
             services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
 
             // Application services
-            //services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IMenuService, MenuService>();
 
 
             services.AddControllersWithViews();

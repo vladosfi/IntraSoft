@@ -2,13 +2,16 @@ namespace IntraSoft.Services.Data
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using IntraSoft.Data.Models;
 
     public interface IMenuService
     {
-        IEnumerable<T> GetAll<T>(int? count = null);
+        Task<int> CreateAsync(Menu item);
 
-        T GetByName<T>(string name);
+        IEnumerable<T> GetAllAsync<T>();
 
-        Task<int> GetCountAsync();
+        T GetById<T>(int id);
+
+        void Delete(Menu item);
     }
 }
