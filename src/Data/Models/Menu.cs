@@ -4,9 +4,10 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
+    using IntraSoft.Services.Mapping;
 
     [Table("Menus")]
-    public class Menu : BaseDeletableModel<int>
+    public class Menu : BaseDeletableModel<int>, IMapFrom<Menu>
     {
         public Menu()
         {

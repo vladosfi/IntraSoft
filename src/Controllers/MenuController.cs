@@ -1,37 +1,34 @@
 ﻿namespace IntraSoft.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
-    using IntraSoft.Data;
     using IntraSoft.Data.Dtos;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Mvc;
-    using Newtonsoft.Json;
 
     [Route("api/[controller]")]
     [ApiController]
     public class MenuController : ControllerBase
     {
-        private readonly IMenuAPIRepo repo;
+        //private readonly IMenuAPIRepo repo;
         private readonly IMapper mapper;
         private readonly IMenuService menuService;
 
-        public MenuController(IMenuAPIRepo repo, IMapper mapper, IMenuService menuService)
+        public MenuController(IMapper mapper, IMenuService menuService)
         {
-            this.repo = repo;
-            this.mapper = mapper;
+            //this.repo = repo;
             this.menuService = menuService;
+            this.mapper = mapper;
         }
 
-        // GET: api/<ValuesController>
+        //// GET: api/<ValuesController>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var menuItems = await this.repo.GetAllAsync();
+            var menuItems = await this.menuService.GetAllAsync();
 
             if (menuItems == null)
             {
@@ -47,14 +44,14 @@
         [HttpGet("{id}", Name = nameof(Get))]
         public async Task<ActionResult<MenuReadDto>> Get(int id)
         {
-            var menuItems = await this.repo.GetByIdAsync(id);
+            var menuItems = await this.menuService.GetByIdAsync<MenuReadDto>(id);
 
             if (menuItems == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(this.mapper.Map<MenuReadDto>(menuItems));
+            return this.Ok(menuItems);
         }
 
         // POST api/<ValuesController>
@@ -65,12 +62,12 @@
 
             if (newMenuItem.ParentId == null)
             {
-                await this.repo.CreateAsync(newMenuItem);
+                await this.menuService.CreateAsync(newMenuItem);
             }
             else
             {
                 var parentId = (int)newMenuItem.ParentId;
-                var parenMenuItem = await this.repo.GetByIdAsync(parentId);
+                var parenMenuItem = await this.menuService.GetByIdAsync(parentId);
 
                 if (parenMenuItem != null)
                 {
@@ -78,7 +75,7 @@
                 }
             }
 
-            await this.repo.SaveChangesAsync();
+            await this.menuService.SaveChangesAsync();
             var menuReadDto = this.mapper.Map<MenuReadDto>(newMenuItem);
 
             return this.CreatedAtRoute(
@@ -90,7 +87,7 @@
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, MenuUpdateDto commandUpdateDto)
         {
-            var menuItemFromRepo = await this.repo.GetByIdAsync(id);
+            var menuItemFromRepo = await this.menuService.GetByIdAsync(id);
 
             if (menuItemFromRepo == null)
             {
@@ -98,8 +95,8 @@
             }
 
             this.mapper.Map(commandUpdateDto, menuItemFromRepo);
-            this.repo.Update(menuItemFromRepo);
-            await this.repo.SaveChangesAsync();
+            this.menuService.Update(menuItemFromRepo);
+            await this.menuService.SaveChangesAsync();
 
             return this.NoContent();
         }
@@ -108,19 +105,15 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            // var menuItemFromRepo = await this.menuService.GetById(id);
-            // this.menuService.Delete();
-
-            //Old repo
-            var menuItemFromRepo = await this.repo.GetByIdAsync(id);
+            var menuItemFromRepo = await this.menuService.GetByIdAsync(id);
 
             if (menuItemFromRepo == null)
             {
                 return this.NotFound();
             }
 
-            this.repo.Delete(menuItemFromRepo);
-            await this.repo.SaveChangesAsync();
+            this.menuService.HardDelete(menuItemFromRepo);
+            await this.menuService.SaveChangesAsync();
 
             return this.NoContent();
         }

@@ -1,21 +1,21 @@
-﻿namespace IntraSoft.Data
-{
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using IntraSoft.Data.Models;
+﻿//namespace IntraSoft.Data
+//{
+//    using System.Collections.Generic;
+//    using System.Threading.Tasks;
+//    using IntraSoft.Data.Models;
 
-    public interface IMenuAPIRepo
-    {
-        Task<bool> SaveChangesAsync();
+//    public interface IMenuAPIRepo
+//    {
+//        Task<bool> SaveChangesAsync();
 
-        Task<IEnumerable<Menu>> GetAllAsync();
+//        Task<IEnumerable<Menu>> GetAllAsync();
 
-        Task<Menu> GetByIdAsync(int id);
+//        Task<Menu> GetByIdAsync(int id);
 
-        Task CreateAsync(Menu item);
+//        Task CreateAsync(Menu item);
 
-        void Update(Menu item);
+//        void Update(Menu item);
 
-        void Delete(Menu item);
-    }
-}
+//        void Delete(Menu item);
+//    }
+//}

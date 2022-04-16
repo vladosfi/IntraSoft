@@ -43,6 +43,7 @@ namespace IntraSoft
 
             object p = services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            
             services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
 
 
@@ -50,7 +51,7 @@ namespace IntraSoft
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-            services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
+            //services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
 
             // Application services
             services.AddTransient<IMenuService, MenuService>();
@@ -68,6 +69,8 @@ namespace IntraSoft
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(ApplicationDbContext).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -80,7 +83,6 @@ namespace IntraSoft
                 app.UseHsts();
             }
 
-            AutoMapperConfig.RegisterMappings(typeof(Menu).GetTypeInfo().Assembly);
 
             app.UseHttpsRedirection();
 

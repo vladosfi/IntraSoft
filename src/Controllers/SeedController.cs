@@ -11,6 +11,7 @@ using System.Security;
 using IntraSoft.Data;
 using AutoMapper;
 using IntraSoft.Data.Models;
+using IntraSoft.Services.Data;
 
 namespace IntraSoft.Controllers
 {
@@ -19,12 +20,12 @@ namespace IntraSoft.Controllers
     public class SeedController : ControllerBase
     {
         private readonly IWebHostEnvironment env;
-        private readonly IMenuAPIRepo repo;
         private readonly IMapper mapper;
+        private readonly IMenuService menuService;
 
-        public SeedController(IMenuAPIRepo repo, IMapper mapper, IWebHostEnvironment env)
+        public SeedController(IMenuService menuService, IMapper mapper, IWebHostEnvironment env)
         {
-            this.repo = repo;
+            this.menuService = menuService;
             this.mapper = mapper;
             this.env = env;
         }
@@ -47,7 +48,7 @@ namespace IntraSoft.Controllers
             // create a lookup dictionary
             // containing all the menu already existing
             // into the Database (it will be empty on first run).
-            var existingMenus = await this.repo.GetAllAsync();
+            var existingMenus = await this.menuService.GetAllAsync();
             var menuByText = existingMenus.ToDictionary(x => x.Text, StringComparer.OrdinalIgnoreCase);
 
             // iterates through all rows, skipping the first one
@@ -85,14 +86,14 @@ namespace IntraSoft.Controllers
                 }
 
                 // add the new country to the DB context
-                await this.repo.CreateAsync(menuToAdd);
+                await this.menuService.CreateAsync(menuToAdd);
                 // store the country in our lookup to retrieve its Id later on
                 menuByText.Add(menuText, menuToAdd);
                 // increment the counter
                 numberOfMenusAdded++;
             }
 
-            if (numberOfMenusAdded > 0) await this.repo.SaveChangesAsync();
+            if (numberOfMenusAdded > 0) await this.menuService.SaveChangesAsync();
 
 
             return new JsonResult(new

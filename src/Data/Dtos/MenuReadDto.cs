@@ -2,8 +2,9 @@
 {
     using System.Collections.Generic;
     using IntraSoft.Data.Models;
+    using IntraSoft.Services.Mapping;
 
-    public class MenuReadDto
+    public class MenuReadDto: IMapTo<Menu>, IMapFrom<Menu>
     {
         public int Id { get; set; }
 

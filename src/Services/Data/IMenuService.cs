@@ -8,10 +8,16 @@ namespace IntraSoft.Services.Data
     {
         Task<int> CreateAsync(Menu item);
 
-        IEnumerable<T> GetAllAsync<T>();
+        Task<IEnumerable<Menu>> GetAllAsync();
 
-        T GetById<T>(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
-        void Delete(Menu item);
+        Task<Menu> GetByIdAsync(int id);
+
+        void HardDelete(Menu item);
+
+        void Update(Menu menuItem);
+
+        Task<int> SaveChangesAsync();
     }
 }
