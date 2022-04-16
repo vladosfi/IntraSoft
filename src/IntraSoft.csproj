@@ -56,11 +56,18 @@
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\share-navigation-data.service.ts" />
+	  <Script Remove="Controllers\ContactController.cs" />
 	  <Script Remove="Controllers\SeedController.cs" />
+	  <Script Remove="Data\Dtos\Contact\ContactCreateDto.cs" />
+	  <Script Remove="Data\Dtos\Contact\ContactReadDto.cs" />
+	  <Script Remove="Data\Dtos\Contact\ContactUpdateDto.cs" />
 	  <Script Remove="Data\Dtos\Document\DocumentInputModelDto.cs" />
 	  <Script Remove="Data\Dtos\FileInputModel.cs" />
 	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
+	  <Script Remove="Data\Models\Contact.cs" />
 	  <Script Remove="Data\Models\Document.cs" />
+	  <Script Remove="Services\Data\ContactService.cs" />
+	  <Script Remove="Services\Data\IContactService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

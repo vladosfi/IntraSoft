@@ -13,13 +13,11 @@
     [ApiController]
     public class MenuController : ControllerBase
     {
-        //private readonly IMenuAPIRepo repo;
         private readonly IMapper mapper;
         private readonly IMenuService menuService;
 
         public MenuController(IMapper mapper, IMenuService menuService)
         {
-            //this.repo = repo;
             this.menuService = menuService;
             this.mapper = mapper;
         }
@@ -41,8 +39,8 @@
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}", Name = nameof(Get))]
-        public async Task<ActionResult<MenuReadDto>> Get(int id)
+        [HttpGet("{id}", Name = nameof(GetMenu))]
+        public async Task<ActionResult<MenuReadDto>> GetMenu(int id)
         {
             var menuItems = await this.menuService.GetByIdAsync<MenuReadDto>(id);
 
@@ -79,13 +77,13 @@
             var menuReadDto = this.mapper.Map<MenuReadDto>(newMenuItem);
 
             return this.CreatedAtRoute(
-                nameof(this.Get),
+                nameof(this.GetMenu),
                 new { Id = menuReadDto.Id },
                 menuReadDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCommand(int id, MenuUpdateDto commandUpdateDto)
+        public async Task<ActionResult> UpdateCommand(int id, MenuUpdateDto menuUpdateDto)
         {
             var menuItemFromRepo = await this.menuService.GetByIdAsync(id);
 
@@ -94,7 +92,7 @@
                 return this.NotFound();
             }
 
-            this.mapper.Map(commandUpdateDto, menuItemFromRepo);
+            this.mapper.Map(menuUpdateDto, menuItemFromRepo);
             this.menuService.Update(menuItemFromRepo);
             await this.menuService.SaveChangesAsync();
 

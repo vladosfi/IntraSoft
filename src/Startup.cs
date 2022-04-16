@@ -51,10 +51,10 @@ namespace IntraSoft
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-            //services.AddScoped<IMenuAPIRepo, MenuAPIRepo>();
 
             // Application services
             services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IContactService, ContactService>();
 
 
             services.AddControllersWithViews();

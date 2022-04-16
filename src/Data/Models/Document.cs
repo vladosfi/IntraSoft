@@ -1,4 +1,4 @@
-﻿namespace IntraSoft.Data.Dtos.Document
+﻿namespace IntraSoft.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
     using IntraSoft.Data.Common.Models;
