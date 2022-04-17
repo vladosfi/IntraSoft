@@ -51,6 +51,8 @@
 
 	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
+	  <Script Remove="ClientApp\src\app\core\interfaces\Contact.ts" />
+	  <Script Remove="ClientApp\src\app\core\services\contact.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />

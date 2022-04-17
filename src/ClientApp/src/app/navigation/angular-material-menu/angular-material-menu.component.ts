@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Menu } from '../../core/interfaces/Menu';
-import { ShareNavigationDataService } from '../share-navigation-data.service';
+import { ShareNavigationDataService } from '../../core/services/share-navigation-data.service';
 
 @Component({
   selector: 'app-angular-material-menu',

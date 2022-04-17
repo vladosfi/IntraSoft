@@ -60,7 +60,7 @@
 
     <div class="form-group commands">
       <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="saveMenuItem()"
-        [disabled]="form.invalid || !form.touched" class="btn btn-success">
+        [disabled]="form.invalid || !form.dirty" class="btn btn-success">
         Save
       </button>
       <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="delete()" mat-button

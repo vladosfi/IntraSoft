@@ -2,7 +2,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Menu } from '../../../core/interfaces/Menu';
-import { ShareNavigationDataService } from '../../../navigation/share-navigation-data.service';
+import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {

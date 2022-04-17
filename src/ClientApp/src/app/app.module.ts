@@ -17,6 +17,7 @@ import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-ite
 import { MenuComponent } from './admin/components/menu/menu.component';
 import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     MenuComponent,
     SingleMenuItemComponent,
     DialogComponent,
+    ContactComponent,
   ],
   entryComponents:[
     DialogComponent

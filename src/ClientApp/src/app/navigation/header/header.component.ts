@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ShareNavigationDataService } from '../share-navigation-data.service';
+import { ShareNavigationDataService } from '../../core/services/share-navigation-data.service';
 
 @Component({
   selector: 'app-header',

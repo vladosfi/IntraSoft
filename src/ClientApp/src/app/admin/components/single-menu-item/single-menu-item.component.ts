@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ShareNavigationDataService } from '../../../navigation/share-navigation-data.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Menu } from '../../../core/interfaces/Menu';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -7,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { MenuService } from 'src/app/core/services/menu.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
+import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
 
 @Component({
   selector: 'app-single-menu-item',
