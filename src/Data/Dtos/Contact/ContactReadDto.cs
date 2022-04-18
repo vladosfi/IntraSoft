@@ -18,6 +18,6 @@
 
         public string Email { get; set; }
 
-        public string FullName => string.Join(" ", this.FirstName, this.MiddleName, this.LastName);
+        //public string FullName => string.Join(" ", this.FirstName, this.MiddleName, this.LastName);
     }
 }

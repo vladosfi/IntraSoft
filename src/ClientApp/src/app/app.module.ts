@@ -18,6 +18,9 @@ import { MenuComponent } from './admin/components/menu/menu.component';
 import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { DisableControlDirective } from './components/contact/disabled-form';
+import { MatPaginatorGotoComponent } from './components/contact/mat-paginator-goto/mat-paginator-goto.component';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
 
 @NgModule({
@@ -32,6 +35,8 @@ import { ContactComponent } from './components/contact/contact.component';
     SingleMenuItemComponent,
     DialogComponent,
     ContactComponent,
+    MatPaginatorGotoComponent,
+    DisableControlDirective,
   ],
   entryComponents:[
     DialogComponent
@@ -45,7 +50,9 @@ import { ContactComponent } from './components/contact/contact.component';
     ReactiveFormsModule,
     MaterialModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

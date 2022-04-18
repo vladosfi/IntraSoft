@@ -14,19 +14,48 @@ table {
   border-right: 1px solid currentColor;
   padding-right: 24px;
   text-align: center;
+  width: 5%;
+  color:cornflowerblue;
+
 }
 
-.mat-column-fullname {
+.mat-column-fullName {
   padding-left: 16px;
   font-size: 20px;
+  text-transform: uppercase;
+  width: 40%;
 }
 
 .mat-column-phone {
-  font-style: italic;
+  text-transform: uppercase;
+  width: 20%;
 }
 
 .mat-column-email {
   width: 32px;
-  text-align: center;
-  color:cornflowerblue;
+  text-align: left;
+  text-transform: uppercase;
+  width: 20%;
+}
+.mat-column-action {
+  width: 32px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 10%;
+}
+
+
+
+.mat-paginator-range-label {
+    display: none;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgb(255, 255, 255);
+  /* background-color: white; */
+}
+/* Font color */
+input.mat-input-element {
+  color: rgb(0, 0, 0);
 }

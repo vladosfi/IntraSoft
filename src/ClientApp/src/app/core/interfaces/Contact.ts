@@ -5,6 +5,6 @@ export interface Contact {
   lastName: string;
   phone: string;
   email?: string;
-  readonly fullName: string;
+  fullName: string;
 }
 
