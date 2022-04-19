@@ -65,6 +65,11 @@
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Department>()
+                .HasMany(d => d.Contacts)
+                .WithOne(c => c.Department)
+                .OnDelete(DeleteBehavior.Restrict);
+
             var entityTypes = builder.Model.GetEntityTypes().ToList();
 
             // Set global query filter for not deleted entities only

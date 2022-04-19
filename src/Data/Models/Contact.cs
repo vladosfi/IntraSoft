@@ -1,6 +1,7 @@
 ﻿namespace IntraSoft.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
     using IntraSoft.Data.Dtos.Contact;
     using IntraSoft.Services.Mapping;
@@ -26,5 +27,10 @@
         [MaxLength(100)]
         [EmailAddress]
         public string Email { get; set; }
+
+        [ForeignKey(nameof(Department))]
+        public int DepartmentId { get; set; }
+
+        public virtual Department Department { get; set; }
     }
 }

@@ -9,6 +9,8 @@ import {
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
+import { Department } from 'src/app/core/interfaces/Department'
+import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
@@ -21,33 +23,39 @@ import { DialogComponent } from '../dialog/dialog.component'
   styleUrls: ['./contact.component.css'],
 })
 export class ContactComponent implements OnInit {
-  contacts: Contact[] = []
-  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','department', 'action']
-  dataSource = new MatTableDataSource<any>()
+  contacts: Contact[] = [];
+  departments: Department[] = [];
+  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','department', 'action'];
+  dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
-  isLoading = true
+  isLoading = true;
 
-  pageNumber: number = 1
-  VOForm: FormGroup
-  isEditableNew: boolean = true
-  @ViewChild(MatPaginator) paginator: MatPaginator
+  pageNumber: number = 1;
+  VOForm: FormGroup;
+  isEditableNew: boolean = true;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
     private _formBuilder: FormBuilder,
     private contactService: ContactService,
+    private departmentService: DepartmentService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
     this.contactService.getData().subscribe((result) => {
-      this.contacts = result as Contact[]
+      this.contacts = result as Contact[];
       this.contacts.forEach(
         (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
       )
-      this.initiateForm()
-    })
+      this.initiateForm();
+    });
+
+    this.departmentService.getData().subscribe((result =>{
+        this.departments = result as Department[];
+    }));    
   }
 
   initiateForm() {
@@ -63,7 +71,7 @@ export class ContactComponent implements OnInit {
             fullName: new FormControl(val.fullName),
             phone: new FormControl(val.phone),
             email: new FormControl(val.email),
-            department: new FormControl("val.department"),
+            department: new FormControl("Department"),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),

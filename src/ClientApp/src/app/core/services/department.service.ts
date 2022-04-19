@@ -1,33 +1,33 @@
 import { Injectable, Inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { Contact } from '../interfaces/Contact'
+import { Department } from '../interfaces/Department'
 
 @Injectable({
   providedIn: 'root',
 })
 export class DepartmentService {
-  url = this.baseUrl + 'api/contact'
+  url = this.baseUrl + 'api/department'
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
   ) {}
 
-  getData<Contact>(): Observable<Contact> {
+  getData<Department>(): Observable<Department> {
     var params = new HttpParams()
-    return this.http.get<Contact>(this.url, { params })
+    return this.http.get<Department>(this.url, { params })
   }
 
-  deleteContactItem(contactId: number): any {
-    return this.http.delete(this.url + `/${contactId}`);
+  deleteDepartmentItem(departmentId: number): any {
+    return this.http.delete(this.url + `/${departmentId}`);
   }
 
-  updateContactItem(contactItem: Contact): Observable<Contact> {
+  updateDepartmentItem(departmentItem: Department): Observable<Department> {
     return this.http
-      .put<Contact>(this.url + `/${contactItem.id}`, contactItem);
+      .put<Department>(this.url + `/${departmentItem.id}`, departmentItem);
   }
 
-  addContactItem(contactItem: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.url, contactItem);
+  addDepartmentItem(departmentItem: Department): Observable<Department> {
+    return this.http.post<Department>(this.url, departmentItem);
   }
 }
