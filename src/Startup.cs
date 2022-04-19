@@ -55,6 +55,7 @@ namespace IntraSoft
             // Application services
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IContactService, ContactService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
 
 
             services.AddControllersWithViews();

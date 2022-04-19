@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import {
   AbstractControl,
-  EmailValidator,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
 } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
@@ -65,7 +63,7 @@ export class ContactComponent implements OnInit {
             fullName: new FormControl(val.fullName),
             phone: new FormControl(val.phone),
             email: new FormControl(val.email),
-            department: new FormControl(val.department),
+            department: new FormControl("val.department"),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
@@ -242,6 +240,7 @@ export class ContactComponent implements OnInit {
       fullName: new FormControl(''),
       phone: new FormControl(''),
       email: new FormControl(''),
+      department: new FormControl(''),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
@@ -267,6 +266,7 @@ export class ContactComponent implements OnInit {
       lastName: names[2],
       phone: VOFormElement.get('VORows').at(i).value.phone,
       email: VOFormElement.get('VORows').at(i).value.email,
+      department: VOFormElement.get('VORows').at(i).value.department,
     } as Contact;
   }
 }

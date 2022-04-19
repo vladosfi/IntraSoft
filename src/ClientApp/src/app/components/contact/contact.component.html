@@ -98,7 +98,7 @@
 
         <!-- Email Column -->
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>Емейл</th>
+          <th mat-header-cell *matHeaderCellDef>Имейл</th>
           <td
             mat-cell
             *matCellDef="let element; let i = index"
@@ -129,13 +129,20 @@
             *matCellDef="let element; let i = index"
             [formGroup]="element"
           >
+          <span [hidden]="!VOForm.get('VORows').value[i].isEditable">
+            <input
+                matInput
+                type="text"
+                formControlName="department"
+                [readonly]="VOForm.get('VORows').value[i].isEditable"
+              />
+          </span>
             <span [hidden]="VOForm.get('VORows').value[i].isEditable">
               <button style="width: 100%; margin-bottom: 20px;" 
-              formControlName="department"
               mat-button 
               [readonly]="VOForm.get('VORows').value[i].isEditable" 
               [matMenuTriggerFor]="menu">
-                I'm a menu button
+                Department
               </button> 
             </span> 
           </td>

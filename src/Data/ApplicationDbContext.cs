@@ -24,9 +24,7 @@
         {
         }
 
-        public DbSet<City> Cities { get; set; }
-
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
 
