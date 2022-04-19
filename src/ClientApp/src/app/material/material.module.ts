@@ -42,7 +42,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
-
   ],
   exports: [
     MatTabsModule,
@@ -65,4 +64,4 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

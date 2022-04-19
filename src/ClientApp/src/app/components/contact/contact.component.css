@@ -1,6 +1,15 @@
+
+h1{
+  text-align: center;  
+}
+
 /* Structure */
 table {
   width: 100%;
+}
+
+table th {
+  font-weight: bold;
 }
 
 .mat-form-field {
@@ -15,13 +24,12 @@ table {
   padding-right: 24px;
   text-align: center;
   width: 5%;
-  color:cornflowerblue;
+  color: #3498DB;
 
 }
 
 .mat-column-fullName {
   padding-left: 16px;
-  font-size: 20px;
   text-transform: uppercase;
   width: 40%;
 }
@@ -37,6 +45,14 @@ table {
   text-transform: uppercase;
   width: 20%;
 }
+
+.mat-column-department {
+  width: 32px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 20%;
+}
+
 .mat-column-action {
   width: 32px;
   text-align: left;
@@ -45,6 +61,21 @@ table {
 }
 
 
+.add-button{
+  color:#3498DB;
+}
+.mat-elevation-z8>button{
+  float: right;
+  border-color: #3498DB;
+  padding: 5px 5px 0px 5px;
+  font-size: 14px;
+}
+
+.mat-elevation-z8>button::after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .mat-paginator-range-label {
     display: none;
@@ -58,4 +89,8 @@ table {
 /* Font color */
 input.mat-input-element {
   color: rgb(0, 0, 0);
+}
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
+  color:#3498DB;
 }

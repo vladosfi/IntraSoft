@@ -18,6 +18,8 @@ body .container {
 main {
   margin: 0 auto;
   padding: 15px;
+  max-width: 90%;
+  /* background-color: white; */
 }
 
 /* Provide sufficient contrast against white background */
@@ -68,7 +70,7 @@ code {
 }
 
 .snackbar-info {
-  background-color: blue;
+  background-color: #3498DB;
 }
 
 .mat-simple-snackbar-action {

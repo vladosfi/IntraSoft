@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import {
   AbstractControl,
+  EmailValidator,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  Validators,
 } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
@@ -21,43 +23,36 @@ import { DialogComponent } from '../dialog/dialog.component'
   styleUrls: ['./contact.component.css'],
 })
 export class ContactComponent implements OnInit {
-  contacts: Contact[] =[];
-  displayedColumns: string[] = [
-    'id',
-    'fullName',
-    'phone',
-    'email',
-    'action',
-  ]
+  contacts: Contact[] = []
+  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','department', 'action']
   dataSource = new MatTableDataSource<any>()
-
+  title = 'Контакти';
   isLoading = true
 
   pageNumber: number = 1
   VOForm: FormGroup
   isEditableNew: boolean = true
+  @ViewChild(MatPaginator) paginator: MatPaginator
+
   constructor(
-    private fb: FormBuilder, 
-    private _formBuilder: FormBuilder, 
+    private fb: FormBuilder,
+    private _formBuilder: FormBuilder,
     private contactService: ContactService,
     private snackbar: SnackbarService,
-    private dialog: MatDialog,) {}
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
-
     this.contactService.getData().subscribe((result) => {
-          this.contacts = result as Contact[]
-          this.contacts.forEach(
-            (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
-          )
-          //this.dataSource = new MatTableDataSource(this.contacts);
-          this.initiateForm();
-        })
+      this.contacts = result as Contact[]
+      this.contacts.forEach(
+        (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
+      )
+      this.initiateForm()
+    })
   }
 
-
-  initiateForm(){
-
+  initiateForm() {
     this.VOForm = this._formBuilder.group({
       VORows: this._formBuilder.array([]),
     })
@@ -70,6 +65,7 @@ export class ContactComponent implements OnInit {
             fullName: new FormControl(val.fullName),
             phone: new FormControl(val.phone),
             email: new FormControl(val.email),
+            department: new FormControl(val.department),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
@@ -92,8 +88,6 @@ export class ContactComponent implements OnInit {
     // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
     //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
   }
-
-  @ViewChild(MatPaginator) paginator: MatPaginator
 
   goToPage() {
     this.paginator.pageIndex = this.pageNumber - 1
@@ -119,20 +113,23 @@ export class ContactComponent implements OnInit {
 
   applyFilter(event: Event) {
     //  debugger;
-    const filterValue = (event.target as HTMLInputElement).value
-    this.dataSource.filter = filterValue.trim().toLowerCase()
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow() {
-    // this.getBasicDetails();
-    const control = this.VOForm.get('VORows') as FormArray
-    control.insert(0, this.initiateVOForm())
-    this.dataSource = new MatTableDataSource(control.controls)
-    // control.controls.unshift(this.initiateVOForm());
-    // this.openPanel(panel);
-    // this.table.renderRows();
-    // this.dataSource.data = this.dataSource.data;
+
+    // Do not add new record if last is not added correctly
+    for (let i = 0; i < this.dataSource.data.length; i++) {
+      if (this.dataSource.data[i].value.action === 'newRecord') {
+        return;
+      }
+    }
+
+    const control = this.VOForm.get('VORows') as FormArray;
+    control.insert(0, this.initiateVOForm());
+    this.dataSource = new MatTableDataSource(control.controls);
   }
 
   // this function will enabled the select field for editd
@@ -142,40 +139,74 @@ export class ContactComponent implements OnInit {
     // this.isEditableNew = true;
   }
 
-  // On click of correct button in table (after click on edit) this method will call
   SaveVO(VOFormElement, i) {
-    //alert('SaveVO')
-    alert(JSON.stringify(VOFormElement.get('VORows').at(i).value));
-    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true)
+    let contact = this.generateContact(VOFormElement, i);
+    let recordType = VOFormElement.get('VORows').at(i).get('action').value;
+
+    if (contact === null) {
+      return;
+    }
+
+    if (recordType === 'newRecord') {
+      this.contactService.addContactItem(contact).subscribe({
+        next: (data) => {
+          this.snackbar.success('Успешно добавяне на записа');
+          VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+          VOFormElement.get('VORows').at(i).get('action').patchValue('existingRecord');
+        },
+        error: (error) => {
+          this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
+        },
+      });
+    } else {
+      this.contactService.updateContactItem(contact).subscribe({
+        next: (data) => {
+          this.snackbar.success('Успешно обновяване на записа');
+          VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+        },
+        error: (error) => {
+          this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
+        },
+      });
+    }
   }
 
-  DeleteSVO(VOFormElement, i){
-    alert(JSON.stringify(VOFormElement.get('VORows').at(i).value));
-    VOFormElement.get('VORows').at(i).delete;
+  DeleteSVO(VOFormElement, i) {
+    let id = VOFormElement.get('VORows').at(i).value.id;
+    let fullName = VOFormElement.get('VORows').at(i).value.fullName;
 
-    // let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Are you sure you want to delete contact ' + this.currentMenu.text + '?' } });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 'true') {
-    //     var res = this.contactService.deleteContactItem(this.currentMenu.id)
-    //       .subscribe({
-    //         next: () => {
-    //           //this.currentMenu = null;
-    //           this.snackbar.success('Contact has been deleted');
-    //         },
-    //         error: (error) => {
-    //           this.snackbar.error('Failed to delete Contact!');
-    //         }
-    //       });
-    //   } else {
-    //     console.log(`Dialog result is: ${result}`);
-    //   }
-    // });
+    if (!id) {
+      const data = this.dataSource.data;
+      data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
+      this.dataSource.data = data;
+      return;
+    }
 
+    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете контакт: ' + fullName + '?' } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        this.contactService.deleteContactItem(id)
+          .subscribe({
+            next: () => {
+              const data = this.dataSource.data;
+              data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
+              this.dataSource.data = data;
+              this.snackbar.success('Контакта беше изтрит');
+            },
+            error: (error) => {
+              this.snackbar.error('Грешка при изтриване на кoнтакт!');
+            }
+          });
+      } else {
+        console.log(`Dialog result is: ${result}`);
+      }
+    });
   }
 
   // On click of cancel button in the table (after click on edit) this method will call and reset the previous data
   CancelSVO(VOFormElement, i) {
-    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true)
+    //this.initiateForm();
+    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
   }
 
   paginatorList: HTMLCollectionOf<Element>
@@ -183,36 +214,59 @@ export class ContactComponent implements OnInit {
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout(
       (idx) => {
-        let from = paginator.pageSize * paginator.pageIndex + 1
+        paginator.pageIndex = 0;
+        let from = paginator.pageSize * paginator.pageIndex + 1;
 
         let to =
           paginator.length < paginator.pageSize * (paginator.pageIndex + 1)
             ? paginator.length
-            : paginator.pageSize * (paginator.pageIndex + 1)
+            : paginator.pageSize * (paginator.pageIndex + 1);
 
-        let toFrom = paginator.length == 0 ? 0 : `${from} - ${to}`
+        let toFrom = paginator.length == 0 ? 0 : `${from} - ${to}`;
         let pageNumber =
           paginator.length == 0
             ? `0 of 0`
-            : `${paginator.pageIndex + 1} of ${paginator.getNumberOfPages()}`
-        let rows = `Page ${pageNumber} (${toFrom} of ${paginator.length})`
+            : `${paginator.pageIndex + 1} of ${paginator.getNumberOfPages()}`;
+        let rows = `Page ${pageNumber} (${toFrom} of ${paginator.length})`;
 
-        if (list.length >= 1) list[0].innerHTML = rows
+        if (list.length >= 1) list[0].innerHTML = rows;
       },
       0,
       paginator.pageIndex,
     )
   }
 
-  initiateVOForm(): FormGroup {
+  private initiateVOForm(): FormGroup {
     return this.fb.group({
-      position: new FormControl(234),
-      name: new FormControl(''),
-      weight: new FormControl(''),
-      symbol: new FormControl(''),
+      id: new FormControl(),
+      fullName: new FormControl(''),
+      phone: new FormControl(''),
+      email: new FormControl(''),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
-    })
+    });
+  }
+
+  private generateContact(VOFormElement: any, i): Contact {
+
+    let names = VOFormElement.get('VORows')
+      .at(i)
+      .value.fullName.trim()
+      .split(/[\s,]+/);
+
+    if (names.length !== 3) {
+      this.snackbar.infoWitHide('Въведете трите имена');
+      return null;
+    }
+
+    return {
+      id: VOFormElement.get('VORows').at(i).value.id,
+      firstName: names[0],
+      middleName: names[1],
+      lastName: names[2],
+      phone: VOFormElement.get('VORows').at(i).value.phone,
+      email: VOFormElement.get('VORows').at(i).value.email,
+    } as Contact;
   }
 }

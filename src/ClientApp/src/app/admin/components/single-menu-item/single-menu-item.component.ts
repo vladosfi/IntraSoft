@@ -72,7 +72,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  createMenu(){
+  createMenu() {
     var newMenu = Object.assign({}, this.form.value);
 
     this.menuService.createMenuItem(newMenu)
@@ -112,6 +112,12 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     });
   }
 
+  closeMenuItem() {
+    this.reloadMenu.emit();
+    this.currentMenu = null;
+    this.form.reset();
+  }
+
   ngOnDestroy(): void {
     this.shareDataService.menuItem$ = EMPTY;
   }
@@ -140,7 +146,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
           //const { children, parentId, ...rest } = mnuItem;
           const { ...rest } = mnuItem;
           //if (menuId !== rest.id) {
-            flatedMenusItems.push(rest);
+          flatedMenusItems.push(rest);
           //}
         }
         mnuItem.children.map(recursiveFn)

@@ -40,6 +40,11 @@
         class="form-control" />
     </div>
 
+    <button type="button" (click)="fileInput.click()" class="btn btn-success">
+      <span>Upload</span>
+      <input #fileInput type="file"  style="display:none;" />
+    </button>
+
 
     <div class="form-group">
       <label for="parentId">Item Parent Id:</label>
@@ -71,7 +76,7 @@
         class="btn btn-success">
         Create
       </button>
-      <button type="button" [routerLink]="['/']" class="btn">
+      <button type="button" (click)="closeMenuItem()" class="btn btn-default">
         Cancel
       </button>
 
