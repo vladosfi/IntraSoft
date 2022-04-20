@@ -1,13 +1,13 @@
 ﻿namespace IntraSoft.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using IntraSoft.Data;
     using IntraSoft.Data.Common.Repositories;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class ContactService : IContactService
     {
@@ -27,9 +27,8 @@
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            IQueryable<Contact> query = this.contactRepo
-                .All()
-                .OrderBy(x => x.Id);
+            IQueryable<Contact> query =
+                this.contactRepo.All().OrderBy(x => x.Id);
 
             return await query.To<T>().ToListAsync();
         }
@@ -53,7 +52,6 @@
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
-
 
         public void Delete(Contact contactItem)
         {

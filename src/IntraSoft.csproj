@@ -50,7 +50,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="ClientApp\src\app\core\directives\disable-control.directive.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Script Remove="ClientApp\src\app\app.component.css" />
+	  <Script Remove="ClientApp\src\app\core\directives\disable-control.directive.ts" />
 	  <Script Remove="ClientApp\src\app\core\interfaces\Contact.ts" />
 	  <Script Remove="ClientApp\src\app\core\services\contact.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
@@ -63,6 +68,7 @@
 	  <Script Remove="Data\Dtos\Contact\ContactCreateDto.cs" />
 	  <Script Remove="Data\Dtos\Contact\ContactReadDto.cs" />
 	  <Script Remove="Data\Dtos\Contact\ContactUpdateDto.cs" />
+	  <Script Remove="Data\Dtos\Department\DepartmentReadDto.cs" />
 	  <Script Remove="Data\Dtos\Document\DocumentInputModelDto.cs" />
 	  <Script Remove="Data\Dtos\FileInputModel.cs" />
 	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
@@ -74,6 +80,10 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <TypeScriptCompile Include="ClientApp\src\app\core\directives\disable-control.directive.ts" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

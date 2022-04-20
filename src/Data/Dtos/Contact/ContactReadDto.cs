@@ -4,6 +4,7 @@
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
     using System.Collections.Generic;
+    using IntraSoft.Data.Dtos.Department;
 
     public class ContactReadDto : IMapFrom<Contact>, IMapTo<Contact>
     {
@@ -19,7 +20,7 @@
 
         public string Email { get; set; }
 
-        //public virtual Department Department { get; set; }
+        public int DepartmentId { get; set; }
 
         //public string FullName => string.Join(" ", this.FirstName, this.MiddleName, this.LastName);
     }

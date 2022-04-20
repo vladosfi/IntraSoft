@@ -1,5 +1,3 @@
-import { Department } from "./Department";
-
 export interface Contact {
   id: number;
   firstName: string;
@@ -8,6 +6,6 @@ export interface Contact {
   phone: string;
   email?: string;
   fullName: string;
-  department: Department;
+  departmentId: number;
 }
 

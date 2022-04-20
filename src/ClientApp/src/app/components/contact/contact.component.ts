@@ -25,7 +25,7 @@ import { DialogComponent } from '../dialog/dialog.component'
 export class ContactComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','department', 'action'];
+  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','departments', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
   isLoading = true;
@@ -71,7 +71,8 @@ export class ContactComponent implements OnInit {
             fullName: new FormControl(val.fullName),
             phone: new FormControl(val.phone),
             email: new FormControl(val.email),
-            department: new FormControl("Department"),
+            departmentId: new FormControl({ value: val.departmentId, disabled: true }),
+            departments: new FormControl(this.departments),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
@@ -79,16 +80,17 @@ export class ContactComponent implements OnInit {
         ),
       ), //end of fb array
     }) // end of form group cretation
-    this.isLoading = false
+    this.isLoading = false;
     this.dataSource = new MatTableDataSource(
       (this.VOForm.get('VORows') as FormArray).controls,
     )
-    this.dataSource.paginator = this.paginator
+    this.dataSource.paginator = this.paginator;
 
-    const filterPredicate = this.dataSource.filterPredicate
+    const filterPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
-      return filterPredicate.call(this.dataSource, data.value, filter)
+      return filterPredicate.call(this.dataSource, data.value, filter);
     }
+
 
     //Custom filter according to name column
     // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
@@ -141,14 +143,16 @@ export class ContactComponent implements OnInit {
   // this function will enabled the select field for editd
   EditSVO(VOFormElement, i) {
     // VOFormElement.get('VORows').at(i).get('name').disabled(false)
-    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false)
+    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false);
+    VOFormElement.get('VORows').at(i).get('departmentId').enable(true);
+
     // this.isEditableNew = true;
   }
 
   SaveVO(VOFormElement, i) {
     let contact = this.generateContact(VOFormElement, i);
     let recordType = VOFormElement.get('VORows').at(i).get('action').value;
-
+    
     if (contact === null) {
       return;
     }
@@ -159,6 +163,7 @@ export class ContactComponent implements OnInit {
           this.snackbar.success('Успешно добавяне на записа');
           VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
           VOFormElement.get('VORows').at(i).get('action').patchValue('existingRecord');
+          VOFormElement.get('VORows').at(i).get('departmentId').disable(true);
         },
         error: (error) => {
           this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
@@ -169,6 +174,7 @@ export class ContactComponent implements OnInit {
         next: (data) => {
           this.snackbar.success('Успешно обновяване на записа');
           VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+          VOFormElement.get('VORows').at(i).get('departmentId').disable(true);
         },
         error: (error) => {
           this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
@@ -248,7 +254,7 @@ export class ContactComponent implements OnInit {
       fullName: new FormControl(''),
       phone: new FormControl(''),
       email: new FormControl(''),
-      department: new FormControl(''),
+      departmentId: new FormControl(''),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
@@ -274,7 +280,7 @@ export class ContactComponent implements OnInit {
       lastName: names[2],
       phone: VOFormElement.get('VORows').at(i).value.phone,
       email: VOFormElement.get('VORows').at(i).value.email,
-      department: VOFormElement.get('VORows').at(i).value.department,
+      departmentId: VOFormElement.get('VORows').at(i).value.departmentId,
     } as Contact;
   }
 }

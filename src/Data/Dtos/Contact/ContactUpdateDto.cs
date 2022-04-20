@@ -23,5 +23,7 @@
         [MaxLength(100)]
         [EmailAddress]
         public string Email { get; set; }
+
+        public int DepartmentId { get; set; }
     }
 }

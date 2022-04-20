@@ -46,12 +46,23 @@ table th {
   width: 15%;
 }
 
-.mat-column-department {
+.mat-column-departments {
   width: 32px;
   text-align: left;
   text-transform: uppercase;
-  width: 20%;
+  width: 18%;
 }
+
+
+
+.mat-select {
+  width: 95% !important;
+  min-width: 95% !important;
+  max-width: 95% !important;
+  cursor: pointer !important;
+  color: rgb(125, 125, 125) !important;
+}
+
 
 .mat-column-action {
   width: 32px;
