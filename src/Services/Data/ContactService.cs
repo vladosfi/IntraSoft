@@ -28,7 +28,7 @@
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
             IQueryable<Contact> query =
-                this.contactRepo.All().OrderBy(x => x.Id);
+                this.contactRepo.All().OrderBy(x => x.DepartmentId).ThenBy(x => x.Id);
 
             return await query.To<T>().ToListAsync();
         }

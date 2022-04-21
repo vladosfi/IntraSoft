@@ -45,6 +45,17 @@ export class ContactComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
+    this.departmentService.getData().subscribe(
+      {
+        next: (result) => {
+          this.departments = result as Department[];
+          this.getContacts();
+        }
+      });    
+  }
+
+  getContacts() {
     this.contactService.getData().subscribe((result) => {
       this.contacts = result as Contact[];
       this.contacts.forEach(
@@ -53,9 +64,6 @@ export class ContactComponent implements OnInit {
       this.initiateForm();
     });
 
-    this.departmentService.getData().subscribe((result =>{
-        this.departments = result as Department[];
-    }));    
   }
 
   initiateForm() {
@@ -81,9 +89,7 @@ export class ContactComponent implements OnInit {
       ), //end of fb array
     }) // end of form group cretation
     this.isLoading = false;
-    this.dataSource = new MatTableDataSource(
-      (this.VOForm.get('VORows') as FormArray).controls,
-    )
+    this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
     this.dataSource.paginator = this.paginator;
 
     const filterPredicate = this.dataSource.filterPredicate;
@@ -106,21 +112,17 @@ export class ContactComponent implements OnInit {
     })
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator
-    this.paginatorList = document.getElementsByClassName(
-      'mat-paginator-range-label',
-    )
+    this.dataSource.paginator = this.paginator;
+    this.paginatorList = document.getElementsByClassName('mat-paginator-range-label');
 
-    this.onPaginateChange(this.paginator, this.paginatorList)
+    this.onPaginateChange(this.paginator, this.paginatorList);
 
-    this.paginator.page.subscribe(() => {
-      // this is page change event
-      this.onPaginateChange(this.paginator, this.paginatorList)
-    })
+    this.paginator.page.subscribe(() => { // this is page change event
+      this.onPaginateChange(this.paginator, this.paginatorList);
+    });
   }
 
   applyFilter(event: Event) {
-    //  debugger;
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -221,32 +223,26 @@ export class ContactComponent implements OnInit {
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
   }
 
-  paginatorList: HTMLCollectionOf<Element>
-  idx: number
+  paginatorList: HTMLCollectionOf<Element>;
+  idx: number;
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
-    setTimeout(
-      (idx) => {
-        paginator.pageIndex = 0;
-        let from = paginator.pageSize * paginator.pageIndex + 1;
+    setTimeout((idx) => {
+      let from = (paginator.pageSize * paginator.pageIndex) + 1;
+      
+      let to = (paginator.length < paginator.pageSize * (paginator.pageIndex + 1))
+        ? paginator.length
+        : paginator.pageSize * (paginator.pageIndex + 1);
 
-        let to =
-          paginator.length < paginator.pageSize * (paginator.pageIndex + 1)
-            ? paginator.length
-            : paginator.pageSize * (paginator.pageIndex + 1);
+      let toFrom = (paginator.length == 0) ? 0 : `${from} - ${to}`;
+      let pageNumber = (paginator.length == 0) ? `0 of 0` : `${paginator.pageIndex + 1} of ${paginator.getNumberOfPages()}`;
+      let rows = `Page ${pageNumber} (${toFrom} of ${paginator.length})`;
 
-        let toFrom = paginator.length == 0 ? 0 : `${from} - ${to}`;
-        let pageNumber =
-          paginator.length == 0
-            ? `0 of 0`
-            : `${paginator.pageIndex + 1} of ${paginator.getNumberOfPages()}`;
-        let rows = `Page ${pageNumber} (${toFrom} of ${paginator.length})`;
+      if (list.length >= 1)
+        list[0].innerHTML = rows;
 
-        if (list.length >= 1) list[0].innerHTML = rows;
-      },
-      0,
-      paginator.pageIndex,
-    )
+    }, 1500, paginator.pageIndex);
   }
+
 
   private initiateVOForm(): FormGroup {
     return this.fb.group({
