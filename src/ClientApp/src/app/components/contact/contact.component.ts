@@ -91,6 +91,7 @@ export class ContactComponent implements OnInit {
     this.isLoading = false;
     this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
     this.dataSource.paginator = this.paginator;
+    this.onPaginateChange(this.paginator, this.paginatorList);
 
     const filterPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
@@ -111,6 +112,7 @@ export class ContactComponent implements OnInit {
       length: this.paginator.length,
     })
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.paginatorList = document.getElementsByClassName('mat-paginator-range-label');
@@ -240,7 +242,7 @@ export class ContactComponent implements OnInit {
       if (list.length >= 1)
         list[0].innerHTML = rows;
 
-    }, 1500, paginator.pageIndex);
+    }, 0, paginator.pageIndex);
   }
 
 

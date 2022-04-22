@@ -16,10 +16,23 @@ body .container {
 }
 
 main {
-  margin: 0 auto;
-  padding: 15px;
-  max-width: 90%;
+  /*margin: 0 auto;
+  padding: 15px;*/
+/*  max-width: 90%;*/
   /* background-color: white; */
+}
+
+.wrapper {
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A media query for a large screen */
+@media (min-width: 1170px) {
+  .wrapper {
+    max-width: 1170px;
+  }
 }
 
 /* Provide sufficient contrast against white background */

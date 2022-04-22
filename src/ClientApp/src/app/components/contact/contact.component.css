@@ -1,6 +1,6 @@
 
-h1{
-  text-align: center;  
+h1 {
+  text-align: center;
 }
 
 /* Structure */
@@ -8,16 +8,18 @@ table {
   width: 100%;
 }
 
-table th {
-  font-weight: bold;
-}
+  table th {
+    font-weight: bold;
+  }
+
 
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 }
 
-tr:hover td {
+
+.mat-row:hover .mat-cell {
   background-color: aliceblue;
 }
 
@@ -74,24 +76,25 @@ tr:hover td {
 }
 
 
-.add-button{
-  color:#3498DB;
+.add-button {
+  color: #3498DB;
 }
-.mat-elevation-z8>button{
+
+.mat-elevation-z8 > button {
   float: right;
   border-color: #3498DB;
   padding: 5px 5px 0px 5px;
   font-size: 14px;
 }
 
-.mat-elevation-z8>button::after {
-  content: "";
-  display: block;
-  clear: both;
-}
+  .mat-elevation-z8 > button::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
 
 .mat-paginator-range-label {
-    display: none;
+  display: none;
 }
 
 /* Border */
@@ -104,6 +107,6 @@ input.mat-input-element {
   color: rgb(0, 0, 0);
 }
 
-.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
-  color:#3498DB;
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+  color: #3498DB;
 }
