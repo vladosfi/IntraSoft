@@ -39,12 +39,18 @@
       <input type="text" id="routerLink" formControlName="routerLink" placeholder="RouterLink..."
         class="form-control" />
     </div>
-
-    <button type="button" (click)="fileInput.click()" class="btn btn-success">
-      <span>Upload</span>
-      <input #fileInput type="file"  style="display:none;" />
-    </button>
-
+    <div class="form-group">
+      <label for="file">File</label>
+      <input 
+          formControlName="file"
+          id="file" 
+          type="file" 
+          class="form-control"
+          (change)="onFileChange($event)">
+        <!-- <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+            <div *ngIf="f.file.errors.required">File is required.</div>
+        </div> -->
+    </div>
 
     <div class="form-group">
       <label for="parentId">Item Parent Id:</label>

@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+    using IntraSoft.Services.Data;
     using IntraSoft.Data.Dtos.Document;
+    using IntraSoft.Data.Models;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +15,12 @@
     public class DocumentController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly IDocumentService documentService;
 
-        public DocumentController(IWebHostEnvironment hostingEnvironment)
+        public DocumentController(IWebHostEnvironment hostingEnvironment, IDocumentService documentService)
         {
             this.hostingEnvironment = hostingEnvironment;
+            this.documentService = documentService;
         }
 
         [HttpGet]
@@ -42,17 +46,40 @@
 
 
 
-        [HttpPost]
-        public async Task<IActionResult> AddDocument([FromForm] DocumentInputModelDto fileInput)
+        [HttpPost]        
+        public async Task<IActionResult> AddDocument([FromQuery]string path, [FromForm] DocumentReadModelDto fileInput)
         {
-            if (fileInput.DataFile != null)
+            if (fileInput.File != null && path != null)
             {
-                var uniqueFileName = GetUniqueFileName(fileInput.DataFile.FileName);
-                var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
-                var filePath = Path.Combine(uploads, uniqueFileName);
-                await fileInput.DataFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                // Save uniqueFileName to file system
+                var uniqueFileName = GetUniqueFileName(fileInput.File.FileName);
+                var uploads = Path.Combine(hostingEnvironment.WebRootPath, path);
+                
+                // Create dir if does not exidt
+                if (!Directory.Exists(uploads))
+                {
+                    Directory.CreateDirectory(uploads);
+                }
 
-                //to do : Save uniqueFileName to db table   
+                var filePath = Path.Combine(uploads, uniqueFileName);
+
+                await fileInput.File.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                // Save uniqueFileName to db table   
+                var document = new Document
+                {
+                    FileName = uniqueFileName,
+                    FilePath = path,
+                    Description = null,
+                    UserName = null
+                };
+
+                await this.documentService.CreateAsync(document);
+
+            }
+            else
+            {
+                return BadRequest();
             }
 
             // to do  : Return something

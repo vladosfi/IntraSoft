@@ -58,6 +58,7 @@
 	  <Script Remove="ClientApp\src\app\core\directives\disable-control.directive.ts" />
 	  <Script Remove="ClientApp\src\app\core\interfaces\Contact.ts" />
 	  <Script Remove="ClientApp\src\app\core\services\contact.service.ts" />
+	  <Script Remove="ClientApp\src\app\core\services\file.service.ts" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.css" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.html" />
 	  <Script Remove="ClientApp\src\app\navigation\menu-item\menu-item.component.ts" />
@@ -69,13 +70,15 @@
 	  <Script Remove="Data\Dtos\Contact\ContactReadDto.cs" />
 	  <Script Remove="Data\Dtos\Contact\ContactUpdateDto.cs" />
 	  <Script Remove="Data\Dtos\Department\DepartmentReadDto.cs" />
-	  <Script Remove="Data\Dtos\Document\DocumentInputModelDto.cs" />
+	  <Script Remove="Data\Dtos\Document\DocumentReadModelDto.cs" />
 	  <Script Remove="Data\Dtos\FileInputModel.cs" />
 	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
 	  <Script Remove="Data\Models\Contact.cs" />
 	  <Script Remove="Data\Models\Document.cs" />
 	  <Script Remove="Services\Data\ContactService.cs" />
+	  <Script Remove="Services\Data\DocumentService.cs" />
 	  <Script Remove="Services\Data\IContactService.cs" />
+	  <Script Remove="Services\Data\IDocumentService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -5,8 +5,10 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { MenuService } from 'src/app/core/services/menu.service';
+import { FileService } from 'src/app/core/services/file.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
 import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-single-menu-item',
@@ -26,15 +28,17 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     private shareDataService: ShareNavigationDataService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
-    private menuService: MenuService) { }
+    private menuService: MenuService,
+    private fileService: FileService) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       id: new FormControl(''),
       text: new FormControl('', Validators.required),
       icon: new FormControl('',),
-      routerLink: new FormControl('',),
+      routerLink: new FormControl('menu-links',),
       parentId: new FormControl('',),
+      file: new FormControl('',),
     });
 
     this.loadData();
@@ -120,6 +124,44 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.shareDataService.menuItem$ = EMPTY;
+  }
+
+     
+  
+// At the file input element
+  // (change)="selectFile($event)"
+  onFileChange(event) {
+    this.uploadFile(event.target.files);
+  }
+
+  uploadFile(files: FileList) {
+    if (files.length == 0) {
+      console.log("No file selected!");
+      return
+
+    }
+    let file: File = files[0];
+
+    this.fileService.uploadFile(file)
+      .subscribe(
+        {
+        next:(event) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round(100 * event.loaded / event.total);
+            this.snackbar.infoWitHide(`File is ${percentDone}% uploaded.`);
+
+          } else if (event instanceof HttpResponse) {
+            this.snackbar.infoWitHide('File is completely uploaded!');
+          }
+        },
+        error: (error) => {
+          this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
+        }
+        ,
+        complete: () => {
+          this.snackbar.success('Upload done');
+        }
+        });
   }
 
   private _getAllMenuItems() {

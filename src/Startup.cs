@@ -10,6 +10,7 @@ namespace IntraSoft
     using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http.Features;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -41,11 +42,17 @@ namespace IntraSoft
                 services.AddDbContext<ApplicationDbContext>(x => x.UseSqlite(this.Configuration.GetConnectionString("DefaultConnection")));
             }
 
+            services.Configure<FormOptions>(o =>
+           {
+               o.ValueLengthLimit = int.MaxValue;
+               o.MultipartBodyLengthLimit = int.MaxValue;
+               o.MemoryBufferThreshold = int.MaxValue;  
+           });
+
             object p = services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
-
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -56,6 +63,7 @@ namespace IntraSoft
             services.AddTransient<IMenuService, MenuService>();
             services.AddTransient<IContactService, ContactService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<IDocumentService, DocumentService>();
 
 
             services.AddControllersWithViews();

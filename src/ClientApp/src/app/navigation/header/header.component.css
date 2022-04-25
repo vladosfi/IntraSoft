@@ -22,6 +22,10 @@ mat-toolbar {
   border-radius: 3px;
 }
 
+.active {
+  background-color: #E9E9E9;
+}
+
 @media(max-width: 959px) {
   mat-toolbar {
     border-radius: 0px;

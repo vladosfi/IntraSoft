@@ -10,7 +10,7 @@ export class SnackbarService {
   error(message: string) {
     return this._snackBar.open(message, undefined, {
       panelClass: ['snackbar-error'],
-      duration: 5000,
+      duration: 10000,
     })
   }
 
