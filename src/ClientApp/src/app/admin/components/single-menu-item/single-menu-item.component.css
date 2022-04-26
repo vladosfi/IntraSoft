@@ -39,3 +39,11 @@ input.ng-invalid ~ .invalid-feedback {
 button{
   margin-right: 5px;
 }
+
+.show{
+  display: block;
+}
+
+.hide{
+  display: none;
+}

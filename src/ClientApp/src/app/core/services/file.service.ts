@@ -16,13 +16,10 @@ export class FileService {
   }
 
     // file from event.target.files[0]
-    uploadFile(file: File): Observable<HttpEvent<any>> {
-      
-      let formData = new FormData();
-      formData.append('file', file);
+    uploadFile(formData: FormData): Observable<HttpEvent<any>> {
   
       let params = new HttpParams()
-          .set('path', 'uploads/menu');
+          .set('path', 'uploads\\menu');
 
       const options = {
         params: params,
@@ -31,5 +28,9 @@ export class FileService {
   
       const req = new HttpRequest('POST', this.url, formData, options);
       return this.http.request(req);
+    }
+
+    deleteFile(fileId: string){
+      return this.http.delete(this.url + `/${fileId}`);
     }
 }

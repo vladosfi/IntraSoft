@@ -51,6 +51,8 @@
         {
             if (fileInput.File != null && path != null)
             {
+                var fullPath = Path.GetFullPath(path);
+                path = fullPath.Substring(fullPath.Length - path.Length);
                 // Save uniqueFileName to file system
                 var uniqueFileName = GetUniqueFileName(fileInput.File.FileName);
                 var uploads = Path.Combine(hostingEnvironment.WebRootPath, path);
@@ -84,6 +86,32 @@
             {
                 return BadRequest();
             }
+        }
+
+        // DELETE api/<ValuesController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var documentFromRepo = await this.documentService.GetByIdAsync(id);
+
+            if (documentFromRepo == null)
+            {
+                return this.NotFound();
+            }
+
+            this.documentService.HardDelete(documentFromRepo);
+            await this.documentService.SaveChangesAsync();
+
+            // Delete form filesystem
+            string path = Path.Combine(hostingEnvironment.WebRootPath, documentFromRepo.FilePath, documentFromRepo.FileName);
+            
+            FileInfo file = new FileInfo(path);  
+            if (file.Exists)
+            {  
+                file.Delete();
+            }  
+
+            return this.NoContent();
         }
 
 

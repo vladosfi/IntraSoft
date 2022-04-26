@@ -39,7 +39,7 @@
       <input type="text" id="routerLink" formControlName="routerLink" placeholder="RouterLink..."
         class="form-control" />
     </div>
-    <div class="form-group">
+    <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
       <label for="file">File</label>
       <input 
           formControlName="file"
@@ -48,9 +48,12 @@
           class="form-control"
           (change)="onFileChange($event)">
           <small  class="form-text text-muted">{{fileInfoMessage}}</small >
-        <!-- <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
-            <div *ngIf="f.file.errors.required">File is required.</div>
-        </div> -->
+    </div>
+    <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
+        <button type="button" (click)="deleteFile()"
+          class="btn btn-success">
+          Delete File: {{deleteButtonText}}
+        </button>
     </div>
 
     <div class="form-group">

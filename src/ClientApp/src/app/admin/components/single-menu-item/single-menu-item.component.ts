@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Menu } from '../../../core/interfaces/Menu';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -24,6 +24,8 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   flatedMenu: Menu[];
   @Output() reloadMenu = new EventEmitter();
   fileInfoMessage = "";
+  deleteButtonText: string;
+  fileId: string;
 
   constructor(
     private shareDataService: ShareNavigationDataService,
@@ -79,12 +81,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   }
 
   createMenu() {
-    
     var newMenu = Object.assign({}, this.form.value);
-
-    this.uploadFile(this.form.get('fileSource').value);
-    return;
-
     this.menuService.createMenuItem(newMenu)
       .subscribe({
         next: () => {
@@ -135,21 +132,41 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
      
   
 // At the file input element
-  onFileChange(event) {
-    this.uploadFile(event.target.files);
+  onFileChange(event: any) {
+      if (event.target.files.length > 0) {
+        const file = event.target.files[0];
+        this.uploadFile(file);
+      }
   }
 
-  uploadFile(files: FileList) {
-    console.log(files[0]);
+  deleteFile() {
+    if (this.fileId === null) return;
 
-    if (files.length == 0) {
+    this.fileService.deleteFile(this.fileId)
+      .subscribe({
+      next: () => {
+          this.snackbar.success('File has been deleted');
+          this.fileInfoMessage = "";
+          this.fileId = null;
+          
+      },
+      error: (error) => {
+        this.snackbar.error('Failed to delete File!');
+      }
+    });
+  }
+
+  uploadFile(file: any) {
+
+    if (file == undefined) {
       console.log("No file selected!");
-      return
-
+      return;
     }
-    let file: File = files[0];
 
-    this.fileService.uploadFile(file)
+    let formData = new FormData();
+    formData.append('file', file);
+
+    this.fileService.uploadFile(formData)
       .subscribe(
         {
         next:(event) => {
@@ -160,6 +177,8 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
           } else if (event instanceof HttpResponse) {
             this.fileInfoMessage = 'File is completely uploaded!';
             this.fileInfoMessage = event.body;
+            this.deleteButtonText = file.name;
+            this.fileId = event.body;
           }
         },
         error: (error) => {
