@@ -63,7 +63,9 @@
 
                 var filePath = Path.Combine(uploads, uniqueFileName);
 
-                await fileInput.File.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                var fs = new FileStream(filePath, FileMode.Create);
+                await fileInput.File.CopyToAsync(fs);
+                await fs.DisposeAsync();
 
                 // Save uniqueFileName to db table   
                 var document = new Document
@@ -74,16 +76,14 @@
                     UserName = null
                 };
 
-                await this.documentService.CreateAsync(document);
+                var documentId = await this.documentService.CreateAsync(document);
 
+                return this.Ok(documentId);
             }
             else
             {
                 return BadRequest();
             }
-
-            // to do  : Return something
-            return this.Ok();
         }
 
 

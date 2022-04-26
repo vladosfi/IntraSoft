@@ -23,6 +23,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   currentMenu: Menu;
   flatedMenu: Menu[];
   @Output() reloadMenu = new EventEmitter();
+  fileInfoMessage = "";
 
   constructor(
     private shareDataService: ShareNavigationDataService,
@@ -36,9 +37,10 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
       id: new FormControl(''),
       text: new FormControl('', Validators.required),
       icon: new FormControl('',),
-      routerLink: new FormControl('menu-links',),
+      routerLink: new FormControl('menu',),
       parentId: new FormControl('',),
       file: new FormControl('',),
+      fileSource: new FormControl('')
     });
 
     this.loadData();
@@ -77,7 +79,11 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   }
 
   createMenu() {
+    
     var newMenu = Object.assign({}, this.form.value);
+
+    this.uploadFile(this.form.get('fileSource').value);
+    return;
 
     this.menuService.createMenuItem(newMenu)
       .subscribe({
@@ -129,12 +135,13 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
      
   
 // At the file input element
-  // (change)="selectFile($event)"
   onFileChange(event) {
     this.uploadFile(event.target.files);
   }
 
   uploadFile(files: FileList) {
+    console.log(files[0]);
+
     if (files.length == 0) {
       console.log("No file selected!");
       return
@@ -148,10 +155,11 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
         next:(event) => {
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round(100 * event.loaded / event.total);
-            this.snackbar.infoWitHide(`File is ${percentDone}% uploaded.`);
+            this.fileInfoMessage = `File is ${percentDone}% uploaded.`;
 
           } else if (event instanceof HttpResponse) {
-            this.snackbar.infoWitHide('File is completely uploaded!');
+            this.fileInfoMessage = 'File is completely uploaded!';
+            this.fileInfoMessage = event.body;
           }
         },
         error: (error) => {
@@ -159,7 +167,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
         }
         ,
         complete: () => {
-          this.snackbar.success('Upload done');
+          this.fileInfoMessage= 'Upload done: ID - ' + this.fileInfoMessage;
         }
         });
   }
