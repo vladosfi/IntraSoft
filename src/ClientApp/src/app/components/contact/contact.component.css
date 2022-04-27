@@ -24,12 +24,14 @@ table {
 }
 
 .mat-column-id {
-  width: 32px;
   border-right: 1px solid currentColor;
-  padding-right: 24px;
+  padding-right: 15px; 
   text-align: center;
-  width: 5%;
+  width: 3%;
   color: #3498DB;
+}
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+  padding-left: 15px;
 }
 
 .mat-column-fullName {
@@ -109,4 +111,20 @@ input.mat-input-element {
 
 .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
   color: #3498DB;
+}
+
+
+::ng-deep td .mat-form-field-wrapper{
+  padding-bottom: 0 !important;
+}
+
+::ng-deep td .mat-form-field-infix{
+  border-top: 0;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 1.1em 0 1.4em 0;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
+  /* padding-top: 10px; */
 }

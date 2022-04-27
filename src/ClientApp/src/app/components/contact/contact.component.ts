@@ -26,6 +26,7 @@ export class ContactComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
   displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','departments', 'action'];
+  //displayedColumns: string[] = ['id', 'fullName','phone', 'email', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
   isLoading = true;
