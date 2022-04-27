@@ -1,0 +1,27 @@
+
+       
+<form [formGroup]="form">
+  
+<div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
+    <label for="file">File</label>
+    <input 
+        formControlName="file"
+        id="file" 
+        type="file" 
+        class="form-control"
+        (change)="onFileChange($event)">
+        <small  class="form-text text-muted">{{fileInfoMessage}}</small >
+  </div>
+  <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
+    <div>
+      <label>Selected File</label>
+    </div>
+      <button 
+        id="btn-delete"
+        type="button"
+        (click)="deleteFile()"
+        class="btn btn-danger">
+        Delete File: {{deleteButtonText}}
+      </button>
+  </div>
+</form>

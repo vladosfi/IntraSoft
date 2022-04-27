@@ -23,9 +23,6 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   currentMenu: Menu;
   flatedMenu: Menu[];
   @Output() reloadMenu = new EventEmitter();
-  fileInfoMessage = "";
-  deleteButtonText: string;
-  fileId: string;
 
   constructor(
     private shareDataService: ShareNavigationDataService,
@@ -130,66 +127,6 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   }
 
      
-  
-// At the file input element
-  onFileChange(event: any) {
-      if (event.target.files.length > 0) {
-        const file = event.target.files[0];
-        this.uploadFile(file);
-      }
-  }
-
-  deleteFile() {
-    if (this.fileId === null) return;
-
-    this.fileService.deleteFile(this.fileId)
-      .subscribe({
-      next: () => {
-          this.snackbar.success('File has been deleted');
-          this.fileInfoMessage = "";
-          this.fileId = null;
-          
-      },
-      error: (error) => {
-        this.snackbar.error('Failed to delete File!');
-      }
-    });
-  }
-
-  uploadFile(file: any) {
-
-    if (file == undefined) {
-      console.log("No file selected!");
-      return;
-    }
-
-    let formData = new FormData();
-    formData.append('file', file);
-
-    this.fileService.uploadFile(formData)
-      .subscribe(
-        {
-        next:(event) => {
-          if (event.type == HttpEventType.UploadProgress) {
-            const percentDone = Math.round(100 * event.loaded / event.total);
-            this.fileInfoMessage = `File is ${percentDone}% uploaded.`;
-
-          } else if (event instanceof HttpResponse) {
-            this.fileInfoMessage = 'File is completely uploaded!';
-            this.fileInfoMessage = event.body;
-            this.deleteButtonText = file.name;
-            this.fileId = event.body;
-          }
-        },
-        error: (error) => {
-          this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
-        }
-        ,
-        complete: () => {
-          this.fileInfoMessage= 'Upload done: ID - ' + this.fileInfoMessage;
-        }
-        });
-  }
 
   private _getAllMenuItems() {
     this.menuList$.subscribe(

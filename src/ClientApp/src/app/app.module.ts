@@ -21,6 +21,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { DisableControlDirective } from './core/directives/disable-control.directive';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { UploadButtonComponent } from './components/upload-button/upload-button.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ContactComponent,
     DisableControlDirective,
     NotFoundComponent,
+    UploadButtonComponent,
   ],
   entryComponents:[
     DialogComponent

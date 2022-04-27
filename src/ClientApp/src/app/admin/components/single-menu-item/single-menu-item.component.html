@@ -39,22 +39,8 @@
       <input type="text" id="routerLink" formControlName="routerLink" placeholder="RouterLink..."
         class="form-control" />
     </div>
-    <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
-      <label for="file">File</label>
-      <input 
-          formControlName="file"
-          id="file" 
-          type="file" 
-          class="form-control"
-          (change)="onFileChange($event)">
-          <small  class="form-text text-muted">{{fileInfoMessage}}</small >
-    </div>
-    <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
-        <button type="button" (click)="deleteFile()"
-          class="btn btn-success">
-          Delete File: {{deleteButtonText}}
-        </button>
-    </div>
+
+    <upload-button></upload-button>
 
     <div class="form-group">
       <label for="parentId">Item Parent Id:</label>
