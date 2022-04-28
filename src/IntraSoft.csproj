@@ -54,10 +54,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Data\Dtos\Document\DocumentReadDto.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="ClientApp\src\app\core\directives\disable-control.directive.ts" />
 	</ItemGroup>
 
@@ -78,7 +74,6 @@
 	  <Script Remove="Data\Dtos\Contact\ContactReadDto.cs" />
 	  <Script Remove="Data\Dtos\Contact\ContactUpdateDto.cs" />
 	  <Script Remove="Data\Dtos\Department\DepartmentReadDto.cs" />
-	  <Script Remove="Data\Dtos\DocumentReadDto.cs" />
 	  <Script Remove="Data\Dtos\Document\DocumentReadDto.cs" />
 	  <Script Remove="Data\Dtos\Document\DocumentReadModelDto.cs" />
 	  <Script Remove="Data\Dtos\FileInputModel.cs" />
@@ -93,7 +88,6 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
-		<None Include="Data\Dtos\Document\DocumentReadDto.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

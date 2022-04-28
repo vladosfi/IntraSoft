@@ -1,6 +1,7 @@
 ﻿namespace IntraSoft.Data.Dtos.Menu
 {
     using System.Collections.Generic;
+    using IntraSoft.Data.Dtos.Document;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 
@@ -18,6 +19,6 @@
 
         public virtual ICollection<MenuReadDto> Children { get; set; }
 
-        public virtual DocReadDto Document { get; set; }
+        public virtual DocumentReadDto Document { get; set; }
     }
 }

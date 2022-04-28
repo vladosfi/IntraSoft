@@ -1,6 +1,7 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { IFileDocument } from 'src/app/core/interfaces/FileDocument';
 import { FileService } from 'src/app/core/services/file.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 
@@ -12,9 +13,11 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 export class UploadButtonComponent implements OnInit {
   fileInfoMessage = '';
   deleteButtonText: string;
-  fileId: string;
+  fileId: number;
   @Input() sourcePath:string = 'uploads\\menu';
   @Input() menuId:string = null;
+  @Input() document:IFileDocument = null;
+  
 
   form = new FormGroup({
     file: new FormControl(''),
@@ -26,6 +29,8 @@ export class UploadButtonComponent implements OnInit {
     private snackbar: SnackbarService) { }
 
   ngOnInit(): void {
+    this.deleteButtonText = this.document?.fileName;
+    this.fileId = this.document?.id;
   }
   
 // At the file input element

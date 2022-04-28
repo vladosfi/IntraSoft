@@ -7,27 +7,27 @@ import { Department } from '../interfaces/Department'
   providedIn: 'root',
 })
 export class DepartmentService {
-  url = this.baseUrl + 'api/department'
+  endPoint = this.baseUrl + 'api/department'
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
   ) {}
 
   getData<Department>(): Observable<Department> {
-    var params = new HttpParams()
-    return this.http.get<Department>(this.url, { params })
+    var params = new HttpParams();
+    return this.http.get<Department>(this.endPoint, { params });
   }
 
   deleteDepartmentItem(departmentId: number): any {
-    return this.http.delete(this.url + `/${departmentId}`);
+    return this.http.delete(this.endPoint + `/${departmentId}`);
   }
 
   updateDepartmentItem(departmentItem: Department): Observable<Department> {
     return this.http
-      .put<Department>(this.url + `/${departmentItem.id}`, departmentItem);
+      .put<Department>(this.endPoint + `/${departmentItem.id}`, departmentItem);
   }
 
   addDepartmentItem(departmentItem: Department): Observable<Department> {
-    return this.http.post<Department>(this.url, departmentItem);
+    return this.http.post<Department>(this.endPoint, departmentItem);
   }
 }

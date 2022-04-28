@@ -1,12 +1,4 @@
-////export interface IMenu {
-////  id: number;
-////  parentId: number;
-////  title: string;
-////  action: string;
-////  description: string;
-////  subMenus?: IMenu[];
-////}
-
+import { IFileDocument } from "./FileDocument";
 
 export interface Menu {
   id: number;
@@ -16,4 +8,5 @@ export interface Menu {
   parentId?: number;
   children?: Menu[];
   opacity?: number;
+  document: IFileDocument;
 }

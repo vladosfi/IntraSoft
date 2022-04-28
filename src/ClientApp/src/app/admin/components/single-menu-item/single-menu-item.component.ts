@@ -7,7 +7,7 @@ import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { MenuService } from 'src/app/core/services/menu.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
 import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
-import { FileService } from 'src/app/core/services/file.service';
+
 
 @Component({
   selector: 'app-single-menu-item',
@@ -27,8 +27,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     private shareDataService: ShareNavigationDataService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
-    private menuService: MenuService,
-    private fileService: FileService,) { }
+    private menuService: MenuService,) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -51,15 +50,10 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
           this.currentMenu = result;
           this.form.patchValue(this.currentMenu);
           this._getAllMenuItems();
-          this.loadFile();
         },
         error: (error) => console.error(error),
         complete: () => { console.info('complete') }
-      })
-  }
-
-  loadFile(){
-    //this.fileService.getFile
+      });
   }
 
   saveMenuItem() {

@@ -4,7 +4,6 @@ namespace IntraSoft
     using IntraSoft.Data;
     using IntraSoft.Data.Common;
     using IntraSoft.Data.Common.Repositories;
-    using IntraSoft.Data.Models;
     using IntraSoft.Data.Repositories;
     using IntraSoft.Services.Data;
     using IntraSoft.Services.Mapping;

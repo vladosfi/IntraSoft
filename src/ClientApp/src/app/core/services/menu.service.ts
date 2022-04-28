@@ -8,28 +8,27 @@ import { Menu } from '../interfaces/Menu';
   providedIn: 'root',
 })
 export class MenuService {
-  url = this.baseUrl + 'api/menu';
+  endPoint = this.baseUrl + 'api/menu';
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getData<IMenu>(): Observable<IMenu> {
+  getData<Menu>(): Observable<Menu> {
     var params = new HttpParams();
-    var currentMenu = this.http.get<IMenu>(this.url, { params });
+    var currentMenu = this.http.get<Menu>(this.endPoint, { params });
     return currentMenu;
   }
 
   deleteMenuItem(menuId: number): any {
-    return this.http.delete(this.url + `/${menuId}`);
+    return this.http.delete(this.endPoint + `/${menuId}`);
   }
 
   updateMenuItem(menuItem: Menu): any {
-    return this.http.put(this.url + `/${menuItem.id}`, menuItem);
+    return this.http.put(this.endPoint + `/${menuItem.id}`, menuItem);
   }
 
-  createMenuItem(menuItem: Menu): any {
-    
-    return this.http.post(this.url, menuItem);
+  createMenuItem(menuItem: Menu): any {    
+    return this.http.post(this.endPoint, menuItem);
   }
 }

@@ -7,27 +7,27 @@ import { Contact } from '../interfaces/Contact'
   providedIn: 'root',
 })
 export class ContactService {
-  url = this.baseUrl + 'api/contact'
+  endPoint = this.baseUrl + 'api/contact'
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
   ) {}
 
   getData<Contact>(): Observable<Contact> {
-    var params = new HttpParams()
-    return this.http.get<Contact>(this.url, { params })
+    var params = new HttpParams();
+    return this.http.get<Contact>(this.endPoint, { params });
   }
 
   deleteContactItem(contactId: number): any {
-    return this.http.delete(this.url + `/${contactId}`);
+    return this.http.delete(this.endPoint + `/${contactId}`);
   }
 
   updateContactItem(contactItem: Contact): Observable<Contact> {
     return this.http
-      .put<Contact>(this.url + `/${contactItem.id}`, contactItem);
+      .put<Contact>(this.endPoint + `/${contactItem.id}`, contactItem);
   }
 
   addContactItem(contactItem: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.url, contactItem);
+    return this.http.post<Contact>(this.endPoint, contactItem);
   }
 }

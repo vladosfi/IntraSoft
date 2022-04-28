@@ -1,7 +1,6 @@
 ﻿namespace IntraSoft.Data.Dtos.Document
 {
     using Microsoft.AspNetCore.Http;
-    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class DocumentCreateModelDto
@@ -17,3 +16,5 @@
         public int MenuId { get; set; }
     }
 }
+
+
