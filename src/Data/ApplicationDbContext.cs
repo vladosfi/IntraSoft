@@ -70,6 +70,12 @@
                 .WithOne(c => c.Department)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Document>()
+                .HasOne(m => m.Menu)
+                .WithOne(d => d.Document)
+                .HasForeignKey<Document>(e => e.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             var entityTypes = builder.Model.GetEntityTypes().ToList();
 
             // Set global query filter for not deleted entities only

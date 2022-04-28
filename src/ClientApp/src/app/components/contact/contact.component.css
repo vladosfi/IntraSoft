@@ -71,7 +71,6 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 
 
 .mat-column-action {
-  width: 32px;
   text-align: left;
   text-transform: uppercase;
   width: 10%;
@@ -128,3 +127,4 @@ input.mat-input-element {
 ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
   /* padding-top: 10px; */
 }
+

@@ -4,11 +4,16 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class DocumentReadModelDto
+    public class DocumentCreateModelDto
     {
         [Required]
         public IFormFile File { get; set; }
 
+        public string Path { get; set; }
+        
         public string Description { get; set; }
+
+        [Required]
+        public int MenuId { get; set; }
     }
 }

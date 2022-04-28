@@ -1,10 +1,9 @@
-﻿namespace IntraSoft.Data.Dtos
+﻿namespace IntraSoft.Data.Dtos.Menu
 {
     using System.Collections.Generic;
     using IntraSoft.Data.Models;
-    using IntraSoft.Services.Mapping;
 
-    public class MenuReadDto: IMapTo<Menu>, IMapFrom<Menu>
+    public class MenuSingleItemReadDto
     {
         public int Id { get; set; }
 
@@ -15,7 +14,5 @@
         public string Icon { get; set; }
 
         public string RouterLink { get; set; }
-
-        public virtual ICollection<MenuReadDto> Children { get; set; }
     }
 }

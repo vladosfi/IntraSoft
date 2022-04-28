@@ -1,14 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Menu } from '../../../core/interfaces/Menu';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
 import { MenuService } from 'src/app/core/services/menu.service';
-import { FileService } from 'src/app/core/services/file.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
 import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { FileService } from 'src/app/core/services/file.service';
 
 @Component({
   selector: 'app-single-menu-item',
@@ -23,20 +22,20 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   currentMenu: Menu;
   flatedMenu: Menu[];
   @Output() reloadMenu = new EventEmitter();
-
+  disabledRouterLink: boolean = true;
   constructor(
     private shareDataService: ShareNavigationDataService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
     private menuService: MenuService,
-    private fileService: FileService) { }
+    private fileService: FileService,) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       id: new FormControl(''),
       text: new FormControl('', Validators.required),
       icon: new FormControl('',),
-      routerLink: new FormControl('menu',),
+      routerLink: new FormControl('uploads\\menu'),
       parentId: new FormControl('',),
       file: new FormControl('',),
       fileSource: new FormControl('')
@@ -52,12 +51,16 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
           this.currentMenu = result;
           this.form.patchValue(this.currentMenu);
           this._getAllMenuItems();
+          this.loadFile();
         },
         error: (error) => console.error(error),
         complete: () => { console.info('complete') }
       })
   }
 
+  loadFile(){
+    //this.fileService.getFile
+  }
 
   saveMenuItem() {
     var updatedMenu = Object.assign({}, this.form.value);

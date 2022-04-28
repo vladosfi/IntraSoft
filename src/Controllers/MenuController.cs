@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
-    using IntraSoft.Data.Dtos;
+    using IntraSoft.Data.Dtos.Menu;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Mvc;

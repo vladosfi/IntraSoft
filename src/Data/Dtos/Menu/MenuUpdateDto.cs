@@ -1,12 +1,8 @@
-﻿namespace IntraSoft.Data.Dtos
+﻿namespace IntraSoft.Data.Dtos.Menu
 {
     using System.ComponentModel.DataAnnotations;
-    using IntraSoft.Data.Dtos.Document;
-    using IntraSoft.Data.Models;
-    using IntraSoft.Services.Mapping;
-    using Microsoft.AspNetCore.Http;
 
-    public class MenuCreateDto: IMapFrom<Menu>, IMapTo<Menu>
+    public class MenuUpdateDto
     {
         public int? ParentId { get; set; }
 
@@ -20,8 +16,5 @@
         [Required]
         [MaxLength(250)]
         public string RouterLink { get; set; }
-
-        [Required]
-        public IFormFile File { get; set; }
     }
 }

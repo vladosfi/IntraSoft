@@ -30,5 +30,7 @@
         public virtual Menu ParentMenu { get; set; }
 
         public virtual ICollection<Menu> Children { get; set; }
+
+        public virtual Document Document { get; set; }
     }
 }

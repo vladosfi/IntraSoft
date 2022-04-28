@@ -54,6 +54,7 @@ namespace IntraSoft.Services.Data
             return await this
                 .menuRepo
                 .All()
+                .Include(d => d.Document)
                 .Where(x => x.Id == id)
                 .To<T>()
                 .FirstOrDefaultAsync();

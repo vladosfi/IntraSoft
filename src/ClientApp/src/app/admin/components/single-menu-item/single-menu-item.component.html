@@ -1,25 +1,47 @@
 <div class="form-container">
-  <p *ngIf="!currentMenu || (currentMenu | json) === '{}'"><em>
+  <p *ngIf="!currentMenu || (currentMenu | json) === '{}'">
+    <em>
       <h1>Create - Menu Item</h1>
-    </em></p>
-  <p *ngIf="currentMenu && (currentMenu | json) !== '{}'"><em>
-      <h1>Edit - {{this.currentMenu?.text}}</h1>
-    </em></p>
+    </em>
+  </p>
+  <p *ngIf="currentMenu && (currentMenu | json) !== '{}'">
+    <em>
+      <h1>Edit - {{ this.currentMenu?.text }}</h1>
+    </em>
+  </p>
 
   <div class="form" [formGroup]="form">
-
     <div class="form-group">
       <label for="id">Menu Id:</label>
       <br />
-      <input type="text" id="id" formControlName="id" readonly placeholder="Menu id..." class="form-control" />
+      <input
+        type="text"
+        id="id"
+        formControlName="id"
+        readonly
+        placeholder="Menu id..."
+        class="form-control"
+      />
     </div>
 
     <div class="form-group">
       <label for="text">Menu text:</label>
       <br />
-      <input type="text" id="text" formControlName="text" required placeholder="Text..." class="form-control" />
-      <div *ngIf="form.get('text').invalid &&
-                (form.get('text').dirty || form.get('text').touched)" class="invalid-feedback">
+      <input
+        type="text"
+        id="text"
+        formControlName="text"
+        required
+        placeholder="Text..."
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          form.get('text').invalid &&
+          (form.get('text').dirty || form.get('text').touched)
+        "
+        class="invalid-feedback"
+      >
         <div *ngIf="form.get('text').errors?.required">
           Text is required.
         </div>
@@ -29,18 +51,31 @@
     <div class="form-group">
       <label for="icon">Menu icon:</label>
       <br />
-      <input type="text" id="icon" formControlName="icon" placeholder="Icon..." class="form-control" />
-
+      <input
+        type="text"
+        id="icon"
+        formControlName="icon"
+        placeholder="Icon..."
+        class="form-control"
+      />
     </div>
 
     <div class="form-group">
       <label for="routerLink">Menu routerLink:</label>
       <br />
-      <input type="text" id="routerLink" formControlName="routerLink" placeholder="RouterLink..."
-        class="form-control" />
+      <input
+        type="text"
+        id="routerLink"
+        formControlName="routerLink"
+        placeholder="RouterLink..."
+        class="form-control"
+      />
     </div>
 
-    <upload-button></upload-button>
+    <!-- [sourcePath]="this.form.value.routerLink" -->
+    <upload-button *ngIf="currentMenu && (currentMenu | json) !== '{}'"
+      [menuId]="this.form.value.id"
+    ></upload-button>
 
     <div class="form-group">
       <label for="parentId">Item Parent Id:</label>
@@ -51,32 +86,49 @@
           <mat-option [value]="null">
             Root Menu
           </mat-option>
-          <mat-option *ngFor="let menu of flatedMenu" [value]="menu.id" [disabled]="menu.id === currentMenu?.id ? true : false">
-            Name: {{menu.text}} | Id = {{menu.id}}
+          <mat-option
+            *ngFor="let menu of flatedMenu"
+            [value]="menu.id"
+            [disabled]="menu.id === currentMenu?.id ? true : false"
+          >
+            Name: {{ menu.text }} | Id = {{ menu.id }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    
 
     <div class="form-group commands">
-      <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="saveMenuItem()"
-        [disabled]="form.invalid || !form.dirty" class="btn btn-success">
+      <button
+        *ngIf="currentMenu && (currentMenu | json) !== '{}'"
+        type="button"
+        (click)="saveMenuItem()"
+        [disabled]="form.invalid || !form.dirty"
+        class="btn btn-success"
+      >
         Save
       </button>
-      <button *ngIf="currentMenu && (currentMenu | json) !== '{}'" type="button" (click)="delete()" mat-button
-        [disabled]="form.invalid" class="btn btn-danger">
+      <button
+        *ngIf="currentMenu && (currentMenu | json) !== '{}'"
+        type="button"
+        (click)="delete()"
+        mat-button
+        [disabled]="form.invalid"
+        class="btn btn-danger"
+      >
         Delete
       </button>
-      <button *ngIf="!currentMenu || (currentMenu | json) === '{}'" type="button" (click)="createMenu()" [disabled]="form.invalid"
-        class="btn btn-success">
+      <button
+        *ngIf="!currentMenu || (currentMenu | json) === '{}'"
+        type="button"
+        (click)="createMenu()"
+        [disabled]="form.invalid"
+        class="btn btn-success"
+      >
         Create
       </button>
       <button type="button" (click)="closeMenuItem()" class="btn btn-default">
         Cancel
       </button>
-
     </div>
   </div>
 </div>
-

@@ -18,10 +18,10 @@ export class FileService {
     // file from event.target.files[0]
     uploadFile(formData: FormData, path:string): Observable<HttpEvent<any>> {
   
-      let params = new HttpParams().set('path', path);
+      //let params = new HttpParams().set('path', path);
 
       const options = {
-        params: params,
+        //params: params,
         reportProgress: true,
       };
   

@@ -26,6 +26,7 @@
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
         public int DepartmentId { get; set; }
     }
 }

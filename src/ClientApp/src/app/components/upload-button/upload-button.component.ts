@@ -1,5 +1,5 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -10,9 +10,11 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
   styleUrls: ['./upload-button.component.css']
 })
 export class UploadButtonComponent implements OnInit {
-  fileInfoMessage = "";
+  fileInfoMessage = '';
   deleteButtonText: string;
   fileId: string;
+  @Input() sourcePath:string = 'uploads\\menu';
+  @Input() menuId:string = null;
 
   form = new FormGroup({
     file: new FormControl(''),
@@ -33,6 +35,7 @@ onFileChange(event: any) {
     this.form.patchValue({
       fileSource: file
     });
+
     this.uploadFile(file);
   }
 }
@@ -44,7 +47,7 @@ this.fileService.deleteFile(this.fileId)
   .subscribe({
   next: () => {
       this.snackbar.success('File has been deleted');
-      this.fileInfoMessage = "";
+      this.fileInfoMessage = '';
       this.fileId = null;
       this.form.controls['file'].setValue(null);
   },
@@ -61,10 +64,22 @@ if (file == undefined) {
   return;
 }
 
+if (this.menuId == null) {
+  console.log("No menu ID!");
+  return;
+}
+
+if (this.sourcePath == null) {
+  console.log("No source path!");
+  return;
+}
+
 let formData = new FormData();
 formData.append('file', file);
+formData.append('menuId', this.menuId);
+formData.append('path', this.sourcePath);
 
-this.fileService.uploadFile(formData,'uploads\\menu')
+this.fileService.uploadFile(formData,this.sourcePath)
   .subscribe(
     {
     next:(event) => {

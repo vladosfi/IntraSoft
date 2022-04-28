@@ -27,6 +27,10 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -50,6 +54,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Data\Dtos\Document\DocumentReadDto.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="ClientApp\src\app\core\directives\disable-control.directive.ts" />
 	</ItemGroup>
 
@@ -70,6 +78,8 @@
 	  <Script Remove="Data\Dtos\Contact\ContactReadDto.cs" />
 	  <Script Remove="Data\Dtos\Contact\ContactUpdateDto.cs" />
 	  <Script Remove="Data\Dtos\Department\DepartmentReadDto.cs" />
+	  <Script Remove="Data\Dtos\DocumentReadDto.cs" />
+	  <Script Remove="Data\Dtos\Document\DocumentReadDto.cs" />
 	  <Script Remove="Data\Dtos\Document\DocumentReadModelDto.cs" />
 	  <Script Remove="Data\Dtos\FileInputModel.cs" />
 	  <Script Remove="Data\Dtos\MenuSingleItemReadDto.cs" />
@@ -83,6 +93,7 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="Data\Dtos\Document\DocumentReadDto.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

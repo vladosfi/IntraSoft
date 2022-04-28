@@ -1,8 +1,8 @@
 ﻿namespace IntraSoft.Profiles
 {
     using AutoMapper;
-    using IntraSoft.Data.Dtos;
     using IntraSoft.Data.Dtos.Contact;
+    using IntraSoft.Data.Dtos.Menu;
     using IntraSoft.Data.Models;
 
     public class AutoMapperProfile : Profile
