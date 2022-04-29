@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using AutoMapper;
     using IntraSoft.Data.Common.Models;
     using IntraSoft.Services.Mapping;
 
     [Table("Menus")]
-    public class Menu : BaseDeletableModel<int>, IMapFrom<Menu>
+    public class Menu : BaseDeletableModel<int>, IMapTo<Menu>, IMapFrom<Menu>
     {
         public Menu()
         {

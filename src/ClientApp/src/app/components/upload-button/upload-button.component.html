@@ -3,7 +3,7 @@
 <form [formGroup]="form">
   
 <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
-    <label for="file">File</label>
+    <label for="file">File:</label>
     <input 
         formControlName="file"
         id="file" 
@@ -14,7 +14,7 @@
   </div>
   <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
     <div>
-      <label>Selected File</label>
+      <label>File:</label>
     </div>
       <button 
         id="btn-delete"

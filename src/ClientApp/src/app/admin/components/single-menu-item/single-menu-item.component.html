@@ -77,6 +77,7 @@
     <upload-button *ngIf="currentMenu && (currentMenu | json) !== '{}' || this.currentMenu?.document?.id"
       [menuId]="this.form.value.id"
       [document]="this.currentMenu.document"
+      (changeRouterLinkEvent)="changeRouterLink($event)"
     ></upload-button>
 
     <div class="form-group">

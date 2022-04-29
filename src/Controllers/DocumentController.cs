@@ -30,17 +30,16 @@
             this.documentService = documentService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDocument(string DocumentPath)
+         [HttpGet("{id}", Name = nameof(GetDocument))]
+        public async Task<IActionResult> GetDocument(int id)
         {
             //To do check for recor in database
+            var document = await this.documentService.GetByIdAsync(id);
+            if(document.FilePath == null) return this.NotFound();
+            //documentId = "menu.xlsx";
 
-            //if(path == null) return this.NotFound();
-            DocumentPath = "menu.xlsx";
-
-            var uploadPath =
-                Path.Combine(hostingEnvironment.WebRootPath, "uploads");
-            var path = Path.Combine(uploadPath, DocumentPath);
+            var path = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
+            //var path = Path.Combine(path, document);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -87,8 +86,7 @@
                         MenuId = fileInput.MenuId,
                     };
 
-                var documentId =
-                    await this.documentService.CreateAsync(document);
+                var documentId = await this.documentService.CreateAsync(document);
 
                 return this.Ok(documentId);
             }

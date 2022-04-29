@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FileService } from 'src/app/core/services/file.service';
 
 @Component({
   selector: 'app-menu-item-am',
@@ -10,6 +11,7 @@ export class MenuItemAMComponent implements OnInit {
   @Input("menuitem") menuitem;
   style;
   styleLink;
+
   ngOnInit(): void {
 
     if (this.menuitem.children.length === 0) {
@@ -25,5 +27,4 @@ export class MenuItemAMComponent implements OnInit {
       "background-color": `rgb(155,155,155,${2 / 10})`,
     };
   }
-
 }

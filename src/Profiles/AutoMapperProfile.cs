@@ -18,7 +18,7 @@
             this.CreateMap<ContactCreateDto, Contact>().ReverseMap();
             this.CreateMap<ContactReadDto, Contact>().ReverseMap();
             this.CreateMap<ContactUpdateDto, Contact>();            
-            this.CreateMap<DocumentReadDto, Document>();            
+            this.CreateMap<Document, DocumentReadForMenuDto>();            
         }
     }
 }

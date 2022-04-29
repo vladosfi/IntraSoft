@@ -123,6 +123,10 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     this.shareDataService.menuItem$ = EMPTY;
   }
 
+  changeRouterLink(defaultRouterLinkEvent: string){
+    this.form.controls['routerLink'].setValue(defaultRouterLinkEvent);
+    this.saveMenuItem();
+  }
      
 
   private _getAllMenuItems() {

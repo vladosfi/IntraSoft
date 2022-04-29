@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject,  } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, } from 'rxjs';
 
 
 @Injectable({
@@ -15,28 +15,28 @@ export class FileService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getFile<DocumentFile>(documentFileId: number): Observable<DocumentFile>{
+  getFile<DocumentFile>(documentFileId: number = 29): Observable<DocumentFile> {
     var params = new HttpParams();
     this.endPoint += `/${documentFileId}`;
 
     return this.http.get<DocumentFile>(this.endPoint, { params });
   }
 
-    // file from event.target.files[0]
-    uploadFile(formData: FormData, path:string): Observable<HttpEvent<any>> {
-  
-      //let params = new HttpParams().set('path', path);
 
-      const options = {
-        //params: params,
-        reportProgress: true,
-      };
-  
-      const req = new HttpRequest('POST', this.endPoint, formData, options);
-      return this.http.request(req);
-    }
+  uploadFile(formData: FormData): Observable<HttpEvent<any>> {
+    //var path = formData.get('path') as string;
+    //let params = new HttpParams().set('path', path);
 
-    deleteFile(fileId: number){
-      return this.http.delete(this.endPoint + `/${fileId}`);
-    }
+    const options = {
+      //params: params,
+      reportProgress: true,
+    };
+
+    const req = new HttpRequest('POST', this.endPoint, formData, options);
+    return this.http.request(req);
+  }
+
+  deleteFile(fileId: number) {
+    return this.http.delete(this.endPoint + `/${fileId}`);
+  }
 }

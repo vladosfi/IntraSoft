@@ -9,7 +9,7 @@ export class ShareNavigationDataService {
   private menuListSubject = new BehaviorSubject(null);
   private menuSingleItemSubject = new BehaviorSubject(null);
 
-  get menuList$():Observable<any>{
+  get menuList$(): Observable<any> {
     return this.menuListSubject.asObservable();
   }
 
@@ -21,7 +21,7 @@ export class ShareNavigationDataService {
     this.menuSingleItemSubject.next(menuItem);
   }
 
-  
+
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) { }
@@ -32,7 +32,9 @@ export class ShareNavigationDataService {
     this.menuListSubject.next(null);
 
     this.http.get<any>(url).subscribe({
-      next: (data) => this.menuListSubject.next(data)
+      next: (data) => {
+        this.menuListSubject.next(data)
+      }
     });
   }
 

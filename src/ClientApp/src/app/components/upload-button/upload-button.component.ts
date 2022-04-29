@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IFileDocument } from 'src/app/core/interfaces/FileDocument';
 import { FileService } from 'src/app/core/services/file.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'upload-button',
@@ -14,10 +15,11 @@ export class UploadButtonComponent implements OnInit {
   fileInfoMessage = '';
   deleteButtonText: string;
   fileId: number;
-  @Input() sourcePath:string = 'uploads\\menu';
+  defaultMenuLinkPath = 'uploads\\menu';
+  @Input() sourcePath:string = this.defaultMenuLinkPath;
   @Input() menuId:string = null;
   @Input() document:IFileDocument = null;
-  
+  @Output() changeRouterLinkEvent = new EventEmitter<string>();
 
   form = new FormGroup({
     file: new FormControl(''),
@@ -82,9 +84,9 @@ if (this.sourcePath == null) {
 let formData = new FormData();
 formData.append('file', file);
 formData.append('menuId', this.menuId);
-formData.append('path', this.sourcePath);
+formData.append('path', this.defaultMenuLinkPath);
 
-this.fileService.uploadFile(formData,this.sourcePath)
+this.fileService.uploadFile(formData)
   .subscribe(
     {
     next:(event) => {
@@ -97,7 +99,8 @@ this.fileService.uploadFile(formData,this.sourcePath)
         this.fileInfoMessage = event.body;
         this.deleteButtonText = file.name;
         this.fileId = event.body;
-      }
+        this.changeRouterLinkEvent.emit(`document/${this.fileId}`);
+      }      
     },
     error: (error) => {
       this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
