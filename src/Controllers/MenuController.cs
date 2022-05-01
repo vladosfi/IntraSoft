@@ -15,9 +15,11 @@
     {
         private readonly IMapper mapper;
         private readonly IMenuService menuService;
+        private readonly IDocumentService documentService;
 
-        public MenuController(IMapper mapper, IMenuService menuService)
+        public MenuController(IMapper mapper, IMenuService menuService, IDocumentService documentService)
         {
+            this.documentService = documentService;
             this.menuService = menuService;
             this.mapper = mapper;
         }

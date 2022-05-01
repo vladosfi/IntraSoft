@@ -44,11 +44,11 @@ namespace IntraSoft.Services.Data
             //var menuItems = await query.To<T>().ToListAsync();
             //return menuItems;
 
-            var menuItems = await this.context.Menus.Include(x => x.Children).ToListAsync();
-            return menuItems.Where(x => x.ParentMenu == null).ToList();
+            // var menuItems = await this.context.Menus.Include(x => x.Children).ToListAsync();
+            // return menuItems.Where(x => x.ParentMenu == null).ToList();
 
-        // var menuItems = await this.context.Menus.Include(x => x.Children).Include(d => d.Document).ToListAsync();
-        // return menuItems.Where(x => x.ParentMenu == null).ToList();
+        var menuItems = await this.context.Menus.Include(d => d.Document).Include(x => x.Children).ToListAsync();
+        return menuItems.Where(x => x.ParentMenu == null).ToList();
 
             // IQueryable<Menu> query = this.menuRepo
             //    .All()

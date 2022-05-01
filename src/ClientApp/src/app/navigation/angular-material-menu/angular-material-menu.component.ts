@@ -16,7 +16,8 @@ export class AngularMaterialMenuComponent implements OnInit {
     this.sidenavClose.emit();
   }
 
-  constructor(private shareDataService: ShareNavigationDataService,) { }
+  constructor(private shareDataService: ShareNavigationDataService
+    ,) { }
 
 
   ngOnInit(): void {

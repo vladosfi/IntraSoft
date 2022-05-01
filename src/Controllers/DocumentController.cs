@@ -30,16 +30,14 @@
             this.documentService = documentService;
         }
 
-         [HttpGet("{id}", Name = nameof(GetDocument))]
-        public async Task<IActionResult> GetDocument(int id)
+        [HttpGet("{id}/{open:bool?}", Name = nameof(GetDocument))]
+        public async Task<IActionResult> GetDocument(int id, bool? open = false)
         {
             //To do check for recor in database
             var document = await this.documentService.GetByIdAsync(id);
-            if(document.FilePath == null) return this.NotFound();
-            //documentId = "menu.xlsx";
+            if (document == null) return this.NotFound();
 
             var path = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
-            //var path = Path.Combine(path, document);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -48,7 +46,17 @@
             }
             memory.Position = 0;
             var ext = Path.GetExtension(path).ToLowerInvariant();
-            return File(memory, GetMimeTypes()[ext], Path.GetFileName(path));
+            Response.Headers.Add("Content-Disposition", "inline; filename=" + Path.GetFileName(path));
+
+            // To download or open file 
+            if (open == true)
+            {
+                return new PhysicalFileResult(path, GetMimeTypes()[ext]);
+            }
+            else
+            {
+                return File(memory, GetMimeTypes()[ext], Path.GetFileName(path));
+            }
         }
 
         [HttpPost]
@@ -79,7 +87,8 @@
                 // Save uniqueFileName to db table
                 filePath = Path.Combine(fileInput.Path, uniqueFileName);
                 var document =
-                    new Document {
+                    new Document
+                    {
                         FilePath = filePath,
                         Description = null,
                         UserName = null,
@@ -111,10 +120,7 @@
             await this.documentService.SaveChangesAsync();
 
             // Delete form filesystem
-            string path =
-                Path
-                    .Combine(hostingEnvironment.WebRootPath,
-                    documentFromRepo.FilePath);
+            string path = Path.Combine(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
 
             FileInfo file = new FileInfo(path);
             if (file.Exists)
@@ -125,12 +131,14 @@
             return this.NoContent();
         }
 
+
         private string GetUniqueFileName(string fileName)
         {
             fileName = Path.GetFileName(fileName);
+
             return Path.GetFileNameWithoutExtension(fileName) +
             "_" +
-            Guid.NewGuid().ToString().Substring(0, 10) +
+            Guid.NewGuid().ToString().Substring(0, 5) +
             Path.GetExtension(fileName);
         }
 

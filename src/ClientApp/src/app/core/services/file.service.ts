@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, Renderer2, RendererFactory2 } from '@angular/core';
 import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, } from 'rxjs';
 
@@ -9,19 +9,24 @@ import { BehaviorSubject, Observable, Subject, } from 'rxjs';
 export class FileService {
   private endPoint = this.baseUrl + 'api/document';
   private headers = new Headers();
+  private renderer: Renderer2;
 
   constructor(
     private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string) {
+    @Inject('BASE_URL') private baseUrl: string,
+    rendererFactory: RendererFactory2,
+  ) {
+    this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  getFile<DocumentFile>(documentFileId: number = 29): Observable<DocumentFile> {
-    var params = new HttpParams();
-    this.endPoint += `/${documentFileId}`;
-
-    return this.http.get<DocumentFile>(this.endPoint, { params });
+  downloadFile(id: string) {
+    const link = this.renderer.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', `api/document/${id}/true`);
+    //link.setAttribute('href',  `api/document/${id}`);
+    link.click();
+    link.remove();
   }
-
 
   uploadFile(formData: FormData): Observable<HttpEvent<any>> {
     //var path = formData.get('path') as string;

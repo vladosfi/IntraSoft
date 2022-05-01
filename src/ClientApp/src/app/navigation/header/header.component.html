@@ -15,18 +15,21 @@
       <span fxLayout fxLayoutGap="15px" class="navigation-items">
         <span *ngFor="let item of (menuList$ | async)">
           <span *ngIf="item.children && item.children.length > 0">
-            <button  mat-menu-item [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
+            <button mat-menu-item [matMenuTriggerFor]="menu.childMenu" [disabled]="item.disabled">{{item.text}}</button>
             <app-menu-item #menu [items]="item.children"></app-menu-item>
           </span>
           <span *ngIf="!item.children || item.children.length === 0">
-            <button mat-menu-item [routerLink]="item.routerLink" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="downloadFile()">{{item.text}}</button>
+            <button *ngIf="item.document; else elseBlock" mat-menu-item
+              (click)="downloadFile(item.document.id)">{{item.text}}</button>
+            <ng-template #elseBlock><button mat-menu-item [routerLink]="item.routerLink" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">{{item.text}}</button></ng-template>
           </span>
         </span>
       </span>
     </div>
   </mat-toolbar>
 
-  <!--<div *ngIf="(menuList$ | async) as IMenu">
+  <!-- <div *ngIf="(menuList$ | async) as Menu">
     <h1>{{(menuList$ | async) | json}}</h1>
-  </div>-->
+  </div> -->
 </header>

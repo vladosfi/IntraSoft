@@ -12,6 +12,9 @@ export class MenuItemAMComponent implements OnInit {
   style;
   styleLink;
 
+  constructor(private fileService: FileService,
+  ) { }
+
   ngOnInit(): void {
 
     if (this.menuitem.children.length === 0) {
@@ -21,10 +24,14 @@ export class MenuItemAMComponent implements OnInit {
     }
 
     this.style = {
-     //"background-color": `rgb(155,155,155,${0 / 10})`,
+      //"background-color": `rgb(155,155,155,${0 / 10})`,
     };
     this.styleLink = {
       "background-color": `rgb(155,155,155,${2 / 10})`,
     };
+  }
+
+  downloadFile(fileId: string){
+    this.fileService.downloadFile(fileId);
   }
 }

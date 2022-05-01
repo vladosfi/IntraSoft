@@ -13,16 +13,26 @@
     <ng-template #elseTemplate>
       <section *ngIf="menuitem.parentId === null">
         <mat-action-list [ngStyle]="style">
-          <button mat-list-item [routerLink]="menuitem.routerLink">
-            <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
-          </button>
+          
+
+          <button *ngIf="menuitem.document; else elseBlock" mat-list-item 
+              (click)="downloadFile(menuitem.document.id)">{{menuitem.text}}</button>
+            <ng-template #elseBlock><button mat-list-item [routerLink]="menuitem.routerLink">
+              <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
+            </button></ng-template>
+
         </mat-action-list>
       </section>
       <section *ngIf="menuitem.parentId !== null">
         <mat-action-list [ngStyle]="styleLink">
-          <button mat-list-item [routerLink]="menuitem.routerLink" class="padleft">
-            <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
-          </button>
+          
+
+          <button *ngIf="menuitem.document; else elseBlock" mat-list-item class="padleft"
+              (click)="downloadFile(menuitem.document.id)"><mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}</button>
+            <ng-template #elseBlock><button mat-list-item [routerLink]="menuitem.routerLink" class="padleft">
+              <mat-icon>{{ menuitem.icon }}</mat-icon> {{ menuitem.text }}
+            </button></ng-template>
+                
         </mat-action-list>
       </section>
     </ng-template>

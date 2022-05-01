@@ -7,7 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MenuItemComponent } from './navigation/menu-item/menu-item.component';
+import { MenuItemComponent } from './navigation/header/menu-item/menu-item.component';
 import { RoutingModule } from './routing/routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
@@ -22,6 +22,8 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { DisableControlDirective } from './core/directives/disable-control.directive';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
+import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
+
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { UploadButtonComponent } from './components/upload-button/upload-button.
     DisableControlDirective,
     NotFoundComponent,
     UploadButtonComponent,
+    EllipsifyMeDirective,
   ],
   entryComponents:[
     DialogComponent

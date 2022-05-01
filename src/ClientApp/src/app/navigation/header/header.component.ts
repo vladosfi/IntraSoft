@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Renderer2 } from '@angular/core';
 import { FileService } from 'src/app/core/services/file.service';
 import { ShareNavigationDataService } from '../../core/services/share-navigation-data.service';
 
@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     public shareDataService: ShareNavigationDataService,
-    private fileService:FileService,
+    private fileService: FileService,
     ) {  }
 
   ngOnInit(): void {
@@ -25,9 +25,8 @@ export class HeaderComponent implements OnInit {
     this.sidenavToggle.emit();
   }
 
-  downloadFile(){
-    this.fileService.getFile()
-    .subscribe(data => console.log(data));
+  downloadFile(fileId: string){
+    this.fileService.downloadFile(fileId);
   }
 
 }

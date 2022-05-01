@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Menu } from '../../core/interfaces/Menu';
+import { FileService } from 'src/app/core/services/file.service';
+import { Menu } from '../../../core/interfaces/Menu';
 
 @Component({
   selector: 'app-menu-item',
@@ -10,12 +11,19 @@ import { Menu } from '../../core/interfaces/Menu';
 export class MenuItemComponent implements OnInit {
   @Input() items: Menu[];
   @ViewChild('childMenu', { static: true }) public childMenu: any;
-
+  maxLenghtForTooltip = 30;
 
   constructor(
-    public router: Router,) {  }
+    public router: Router,
+    private fileService: FileService,
+    ) {  }
 
   ngOnInit() {  }
+
+  downloadFile(fileId: string){
+    this.fileService.downloadFile(fileId);
+  }
+
 
 
 }
