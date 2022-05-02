@@ -28,7 +28,12 @@
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
             IQueryable<Contact> query =
-                this.contactRepo.All().OrderBy(x => x.DepartmentId).ThenBy(x => x.Id).AsNoTracking().AsSplitQuery();
+                this.contactRepo
+                .All()
+                .OrderBy(x => x.DepartmentId)
+                .ThenBy(x => x.Id)
+                .AsNoTracking()
+                .AsSplitQuery();
 
             return await query.To<T>().ToListAsync();
         }

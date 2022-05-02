@@ -29,7 +29,9 @@
         {
             IQueryable<Department> query = this.departmentRepo
                 .All()
-                .OrderBy(x => x.Id).AsSplitQuery().AsNoTracking();
+                .OrderBy(x => x.Id)
+                .AsSplitQuery()
+                .AsNoTracking();
 
             return await query.To<T>().ToListAsync();
         }

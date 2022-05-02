@@ -15,7 +15,7 @@
           matTooltipPosition="left" mat-menu-item (click)="downloadFile(child.document.id)">{{child.text}}</button>
 
         <ng-template #elseBlock><button [matTooltip]="child.text.length > maxLenghtForTooltip ? child.text : null" matTooltipPosition="left" mat-menu-item
-            routerLink="['{{child.routerLink}}']" routerLinkActive="active">{{child.text}}</button></ng-template>
+          [routerLink]='child.routerLink' routerLinkActive="active">{{child.text}}</button></ng-template>
 
       </span>
     </span>

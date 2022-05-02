@@ -23,6 +23,7 @@ import { DisableControlDirective } from './core/directives/disable-control.direc
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
 import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
+import { IsoListComponent } from './components/iso-list/iso-list.component';
 
 
 
@@ -42,6 +43,7 @@ import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
     NotFoundComponent,
     UploadButtonComponent,
     EllipsifyMeDirective,
+    IsoListComponent,
   ],
   entryComponents:[
     DialogComponent
