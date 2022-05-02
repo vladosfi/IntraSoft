@@ -12,6 +12,7 @@ using IntraSoft.Data;
 using AutoMapper;
 using IntraSoft.Data.Models;
 using IntraSoft.Services.Data;
+using IntraSoft.Data.Dtos.Department;
 
 namespace IntraSoft.Controllers
 {
@@ -22,22 +23,57 @@ namespace IntraSoft.Controllers
         private readonly IWebHostEnvironment env;
         private readonly IMapper mapper;
         private readonly IMenuService menuService;
+        private readonly IDepartmentService departmentService;
+        private readonly IContactService contactService;
+        private readonly IIsoService isoService;
+        private readonly IIsoFileCategoryService isoFileCategoryService;
 
-        public SeedController(IMenuService menuService, IMapper mapper, IWebHostEnvironment env)
+        public SeedController(
+            IMenuService menuService, 
+            IDepartmentService departmentService,
+            IContactService contactService,
+            IIsoService isoService,
+            IIsoFileCategoryService isoFileCategoryService,
+            IMapper mapper, 
+            IWebHostEnvironment env)
         {
             this.menuService = menuService;
+            this.departmentService = departmentService;
+            this.contactService = contactService;
+            this.isoService = isoService;
+            this.isoFileCategoryService = isoFileCategoryService;
             this.mapper = mapper;
             this.env = env;
         }
 
-        public async Task<IActionResult> ImportMenu()
+        public async Task<IActionResult> Import()
         {
             if (!this.env.IsDevelopment()) throw new SecurityException("Not allowed");
 
-            var path = Path.Combine(this.env.ContentRootPath, "Data/Source/menu.xlsx");
 
-            using var stream = System.IO.File.OpenRead(path);
+            var file = Path.Combine(this.env.ContentRootPath, "Data/Source/data.xlsx");
+            using var stream = System.IO.File.OpenRead(file);
             using var excelPackage = new ExcelPackage(stream);
+
+            var importedMenus = await this.ImportMenu(excelPackage);
+            var importedDepartments = await this.ImportDepartments(excelPackage);
+            var importedContacts = await this.ImportContacts(excelPackage);
+            var importedIsoServices = await this.ImportIsoServices(excelPackage);
+            var importedIsoFileCategories = await this.ImportIsoFileCategories(excelPackage);
+
+            return new JsonResult(new
+            {
+                Menus = importedMenus,
+                Departments = importedDepartments,
+                Contacts = importedDepartments,
+                IsoServices = importedIsoServices,
+                IsoFileCategories = importedIsoFileCategories,
+            });
+        }
+
+
+        private async Task<IActionResult> ImportMenu(ExcelPackage excelPackage)
+        {
             // get the first worksheet
             var worksheet = excelPackage.Workbook.Worksheets[0];
             // define how many rows we want to process
@@ -93,12 +129,207 @@ namespace IntraSoft.Controllers
                 numberOfMenusAdded++;
             }
 
-            if (numberOfMenusAdded > 0) await this.menuService.SaveChangesAsync();
-
+            //if (numberOfMenusAdded > 0) await this.menuService.SaveChangesAsync();
 
             return new JsonResult(new
             {
                 MenuCreateDto = menuByText
+            });
+        }
+
+        private async Task<IActionResult> ImportDepartments(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[1];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberOfDepartmentsAdded = 0;
+
+            // create a lookup dictionary
+            var existingDepartments = await this.departmentService.GetAllAsync<Department>();
+            var departmetnsByName = existingDepartments.ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var name = row[nRow, 2].GetValue<string>();
+                var description = row[nRow, 3].GetValue<string>();
+
+                // skip this country if it already exists in the database
+                if (departmetnsByName.ContainsKey(name)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var departmentToAdd = new Department
+                {
+                    Name = name,
+                    Description = description,
+                };
+
+                // add the new country to the DB context
+                await this.departmentService.AddAsync(departmentToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                departmetnsByName.Add(name, departmentToAdd);
+                // increment the counter
+                numberOfDepartmentsAdded++;
+            }
+
+            //if (numberOfDepartmentsAdded > 0) await this.departmentService.SaveChangesAsync();
+
+            return new JsonResult(new
+            {
+                DepartmentReadDto = departmetnsByName
+            });
+        }
+
+        private async Task<IActionResult> ImportContacts(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[2];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberOfContactsAdded = 0;
+
+            // create a lookup dictionary
+            var existingContacts = await this.contactService.GetAllAsync<Contact>();
+            var contactsByEmailName = existingContacts.ToDictionary(x => x.Email, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var firstName = row[nRow, 2].GetValue<string>();
+                var middleName = row[nRow, 3].GetValue<string>();
+                var lastName = row[nRow, 4].GetValue<string>();
+                var phone = row[nRow, 5].GetValue<string>();
+                var email = row[nRow, 6].GetValue<string>();
+                var departmentId = row[nRow, 7].GetValue<int>();
+
+
+                // skip this country if it already exists in the database
+                if (contactsByEmailName.ContainsKey(email)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var contactToAdd = new Contact
+                {
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    LastName = lastName,
+                    Phone = phone,
+                    Email = email,
+                    DepartmentId = departmentId,                    
+                };
+
+                // add the new country to the DB context
+                await this.contactService.CreateAsync(contactToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                contactsByEmailName.Add(email, contactToAdd);
+                // increment the counter
+                numberOfContactsAdded++;
+            }
+
+            //if (numberOfContactsAdded > 0) await this.contactService.SaveChangesAsync();
+
+            return new JsonResult(new
+            {
+                ContactsReadDto = contactsByEmailName
+            });
+        }
+
+        private async Task<IActionResult> ImportIsoServices(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[3];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberOfIsoServicesAdded = 0;
+
+            // create a lookup dictionary
+            var existingIsoService = await this.isoService.GetAllAsync<Data.Models.IsoService>();
+            var serviceByNumber = existingIsoService.ToDictionary(x => x.Number, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var name = row[nRow, 2].GetValue<string>();
+                var number = row[nRow, 3].GetValue<string>();
+                var departmentId = row[nRow, 4].GetValue<int>();
+
+
+                // skip this country if it already exists in the database
+                if (serviceByNumber.ContainsKey(number)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var isoServiceToAdd = new Data.Models.IsoService
+                {
+                    Name = name,
+                    Number = number,
+                    DepartmentId = departmentId,                    
+                };
+
+                // add the new country to the DB context
+                await this.isoService.CreateAsync(isoServiceToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                serviceByNumber.Add(number, isoServiceToAdd);
+                // increment the counter
+                numberOfIsoServicesAdded++;
+            }
+
+            return new JsonResult(new
+            {
+                IsoServicesReadDto = serviceByNumber
+            });
+        }
+        
+        private async Task<IActionResult> ImportIsoFileCategories(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[4];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberOfIsoFileCategoriesAdded = 0;
+
+            // create a lookup dictionary
+            var existingIsoFileCategories = await this.isoFileCategoryService.GetAllAsync<IsoFileCategory>();
+            var serviceByName = existingIsoFileCategories.ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var name = row[nRow, 2].GetValue<string>();
+                var description = row[nRow, 3].GetValue<string>();
+
+                // skip this country if it already exists in the database
+                if (serviceByName.ContainsKey(name)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var IsoFileCategoryToAdd = new IsoFileCategory
+                {
+                    Name = name,
+                    Description = description                 
+                };
+
+                // add the new country to the DB context
+                await this.isoFileCategoryService.CreateAsync(IsoFileCategoryToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                serviceByName.Add(name, IsoFileCategoryToAdd);
+                // increment the counter
+                numberOfIsoFileCategoriesAdded++;
+            }
+
+            return new JsonResult(new
+            {
+                IsoFileCategories = serviceByName
             });
         }
     }

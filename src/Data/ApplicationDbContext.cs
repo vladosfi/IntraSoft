@@ -32,6 +32,13 @@
 
         public DbSet<Contact> Contacts { get; set; }
 
+        public DbSet<IsoService> IsoServices { get; set; }
+
+        public DbSet<IsoFile> IsoFiles { get; set; }
+
+        public DbSet<IsoFileCategory> IsoFileCategories { get; set; }
+
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -65,15 +72,25 @@
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Department>()
-                .HasMany(d => d.Contacts)
-                .WithOne(c => c.Department)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.Entity<Document>()
                 .HasOne(m => m.Menu)
                 .WithOne(d => d.Document)
                 .HasForeignKey<Document>(e => e.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Department>()
+                .HasMany(d => d.IsoServices)
+                .WithOne(c => c.Department)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<IsoService>()
+                .HasMany(d => d.IsoFiles)
+                .WithOne(c => c.IsoService)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<IsoFileCategory>()
+                .HasMany(f => f.IsoFiles)
+                .WithOne(c => c.IsoFileCategory)
                 .OnDelete(DeleteBehavior.Restrict);
 
             var entityTypes = builder.Model.GetEntityTypes().ToList();

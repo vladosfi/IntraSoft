@@ -54,9 +54,8 @@
         {
             var newDepartmentItem = this.mapper.Map<Department>(departmentItemDto);
 
-            await this.departmentService.CreateAsync(newDepartmentItem);
+            await this.departmentService.AddAsync(newDepartmentItem);
 
-            await this.departmentService.SaveChangesAsync();
             var departmentReadDto = this.mapper.Map<DepartmentReadDto>(newDepartmentItem);
 
             return this.CreatedAtRoute(

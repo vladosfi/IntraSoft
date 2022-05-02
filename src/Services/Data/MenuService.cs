@@ -47,7 +47,7 @@ namespace IntraSoft.Services.Data
             // var menuItems = await this.context.Menus.Include(x => x.Children).ToListAsync();
             // return menuItems.Where(x => x.ParentMenu == null).ToList();
 
-        var menuItems = await this.context.Menus.Include(d => d.Document).Include(x => x.Children).ToListAsync();
+        var menuItems = await this.context.Menus.Include(d => d.Document).Include(x => x.Children).AsSplitQuery().ToListAsync();
         return menuItems.Where(x => x.ParentMenu == null).ToList();
 
             // IQueryable<Menu> query = this.menuRepo
@@ -67,6 +67,7 @@ namespace IntraSoft.Services.Data
                 .All()
                 .Include(d => d.Document)
                 .Where(x => x.Id == id)
+                .AsSplitQuery()
                 .To<T>()
                 .FirstOrDefaultAsync();
         }

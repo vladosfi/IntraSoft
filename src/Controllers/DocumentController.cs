@@ -1,11 +1,9 @@
 ﻿namespace IntraSoft.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Net;
-    using System.Net.Http;
     using System.Threading.Tasks;
+    using IntraSoft.Data.Common.Services;
     using IntraSoft.Data.Dtos.Document;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
@@ -17,7 +15,7 @@
     public class DocumentController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
-        private const string directoryNotExist = "Directory does not exist!";
+        private const string directoryDoesNotExist = "Directory does not exist!";
 
         private readonly IDocumentService documentService;
 
@@ -35,27 +33,28 @@
         {
             //To do check for recor in database
             var document = await this.documentService.GetByIdAsync(id);
-            if (document == null) return this.NotFound();
+            if (document == null || document.FilePath == null) return this.NotFound();
 
-            var path = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
+            var fullPath = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
+            if (System.IO.File.Exists(fullPath)) return this.NotFound();
 
             var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
+            using (var stream = new FileStream(fullPath, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            Response.Headers.Add("Content-Disposition", "inline; filename=" + Path.GetFileName(path));
+            var ext = Path.GetExtension(fullPath).ToLowerInvariant();
 
             // To download or open file 
             if (open == true)
             {
-                return new PhysicalFileResult(path, GetMimeTypes()[ext]);
+                Response.Headers.Add("Content-Disposition", "inline; filename=" + Path.GetFileName(fullPath));
+                return new PhysicalFileResult(fullPath, StringOperations.GetMimeTypes()[ext]);
             }
             else
             {
-                return File(memory, GetMimeTypes()[ext], Path.GetFileName(path));
+                return File(memory, StringOperations.GetMimeTypes()[ext], Path.GetFileName(fullPath));
             }
         }
 
@@ -63,46 +62,44 @@
         public async Task<IActionResult>
         AddDocument([FromForm] DocumentCreateModelDto fileInput)
         {
-            if (fileInput.File != null && fileInput.Path != null)
-            {
-                var fullPath = Path.GetFullPath(fileInput.Path);
-                fileInput.Path = fullPath.Substring(fullPath.Length - fileInput.Path.Length);
-
-                // Save uniqueFileName to file system
-                var uniqueFileName = GetUniqueFileName(fileInput.File.FileName);
-                var uploads = Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
-
-                // Create dir if does not exidt
-                if (!Directory.Exists(uploads))
-                {
-                    throw new Exception(directoryNotExist);
-                }
-
-                var filePath = Path.Combine(uploads, uniqueFileName);
-
-                var fs = new FileStream(filePath, FileMode.Create);
-                await fileInput.File.CopyToAsync(fs);
-                await fs.DisposeAsync();
-
-                // Save uniqueFileName to db table
-                filePath = Path.Combine(fileInput.Path, uniqueFileName);
-                var document =
-                    new Document
-                    {
-                        FilePath = filePath,
-                        Description = null,
-                        UserName = null,
-                        MenuId = fileInput.MenuId,
-                    };
-
-                var documentId = await this.documentService.CreateAsync(document);
-
-                return this.Ok(documentId);
-            }
-            else
+            if (fileInput.File == null && fileInput.Path == null)
             {
                 return BadRequest();
             }
+
+            var fullPath = Path.GetFullPath(fileInput.Path);
+            fileInput.Path = fullPath.Substring(fullPath.Length - fileInput.Path.Length);
+
+            // Save uniqueFileName to file system
+            var uniqueFileName = StringOperations.GetUniqueFileName(fileInput.File.FileName);
+            var uploads = Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
+
+            // Create dir if does not exidt
+            if (!Directory.Exists(uploads))
+            {
+                throw new Exception(directoryDoesNotExist);
+            }
+
+            var filePathWithFileName = Path.Combine(uploads, uniqueFileName);
+
+            var fs = new FileStream(filePathWithFileName, FileMode.Create);
+            await fileInput.File.CopyToAsync(fs);
+            await fs.DisposeAsync();
+
+            // Save uniqueFileName to db table
+            filePathWithFileName = Path.Combine(fileInput.Path, uniqueFileName);
+            var document =
+                new Document
+                {
+                    FilePath = filePathWithFileName,
+                    Description = null,
+                    UserName = null,
+                    MenuId = fileInput.MenuId,
+                };
+
+            var documentId = await this.documentService.CreateAsync(document);
+
+            return this.Ok(documentId);
         }
 
         // DELETE api/<ValuesController>/5
@@ -129,37 +126,6 @@
             }
 
             return this.NoContent();
-        }
-
-
-        private string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-
-            return Path.GetFileNameWithoutExtension(fileName) +
-            "_" +
-            Guid.NewGuid().ToString().Substring(0, 5) +
-            Path.GetExtension(fileName);
-        }
-
-        private Dictionary<string, string> GetMimeTypes()
-        {
-            return new Dictionary<string, string> {
-                { ".txt", "text/plain" },
-                { ".pdf", "application/pdf" },
-                { ".doc", "application/vnd.ms-word" },
-                { ".docx", "application/vnd.ms-word" },
-                { ".xls", "application/vnd.ms-excel" },
-                {
-                    ".xlsx",
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                },
-                { ".png", "image/png" },
-                { ".jpg", "image/jpeg" },
-                { ".jpeg", "image/jpeg" },
-                { ".gif", "image/gif" },
-                { ".csv", "text/csv" }
-            };
         }
     }
 }

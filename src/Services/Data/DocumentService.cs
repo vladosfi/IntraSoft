@@ -4,7 +4,6 @@ namespace IntraSoft.Services.Data
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using IntraSoft.Data;
     using IntraSoft.Data.Common.Repositories;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
@@ -28,7 +27,7 @@ namespace IntraSoft.Services.Data
 
         public async Task<IEnumerable<Document>> GetAllAsync()
         {
-            return await this.documentRepo.All().ToListAsync();
+            return await this.documentRepo.All().AsNoTracking().ToListAsync();
             
         }
 

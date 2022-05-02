@@ -140,6 +140,118 @@ namespace IntraSoft.Data.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IsoCategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IsoServicesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsoCategoryId");
+
+                    b.HasIndex("IsoServicesId");
+
+                    b.ToTable("IsoFiles");
+                });
+
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoFileCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IsoFileCategories");
+                });
+
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("IsoServices");
+                });
+
             modelBuilder.Entity("IntraSoft.Data.Models.Menu", b =>
                 {
                     b.Property<int>("Id")
@@ -203,6 +315,36 @@ namespace IntraSoft.Data.Migrations
                     b.Navigation("Menu");
                 });
 
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoFile", b =>
+                {
+                    b.HasOne("IntraSoft.Data.Models.IsoFileCategory", "IsoFileCategory")
+                        .WithMany("IsoFiles")
+                        .HasForeignKey("IsoCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IntraSoft.Data.Models.IsoService", "IsoService")
+                        .WithMany("IsoFiles")
+                        .HasForeignKey("IsoServicesId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("IsoFileCategory");
+
+                    b.Navigation("IsoService");
+                });
+
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoService", b =>
+                {
+                    b.HasOne("IntraSoft.Data.Models.Department", "Department")
+                        .WithMany("IsoServices")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
             modelBuilder.Entity("IntraSoft.Data.Models.Menu", b =>
                 {
                     b.HasOne("IntraSoft.Data.Models.Menu", "ParentMenu")
@@ -216,6 +358,18 @@ namespace IntraSoft.Data.Migrations
             modelBuilder.Entity("IntraSoft.Data.Models.Department", b =>
                 {
                     b.Navigation("Contacts");
+
+                    b.Navigation("IsoServices");
+                });
+
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoFileCategory", b =>
+                {
+                    b.Navigation("IsoFiles");
+                });
+
+            modelBuilder.Entity("IntraSoft.Data.Models.IsoService", b =>
+                {
+                    b.Navigation("IsoFiles");
                 });
 
             modelBuilder.Entity("IntraSoft.Data.Models.Menu", b =>

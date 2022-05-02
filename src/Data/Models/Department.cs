@@ -4,13 +4,15 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
+    using IntraSoft.Services.Mapping;
 
     [Table("Departments")]
-    public class Department : BaseDeletableModel<int>
+    public class Department : BaseDeletableModel<int>, IMapTo<Department>, IMapFrom<Department>
     {
         public Department()
         {
             this.Contacts = new HashSet<Contact>();
+            this.IsoServices = new HashSet<IsoService>();
         }
 
         [Required]
@@ -22,5 +24,7 @@
         public string Description { get; set; }
 
         public virtual ICollection<Contact> Contacts { get; set; }
+
+        public virtual ICollection<IsoService> IsoServices { get; set; }
     }
 }

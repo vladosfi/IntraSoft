@@ -6,7 +6,7 @@ namespace IntraSoft.Services.Data
 
     public interface IDepartmentService
     {
-        Task<int> CreateAsync(Department item);
+        Task<int> AddAsync(Department item);
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 

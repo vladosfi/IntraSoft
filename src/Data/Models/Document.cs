@@ -1,8 +1,10 @@
 ﻿namespace IntraSoft.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
 
+    [Table("Documents")]
     public class Document : BaseDeletableModel<int>
     {
         [Required]

@@ -18,7 +18,7 @@
             this.departmentRepo = departmentRepo;
         }
 
-        public async Task<int> CreateAsync(Department departmentItem)
+        public async Task<int> AddAsync(Department departmentItem)
         {
             await this.departmentRepo.AddAsync(departmentItem);
             await this.departmentRepo.SaveChangesAsync();
@@ -29,7 +29,7 @@
         {
             IQueryable<Department> query = this.departmentRepo
                 .All()
-                .OrderBy(x => x.Id);
+                .OrderBy(x => x.Id).AsSplitQuery().AsNoTracking();
 
             return await query.To<T>().ToListAsync();
         }

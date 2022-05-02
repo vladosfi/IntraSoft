@@ -3,10 +3,10 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
-    using IntraSoft.Data.Dtos.Contact;
     using IntraSoft.Services.Mapping;
 
-    public class Contact : BaseDeletableModel<int>
+    [Table("Contacts")]
+    public class Contact : BaseDeletableModel<int>, IMapTo<Contact>, IMapFrom<Contact>
     {
         [Required]
         [MaxLength(100)]

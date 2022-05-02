@@ -63,6 +63,9 @@ namespace IntraSoft
             services.AddTransient<IContactService, ContactService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IDocumentService, DocumentService>();
+            services.AddTransient<IIsoService, IsoService>();
+            services.AddTransient<IIsoFileService, IsoFileService>();
+            services.AddTransient<IIsoFileCategoryService, IsoFileCategoryService>();
 
 
             services.AddControllersWithViews();

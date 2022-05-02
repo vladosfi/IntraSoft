@@ -1,6 +1,10 @@
 header{
   box-shadow: 0 5px 5px -5px rgba(0,0,0,.2);
-margin-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+button{
+  font-weight: 400;
 }
 
 a {
@@ -24,6 +28,7 @@ mat-toolbar {
 
 .active {
   background-color: #E9E9E9;
+  font-weight: 500;
 }
 
 @media(max-width: 959px) {
