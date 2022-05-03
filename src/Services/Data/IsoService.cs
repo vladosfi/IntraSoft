@@ -21,6 +21,7 @@
             IQueryable<IntraSoft.Data.Models.IsoService> query = this.isoServiceRepo
                 .All()
                 .OrderBy(x => x.Id)
+                .Include(i => i.IsoFiles)
                 .AsSplitQuery()
                 .AsNoTracking();
 

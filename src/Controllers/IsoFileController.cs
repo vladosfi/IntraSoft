@@ -37,7 +37,7 @@
 
             var fullPath = Path.Combine(hostingEnvironment.WebRootPath, file.FilePath.ToString());
 
-            if (System.IO.File.Exists(fullPath)) return this.NotFound();
+            if (!System.IO.File.Exists(fullPath)) return this.NotFound();
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(fullPath, FileMode.Open))
@@ -60,6 +60,8 @@
             }
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult>
         AddDocument([FromForm] IsoFileCreateDto fileInput)
@@ -72,7 +74,7 @@
             var fullPath = System.IO.Path.GetFullPath(fileInput.Path);
             fileInput.Path = fullPath.Substring(fullPath.Length - fileInput.Path.Length);
 
-            // Save uniqueFileName to file system
+            // Save uniqueFileName to file system            
             var uniqueFileName = StringOperations.GetUniqueFileName(fileInput.File.FileName);
             var uploads = System.IO.Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
 
@@ -95,7 +97,7 @@
                 {
                     FilePath = filePathWithFileName,
                     Description = fileInput.Description,
-                    IsoCategoryId = fileInput.IsoCategoryId,
+                    IsoCategoryId = fileInput.IsoFileCategoryId,
                     IsoServicesId = fileInput.IsoServicesId,
                 };
 

@@ -7,7 +7,9 @@
     using IntraSoft.Services.Mapping;
 
     [Table("IsoServices")]
-    public class IsoService : BaseDeletableModel<int>, IMapTo<IsoService>, IMapFrom<IsoService>
+    public class
+    IsoService
+    : BaseDeletableModel<int>, IMapTo<IsoService>, IMapFrom<IsoService>
     {
         public IsoService()
         {
@@ -23,13 +25,11 @@
         [MaxLength(50)]
         public string Number { get; set; }
 
-
         public virtual ICollection<IsoFile> IsoFiles { get; set; }
 
         [ForeignKey(nameof(Department))]
         public int DepartmentId { get; set; }
 
         public virtual Department Department { get; set; }
-
     }
 }

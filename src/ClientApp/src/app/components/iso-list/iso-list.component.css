@@ -1,158 +1,130 @@
 
+h1 {
+  text-align: center;
+}
 
+/* Structure */
+table {
+  width: 100%;
+}
 
-body {
-    font-family: 'Covered By Your Grace', cursive;
-    line-height: 1.25;
-    
-  }
-
-  .mat-column-id {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 8% !important;
-    width: 8% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
-  
-  .mat-column-name {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 50% !important;
-    width: 50% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
-
-  .mat-column-department {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 15% !important;
-    width: 15% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
-
-  .mat-column-files {
-    word-wrap: break-word !important;
-    white-space: unset !important;
-    flex: 0 0 27% !important;
-    width: 27% !important;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  
-    word-break: break-word;
-  
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
+  table th {
+    font-weight: bold;
   }
 
 
-
-  @media screen and (max-width: 960px) {
-    .mat-table {
-      border: 0;
-      vertical-align: middle
-    }
-  
-    .mat-table caption {
-      font-size: 1em;
-    }
-    
-    /*  Enable this to hide header
-    .mat-table .mat-header-cell {
-      
-      border: 10px solid;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-    */
-    .mat-table .mat-row {
-      border-bottom: 5px solid #ddd;
-      display: block;
-    }
-    /*
-    .mat-table .mat-row:nth-child(even) {background: #CCC}
-    .mat-table .mat-row:nth-child(odd) {background: #FFF}
-    */
-    .mat-table .mat-cell {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: 1em;
-      text-align: right;
-      font-weight: bold;
-      height:30px;
-      margin-bottom: 4%;
-    }
-    .mat-table .mat-cell:before {
-      /*
-      * aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
-      content: attr(data-label);
-      float: left;
-      text-transform: uppercase;
-      font-weight: normal;
-      
-      font-size: .85em;
-    }
-    .mat-table .mat-cell:last-child {
-      border-bottom: 0;
-    }
-      .mat-table .mat-cell:first-child {
-      margin-top: 4%;
-    }
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
 
 
-    .mat-column-department {
-        padding-right: 10px;
-        flex: 0 0 100% !important;
-        width: 100% !important;
-    }
+.mat-row:hover .mat-cell {
+  background-color: aliceblue;
+}
 
-    .mat-column-files {
-        padding-right: 10px;
-        flex: 0 0 100% !important;
-        width: 100% !important;
-    }
+.mat-column-id {
+  border-right: 1px solid currentColor;
+  padding-right: 15px; 
+  text-align: center;
+  width: 3%;
+  color: #3498DB;
+}
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+  padding-left: 15px;
+}
 
-    .mat-column-name {
-        padding-right: 10px;
-        flex: 0 0 100% !important;
-        width: 100% !important;
-    }
+.mat-column-fullName {
+  padding-left: 16px;
+  text-transform: uppercase;
+  width: 30%;
+}
 
-    .mat-column-id {
-        padding-right: 10px;
-        flex: 0 0 100% !important;
-        width: 100% !important;
-    }
+.mat-column-phone {
+  text-transform: uppercase;
+  width: 15%;
+}
+
+.mat-column-email {
+  width: 32px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 15%;
+}
+
+.mat-column-departments {
+  width: 32px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 18%;
+}
+
+
+
+.mat-select {
+  width: 95% !important;
+  min-width: 95% !important;
+  max-width: 95% !important;
+  cursor: pointer !important;
+  color: rgb(125, 125, 125) !important;
+}
+
+
+.mat-column-action {
+  text-align: left;
+  text-transform: uppercase;
+  width: 10%;
+}
+
+
+.add-button {
+  color: #3498DB;
+}
+
+.mat-elevation-z8 > button {
+  float: right;
+  border-color: #3498DB;
+  padding: 5px 5px 0px 5px;
+  font-size: 14px;
+}
+
+  .mat-elevation-z8 > button::after {
+    content: "";
+    display: block;
+    clear: both;
   }
+
+.mat-paginator-range-label {
+  display: none;
+}
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgb(255, 255, 255);
+  /* background-color: white; */
+}
+/* Font color */
+input.mat-input-element {
+  color: rgb(0, 0, 0);
+}
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+  color: #3498DB;
+}
+
+
+::ng-deep td .mat-form-field-wrapper{
+  padding-bottom: 0 !important;
+}
+
+::ng-deep td .mat-form-field-infix{
+  border-top: 0;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 1.1em 0 1.4em 0;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
+  /* padding-top: 10px; */
+}
+

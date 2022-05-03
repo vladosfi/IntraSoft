@@ -19,6 +19,7 @@
 
         public IsoFileCategory IsoFileCategory { get; set; }
 
+
         [ForeignKey(nameof(IsoService))]
         public int IsoServicesId { get; set; }
 

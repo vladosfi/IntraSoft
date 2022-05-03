@@ -7,7 +7,7 @@ namespace src.Data.Dtos.IsoFile
     {
         [Required]
         public IFormFile File { get; set; }
-        
+
         [Required]
         [MaxLength(250)]
         public string Path { get; set; }
@@ -15,9 +15,10 @@ namespace src.Data.Dtos.IsoFile
         [MaxLength(250)]
         public string Description { get; set; }
 
+        [Required]
+        public int IsoFileCategoryId { get; set; }
 
-        public int IsoCategoryId { get; set; }
-
+        [Required]
         public int IsoServicesId { get; set; }
     }
 }

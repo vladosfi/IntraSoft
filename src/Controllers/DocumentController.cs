@@ -36,7 +36,7 @@
             if (document == null || document.FilePath == null) return this.NotFound();
 
             var fullPath = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
-            if (System.IO.File.Exists(fullPath)) return this.NotFound();
+            if (!System.IO.File.Exists(fullPath)) return this.NotFound();
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(fullPath, FileMode.Open))
