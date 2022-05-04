@@ -4,10 +4,13 @@
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
     using src.Data.Dtos.IsoFile;
-    using IntraSoft.Data.Dtos.Department;
+    using System.Collections.Generic;
 
     public class IsoServiceReadDto : IMapFrom<IsoService>, IMapTo<IsoService>
     {
+        IsoServiceReadDto(){
+            this.IsoFiles = new HashSet<IsoFileReadDto>();
+        }
         public int Id { get; set; }
         
         public string Name { get; set; }
@@ -16,7 +19,6 @@
 
         public int DepartmentId { get; set; }
 
-        public virtual IsoFileReadDto Document { get; set; }
-        public virtual DepartmentReadDto Departments { get; set; }
+        public virtual ICollection<IsoFileReadDto> IsoFiles { get; set; }
     }
 }

@@ -1,19 +1,21 @@
 ﻿namespace IntraSoft.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using IntraSoft.Data;
     using IntraSoft.Data.Common.Repositories;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class DepartmentService : IDepartmentService
     {
         private readonly IDeletableEntityRepository<Department> departmentRepo;
 
-        public DepartmentService(IDeletableEntityRepository<Department> departmentRepo)
+        public DepartmentService(
+            IDeletableEntityRepository<Department> departmentRepo
+        )
         {
             this.departmentRepo = departmentRepo;
         }
@@ -25,13 +27,32 @@
             return departmentItem.Id;
         }
 
+        public async Task<IEnumerable<T>> GetAllWithIsoServicesAsync<T>()
+        {
+            IQueryable<Department> query =
+                this
+                    .departmentRepo
+                    .All()
+                    .OrderByDescending(x => x.Id)
+                    .Take(3)
+                    .Include(i => i.IsoServices)
+                        .ThenInclude(f => f.IsoFiles)
+                            .ThenInclude(c => c.IsoFileCategory)
+                    .AsSplitQuery()
+                    .AsNoTracking();
+
+            return await query.To<T>().ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            IQueryable<Department> query = this.departmentRepo
-                .All()
-                .OrderBy(x => x.Id)
-                .AsSplitQuery()
-                .AsNoTracking();
+            IQueryable<Department> query =
+                this
+                    .departmentRepo
+                    .All()
+                    .OrderBy(x => x.Id)
+                    .AsSplitQuery()
+                    .AsNoTracking();
 
             return await query.To<T>().ToListAsync();
         }
@@ -55,7 +76,6 @@
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
-
 
         public void Delete(Department departmentItem)
         {

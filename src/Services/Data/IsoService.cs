@@ -22,6 +22,7 @@
                 .All()
                 .OrderBy(x => x.Id)
                 .Include(i => i.IsoFiles)
+                    .ThenInclude(c => c.IsoFileCategory)                    
                 .AsSplitQuery()
                 .AsNoTracking();
 

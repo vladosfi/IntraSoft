@@ -1,5 +1,6 @@
 ﻿namespace IntraSoft.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
     using IntraSoft.Data.Dtos.Department;
@@ -19,6 +20,22 @@
             this.departmentService = departmentService;
             this.mapper = mapper;
         }
+
+        //// GET: api/<ValuesController>
+        [HttpGet, Route(nameof(GetAllWithIsoServices))]
+        public async Task<IActionResult> GetAllWithIsoServices()
+        {
+            var departmentsWithIsoServicesReadDto = await this.departmentService.GetAllWithIsoServicesAsync<DepartmentWithIsoServicesReadDto>();
+            departmentsWithIsoServicesReadDto = departmentsWithIsoServicesReadDto.OrderBy(x => x.Id);
+            
+            if (departmentsWithIsoServicesReadDto == null)
+            {
+                return this.NoContent();
+            }
+
+            return this.Ok(departmentsWithIsoServicesReadDto);
+        }
+
 
         //// GET: api/<ValuesController>
         [HttpGet]
