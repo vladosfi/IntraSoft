@@ -5,6 +5,8 @@
     using System.Threading.Tasks;
     using IntraSoft.Data;
     using IntraSoft.Data.Common.Repositories;
+    using IntraSoft.Data.Dtos.Department;
+    using IntraSoft.Data.Dtos.IsoService;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
     using Microsoft.EntityFrameworkCore;

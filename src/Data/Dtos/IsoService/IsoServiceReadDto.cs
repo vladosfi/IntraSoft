@@ -8,16 +8,15 @@
 
     public class IsoServiceReadDto : IMapFrom<IsoService>, IMapTo<IsoService>
     {
-        IsoServiceReadDto(){
+        public IsoServiceReadDto(){
             this.IsoFiles = new HashSet<IsoFileReadDto>();
         }
+
         public int Id { get; set; }
         
         public string Name { get; set; }
 
         public string Number { get; set; }
-
-        public int DepartmentId { get; set; }
 
         public virtual ICollection<IsoFileReadDto> IsoFiles { get; set; }
     }

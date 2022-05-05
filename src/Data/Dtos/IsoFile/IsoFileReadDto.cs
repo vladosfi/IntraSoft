@@ -7,8 +7,6 @@ namespace src.Data.Dtos.IsoFile
     public class IsoFileReadDto: IMapFrom<IsoFile>, IMapTo<IsoFile>
     {
         public string FilePath { get; set; }
-        
-        public int IsoServicesId { get; set; }
 
         public IsoFileCategoryReadDto IsoFileCategory { get; set; }
     }

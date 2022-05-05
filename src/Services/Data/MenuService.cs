@@ -50,6 +50,8 @@ namespace IntraSoft.Services.Data
         var menuItems = await this.context.Menus.Include(d => d.Document).Include(x => x.Children).AsSplitQuery().ToListAsync();
         return menuItems.Where(x => x.ParentMenu == null).ToList();
 
+
+
             // IQueryable<Menu> query = this.menuRepo
             //    .All()
             //    .Include(x => x.Children)
