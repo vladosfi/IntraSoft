@@ -23,7 +23,7 @@ table {
   background-color: aliceblue;
 }
 
-.mat-column-id {
+.mat-column-number {
   border-right: 1px solid currentColor;
   padding-right: 15px; 
   text-align: center;

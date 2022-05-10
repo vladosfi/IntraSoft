@@ -18,7 +18,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class IsoListComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','departments', 'action'];
+  displayedColumns: string[] = ['number', 'fullName', 'phone', 'email','departments', 'action'];
   
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
@@ -140,15 +140,12 @@ export class IsoListComponent implements OnInit {
 
   // this function will enabled the select field for editd
   EditSVO(VOFormElement, i) {
-    // VOFormElement.get('VORows').at(i).get('name').disabled(false)
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false);
     VOFormElement.get('VORows').at(i).get('departmentId').enable(true);
-
-    // this.isEditableNew = true;
   }
 
   SaveVO(VOFormElement, i) {
-    let contact = this.generateContact(VOFormElement, i);
+    let contact = this.generateIsoServiceRecord(VOFormElement, i);
     let recordType = VOFormElement.get('VORows').at(i).get('action').value;
     
     if (contact === null) {
@@ -253,23 +250,10 @@ export class IsoListComponent implements OnInit {
     });
   }
 
-  private generateContact(VOFormElement: any, i): Contact {
-
-    let names = VOFormElement.get('VORows')
-      .at(i)
-      .value.fullName.trim()
-      .split(/[\s,]+/);
-
-    if (names.length !== 3) {
-      this.snackbar.infoWitHide('Въведете трите имена');
-      return null;
-    }
+  private generateIsoServiceRecord(VOFormElement: any, i): Contact {
 
     return {
       id: VOFormElement.get('VORows').at(i).value.id,
-      firstName: names[0],
-      middleName: names[1],
-      lastName: names[2],
       phone: VOFormElement.get('VORows').at(i).value.phone,
       email: VOFormElement.get('VORows').at(i).value.email,
       departmentId: VOFormElement.get('VORows').at(i).value.departmentId,

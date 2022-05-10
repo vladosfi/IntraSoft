@@ -13,6 +13,13 @@ export class DepartmentService {
     @Inject('BASE_URL') private baseUrl: string,
   ) {}
 
+
+  getAllWithIsoServices<Department>(): Observable<Department> {
+    var params = new HttpParams();
+    
+    return this.http.get<Department>(this.endPoint + '/GetAllWithIsoServices', { params });
+  }
+
   getData<Department>(): Observable<Department> {
     var params = new HttpParams();
     return this.http.get<Department>(this.endPoint, { params });
