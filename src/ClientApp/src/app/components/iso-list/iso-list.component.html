@@ -22,24 +22,34 @@
              [(ngModel)]="pageNumber"
              (ngModelChange)="goToPage()" />
     </mat-form-field>
+
+    
     <form [formGroup]="VOForm" autocomplete="off" *ngIf="this.VOForm">
       <ng-container formArrayName="VORows">
         <table #table
                mat-table
                [dataSource]="dataSource"
                class="mat-elevation-z8">
+               
           <!-- Index Column -->
           <ng-container matColumnDef="number">
             <th mat-header-cell *matHeaderCellDef>No.</th>
             <td mat-cell
                 *matCellDef="let element; let i = index"
                 [formGroup]="element">
-              {{ i + 1 }}
+                <mat-form-field [appearance]="
+                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+              ">
+                <input matInput
+                       type="text"
+                       formControlName="number"
+                       [readonly]="VOForm.get('VORows').value[i].isEditable" />
+              </mat-form-field>
             </td>
           </ng-container>
 
-          <!-- FullName Column -->
-          <ng-container matColumnDef="fullName">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Име</th>
             <td mat-cell
                 *matCellDef="let element; let i = index"
@@ -50,68 +60,13 @@
               ">
                 <input matInput
                        type="text"
-                       formControlName="fullName"
+                       formControlName="name"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" />
               </mat-form-field>
               <!-- </span> -->
             </td>
           </ng-container>
 
-          <!-- Phone Column -->
-          <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>Телефон</th>
-            <td mat-cell
-                *matCellDef="let element; let i = index"
-                [formGroup]="element">
-              <!-- [appearance]="true ? 'outline': 'fill'" -->
-              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
-              <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
-              ">
-                <input matInput
-                       type="text"
-                       formControlName="phone"
-                       [readonly]="VOForm.get('VORows').value[i].isEditable" />
-              </mat-form-field>
-              <!-- </span> -->
-            </td>
-          </ng-container>
-
-          <!-- Email Column -->
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Имейл</th>
-            <td mat-cell
-                *matCellDef="let element; let i = index"
-                [formGroup]="element">
-              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
-              <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
-              ">
-                <input matInput
-                       type="text"
-                       formControlName="email"
-                       [readonly]="VOForm.get('VORows').value[i].isEditable" />
-              </mat-form-field>
-              <!-- </span> -->
-            </td>
-          </ng-container>
-
-          <!-- Department Column -->
-          <ng-container matColumnDef="departments">
-            <th mat-header-cell *matHeaderCellDef>Дирекция</th>
-            <td mat-cell
-                *matCellDef="let element; let i = index"
-                [formGroup]="element">
-              <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
-              ">
-                <mat-select [readonly]="VOForm.get('VORows').value[i].isEditable"
-                            formControlName="departmentId" placeholder="{{departmentId}}">
-                  <mat-option *ngFor="let dep of departments; index as i;" [value]="dep.id"> {{dep.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </td>
-          </ng-container>
 
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>

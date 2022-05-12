@@ -26,7 +26,7 @@ table {
 .mat-column-number {
   border-right: 1px solid currentColor;
   padding-right: 15px; 
-  text-align: center;
+  text-align: left;
   width: 3%;
   color: #3498DB;
 }
@@ -34,7 +34,7 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   padding-left: 15px;
 }
 
-.mat-column-fullName {
+.mat-column-name {
   padding-left: 16px;
   text-transform: uppercase;
   width: 30%;

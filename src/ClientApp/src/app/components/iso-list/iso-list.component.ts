@@ -18,7 +18,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class IsoListComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  displayedColumns: string[] = ['number', 'fullName', 'phone', 'email','departments', 'action'];
+  displayedColumns: string[] = ['number', 'name', 'action'];
   
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
@@ -40,24 +40,14 @@ export class IsoListComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.departmentService.getData().subscribe(
+    this.departmentService.getAllWithIsoServices().subscribe(
       {
         next: (result) => {
           this.departments = result as Department[];
-          this.getContacts();
+          console.log(this.departments);
+          this.initiateForm();
         }
       });    
-  }
-
-  getContacts() {
-    this.contactService.getData().subscribe((result) => {
-      this.contacts = result as Contact[];
-      this.contacts.forEach(
-        (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
-      )
-      this.initiateForm();
-    });
-
   }
 
   initiateForm() {
@@ -65,16 +55,14 @@ export class IsoListComponent implements OnInit {
       VORows: this._formBuilder.array([]),
     })
 
+
     this.VOForm = this.fb.group({
       VORows: this.fb.array(
-        this.contacts.map((val) =>
+        this.departments.map((val) =>
+        //console.log(val.isoServices[0].name),
           this.fb.group({
-            id: new FormControl(val.id),
-            fullName: new FormControl(val.fullName),
-            phone: new FormControl(val.phone),
-            email: new FormControl(val.email),
-            departmentId: new FormControl({ value: val.departmentId, disabled: true }),
-            departments: new FormControl(this.departments),
+            number: new FormControl(val.isoServices[0].number),
+            name: new FormControl(val.isoServices[0].name),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
