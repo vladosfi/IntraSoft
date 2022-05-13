@@ -55,6 +55,10 @@ export class IsoListComponent implements OnInit {
       VORows: this._formBuilder.array([]),
     })
 
+    this.departments.map((val) => {
+      console.log(val)
+    });
+
 
     this.VOForm = this.fb.group({
       VORows: this.fb.array(
