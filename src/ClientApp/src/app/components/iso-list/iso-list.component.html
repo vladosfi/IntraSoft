@@ -23,7 +23,7 @@
 
   <!-- Number Column -->
   <ng-container matColumnDef="isoServicenumber">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <th mat-header-cell *matHeaderCellDef> №. </th>
     <td mat-cell *matCellDef="let element"> {{element.isoServiceNumber}} </td>
   </ng-container>
 
@@ -40,6 +40,30 @@
   </ng-container>
 
 
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell
+        *matCellDef="let element; let i = index">
+
+      <button mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
+              matTooltip="Edit"
+              color="primary"
+              (click)="EditSVO(VOForm, i);">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button
+              class="material-icons app-toolbar-menu delete-button"
+              matTooltip="Delete"
+              color="warn"
+              (click)="DeleteSVO(VOForm, i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+
   <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of columnNames">
     <th mat-header-cell *matHeaderCellDef> {{column}}</th>
     <td mat-cell *matCellDef="let element"> {{element[column]}}</td> 
@@ -50,19 +74,20 @@
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
   <ng-container matColumnDef="expandedDetail">
     <td mat-cell *matCellDef="let element" [attr.colspan]="columnNames.length">
-      <div class="example-element-detail"
+      <div class="element-detail"
            [@detailExpand]="element == files ? 'expanded' : 'collapsed'">
-        <div class="example-element-diagram">
-          <div class="example-element-name"> {{element.isoServiceNumber}} </div>
+        <div class="element-diagram">
+          <div class="element-name"> {{element.isoServiceNumber}} </div>
         </div>
-        <div class="example-element-description">
-          {{element.isoServices | json}}
+        <div class="element-description container">
           <!-- {{element.isoFiles | json}} -->
-          <!-- <div *ngFor="let f of element.isoFiles"> 
-            {{f}}            
-          </div> -->
+          <!-- {{element.isoFiles | json}} -->
+          <div class="row" *ngFor="let f of element.isoFiles"> 
+            <div class="col-2">{{f.categoryName}}:</div> 
+            <div class="col-8"><a [routerLink]='f.filePath'>Изтегли</a></div>
+          </div>
           
-          <span class="example-element-description-attribution"> -- Wikipedia </span>
+          <div class="element-description-attribution">Налични файлове: {{element.isoFiles.length}}</div>
         </div>
       </div>
     </td>
@@ -70,11 +95,18 @@
 
   <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
   <tr mat-row *matRowDef="let element; columns: columnNames;"
-      class="example-element-row"
-      [class.example-expanded-row]="files === element"
+      class="element-row"
+      [class.expanded-row]="files === element"
       (click)="files = files === element ? null : element">
   </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+
+  <!-- Row shown when there is no matching data. -->
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="6">
+      Няма данни по търсените критерии "{{ input.value }}"
+    </td>
+  </tr>
 </table>
 
 

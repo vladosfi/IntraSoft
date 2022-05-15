@@ -16,7 +16,6 @@ import { AngularMaterialMenuComponent } from './navigation/angular-material-menu
 import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-item/menu-item.component';
 import { MenuComponent } from './admin/components/menu/menu.component';
 import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
-import { DialogComponent } from './components/dialog/dialog.component';
 import { ContactComponent } from './components/contact/contact.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { DisableControlDirective } from './core/directives/disable-control.directive';
@@ -24,6 +23,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
 import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
 import { IsoListComponent } from './components/iso-list/iso-list.component';
+import { DialogComponent } from './components/dialog/delete/dialog.component';
+import { EditDialogComponent } from './components/dialog/edit/edit-dialog.component';
 
 
 
@@ -38,6 +39,7 @@ import { IsoListComponent } from './components/iso-list/iso-list.component';
     MenuComponent,
     SingleMenuItemComponent,
     DialogComponent,
+    EditDialogComponent,
     ContactComponent,
     DisableControlDirective,
     NotFoundComponent,

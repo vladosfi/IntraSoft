@@ -6,8 +6,9 @@ import { Contact } from 'src/app/core/interfaces/Contact';
 import { Department } from 'src/app/core/interfaces/Department';
 import { DepartmentService } from 'src/app/core/services/department.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { DialogComponent } from '../dialog/dialog.component';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { IIsoFiles } from 'src/app/core/interfaces/IsoFiles';
+import { EditDialogComponent } from '../dialog/edit/edit-dialog.component';
 
 
 @Component({
@@ -16,8 +17,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   styleUrls: ['./iso-list.component.css'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -25,11 +26,10 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 export class IsoListComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  columnNames: string[] = ['isoServicenumber', 'isoServiceName','department'];
-  columnsToDisplayBG = ['Номер', 'Име', 'Дирекция'];
+  columnNames: string[] = ['isoServicenumber', 'isoServiceName', 'department', 'action'];
   //columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
   expandedElement: null;
-    
+
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
   isLoading = true;
@@ -45,7 +45,7 @@ export class IsoListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
     this.departmentService.getAllWithIsoServices().subscribe(
       {
         next: (result) => {
@@ -65,7 +65,7 @@ export class IsoListComponent implements OnInit {
 
           this.initiateTableData();
         }
-      });    
+      });
   }
 
   initiateTableData() {
@@ -73,17 +73,19 @@ export class IsoListComponent implements OnInit {
     //   console.log(val)
     // });
 
-    const result = [].concat(...this.departments.map((item) => item.isoServices.map((isoService) => Object.assign({}, item, 
-          { isoServiceName: isoService.name, isoServiceNumber: isoService.number, 
-            isoFiles: isoService.isoFiles.map(f => f.filePath)}
-          ))));
+    const result = [].concat(...this.departments.map((item) =>
+      item.isoServices.map((isoService) =>
+        Object.assign({}, item,
+          {
+            isoServiceName: isoService.name, isoServiceNumber: isoService.number,
+            isoFiles: isoService.isoFiles.map(f =>
+              <IIsoFiles>{ filePath: f.filePath, categoryName: f.isoFileCategory.name })
+          }
+        ))));
 
-    console.log(result)
-    
-    //this.dataSource.data = result as Department[];
     this.dataSource.data = result;
 
-    
+
     this.isLoading = false;
     this.dataSource = new MatTableDataSource(this.dataSource.data);
     this.dataSource.paginator = this.paginator;
@@ -118,7 +120,16 @@ export class IsoListComponent implements OnInit {
   }
 
   // @ViewChild('table') table: MatTable<PeriodicElement>;
-  AddNewRow() {
+  AddNewRow(): void {
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '80%',
+      data: { title: 'Добавяне на услуга', serviceNumber: '234234' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(JSON.stringify(result));
+      console.log('The dialog was closed');
+    });
 
   }
 
@@ -128,7 +139,7 @@ export class IsoListComponent implements OnInit {
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout((idx) => {
       let from = (paginator.pageSize * paginator.pageIndex) + 1;
-      
+
       let to = (paginator.length < paginator.pageSize * (paginator.pageIndex + 1))
         ? paginator.length
         : paginator.pageSize * (paginator.pageIndex + 1);

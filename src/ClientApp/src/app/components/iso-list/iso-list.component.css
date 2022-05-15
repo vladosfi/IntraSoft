@@ -6,65 +6,81 @@ table {
   width: 100%;
 }
 
-tr.example-detail-row {
+tr.detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
+tr.element-row:not(.expanded-row):hover {
   background: whitesmoke;
+  cursor: pointer;
 }
 
-tr.example-element-row:not(.example-expanded-row):active {
+tr.element-row:not(.expanded-row):active {
   background: #efefef;
 }
 
-.example-element-row td {
+.element-row td {
   border-bottom-width: 0;
 }
 
-.example-element-detail {
+.element-detail {
   overflow: hidden;
   display: flex;
 }
 
-.example-element-diagram {
+.element-diagram {
   min-width: 80px;
   border: 2px solid black;
   padding: 8px;
   font-weight: lighter;
   margin: 8px 0;
-  height: 104px;
+  height: 80px;
+  text-align: center;
+  font-weight: bold;
+}
+.element-name{
+  height: 60px;
+  line-height: 60px;
 }
 
-.example-element-name {
-  font-weight: bold;
-  font-size: 40px;
+.element-name::before{
+  content: '\0023';
+}
+
+.mat-column-isoServicenumber {
+  
+  padding-right: 15px; 
+  text-align: center;
+  width: 5%;
+  color: #3498DB;
+}
+
+.mat-column-isoServiceName {
+  padding-left: 10px;
+  width: 75%;
   line-height: normal;
 }
 
-.example-element-number {
-  font-weight: bold;
-  font-size: 40px;
+.mat-column-departments {
+  padding-left: 10px;
+  width: 10%;
   line-height: normal;
 }
 
-.example-element-files {
-  font-weight: bold;
-  font-size: 40px;
+.mat-column-action {
+  padding-left: 10px;
+  width: 10%;
   line-height: normal;
+  min-width: 120px;
 }
 
-.example-element-departments {
-  font-weight: bold;
-  font-size: 40px;
-  line-height: normal;
-}
-
-.example-element-description {
+.element-description {
   padding: 16px;
 }
 
-.example-element-description-attribution {
+.element-description-attribution {
+  padding-top: 10px;
+  text-align: right;
   opacity: 0.5;
 }
 

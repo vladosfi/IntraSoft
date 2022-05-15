@@ -14,7 +14,7 @@ import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
-import { DialogComponent } from '../dialog/dialog.component'
+import { DialogComponent } from '../dialog/delete/dialog.component'
 
 
 @Component({
