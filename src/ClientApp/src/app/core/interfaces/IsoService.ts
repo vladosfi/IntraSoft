@@ -4,5 +4,5 @@ export interface IIsoService {
   id: number;
   name: string;
   number: string;
-  isoFiles: IIsoFiles;
+  isoFiles: IIsoFiles[];
 }
