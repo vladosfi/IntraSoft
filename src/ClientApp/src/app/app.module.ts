@@ -25,6 +25,7 @@ import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
 import { IsoListComponent } from './components/iso-list/iso-list.component';
 import { DialogComponent } from './components/dialog/delete/dialog.component';
 import { EditDialogComponent } from './components/dialog/edit/edit-dialog.component';
+import { UploadCategoryComponent } from './components/upload-category/upload-category.component';
 
 
 
@@ -44,6 +45,7 @@ import { EditDialogComponent } from './components/dialog/edit/edit-dialog.compon
     DisableControlDirective,
     NotFoundComponent,
     UploadButtonComponent,
+    UploadCategoryComponent,
     EllipsifyMeDirective,
     IsoListComponent,
   ],

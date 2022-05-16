@@ -34,7 +34,12 @@
         <!-- <mat-hint>{{department.value?.sound}}</mat-hint> -->
       </mat-form-field>
 
-      <div class="row">
+      <upload-category [isoFileCategories]="this.isoFileCategories"></upload-category>
+
+      
+
+
+      <!-- <div class="row">
         <div class="col-6">
           <label for="department">Категория за файл:</label>
           <mat-form-field class="full-width" appearance="fill">
@@ -48,15 +53,13 @@
                 {{ isoFileCategory.name }}
               </mat-option>
             </mat-select>
-            <!-- <mat-error *ngIf="isoFileCategory.hasError('required')">Моля изберете категория</mat-error> -->
-            <!-- <mat-hint>{{isoFileCategory.value?.name}}</mat-hint>  -->
           </mat-form-field>
         </div>
         <div class="col-6">
           <upload-button [document]=""></upload-button>
         </div>
-      </div>
-    </div>
+      </div>-->
+    </div> 
 
     {{ addServiceForm.value | json }}
     {{ addServiceForm.valid }}

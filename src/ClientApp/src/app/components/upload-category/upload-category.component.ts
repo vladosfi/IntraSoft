@@ -4,22 +4,22 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IFileDocument } from 'src/app/core/interfaces/FileDocument';
 import { FileService } from 'src/app/core/services/file.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { Output, EventEmitter } from '@angular/core';
+import { IIsoFileCategory } from 'src/app/core/interfaces/IsoFileCategory';
 
 @Component({
-  selector: 'upload-button',
-  templateUrl: './upload-button.component.html',
-  styleUrls: ['./upload-button.component.css']
+  selector: 'upload-category',
+  templateUrl: './upload-category.component.html',
+  styleUrls: ['./upload-category.component.css']
 })
-export class UploadButtonComponent implements OnInit {
+export class UploadCategoryComponent implements OnInit {
   fileInfoMessage = '';
   deleteButtonText: string;
   fileId: number;
-  defaultLinkPath = 'uploads\\menu';
+  defaultLinkPath = 'uploads\\isofile';
   @Input() sourcePath: string = this.defaultLinkPath;
   @Input() MenuId: string = null;
   @Input() document: IFileDocument = null;
-  @Output() changeRouterLinkEvent = new EventEmitter<string>();
+  @Input() isoFileCategories: IIsoFileCategory[];
 
   form = new FormGroup({
     file: new FormControl(''),
@@ -99,7 +99,7 @@ export class UploadButtonComponent implements OnInit {
               this.fileInfoMessage = event.body;
               this.deleteButtonText = file.name;
               this.fileId = event.body;
-              this.changeRouterLinkEvent.emit(`document/${this.fileId}`);
+              //this.changeRouterLinkEvent.emit(`document/${this.fileId}`);
             }
           },
           error: (error) => {
