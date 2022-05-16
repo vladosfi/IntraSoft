@@ -1,5 +1,5 @@
 mat-button-toggle-group, mat-form-field{
-    width: 100%;
+    /* width: 100%; */
 }
 
 mat-button-toggle {
@@ -30,23 +30,10 @@ mat-button-toggle {
     margin: 100px;
   }
   
-  .mat-form-field {
-    font-size: 14px;
+  .full-width {
     width: 100%;
   }
-  
-  
-  input.ng-valid {
-    border-left: 5px solid green;
-  }
-  
-  input.ng-invalid.ng-dirty,
-  input.ng-invalid.ng-touched {
-    border-left: 5px solid red;
-  }
-  
-  input.ng-valid ~ .valid-feedback,
-  input.ng-invalid ~ .invalid-feedback {
-    display: block;
-  }
-  
+/* 
+  input#file{
+    height: 50px;
+  } */

@@ -14,21 +14,26 @@ export class IsoService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getData<IIsoService>(): Observable<IIsoService> {
+  getIsoServices<IIsoService>(): Observable<IIsoService> {
     var params = new HttpParams();
     var currentIsoService = this.http.get<IIsoService>(this.endPoint, { params });
     return currentIsoService;
+  }
+
+  getIsoFileCategoryServices<IsoFileCategory>(): Observable<IsoFileCategory> {
+    var currentIsoFileCategory = this.http.get<IsoFileCategory>(this.baseUrl + 'api/isofilecategory');
+    return currentIsoFileCategory;
   }
 
   deleteIsoServiceItem(isoServiceId: number): any {
     return this.http.delete(this.endPoint + `/${isoServiceId}`);
   }
 
-  updateMenuItem(isoServiceItem: IIsoService): any {
+  updateIsoItem(isoServiceItem: IIsoService): any {
     return this.http.put(this.endPoint + `/${isoServiceItem.id}`, isoServiceItem);
   }
 
-  createMenuItem(menuItem: IIsoService): any {    
-    return this.http.post(this.endPoint, menuItem);
+  createIsoItem(isoItem: IIsoService): any {    
+    return this.http.post(this.endPoint, isoItem);
   }
 }

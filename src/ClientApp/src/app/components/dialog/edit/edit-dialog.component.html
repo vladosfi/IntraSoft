@@ -1,56 +1,80 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title>{{ data.title }}</h1>
+
 <form [formGroup]="addServiceForm">
   <div class="form-group">
+    <div mat-dialog-content>
+      
+      <label for="department">Номер на услуга</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете номер на услуга</mat-label>
+        <input matInput formControlName="number" />
+        <!-- <mat-error *ngIf="addServiceForm.get('number').hasError('required')">
+          Моля въведете номер на услуга
+        </mat-error> -->
+      </mat-form-field>
 
-<div mat-dialog-content>
-  <p>Номер на услуга</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Въведете номер на услуга</mat-label>
-    <input matInput formControlName="number">
-  </mat-form-field>
+      <label for="department">Име на услуга</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете име на услуга</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
 
-  <p>Име на услуга</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Въведете име на услуга</mat-label>
-    <input matInput 
-        type="text"
-        id="name"
-        formControlName="name"
-        required
-        class="form-control"
-    >
-    <div
-    *ngIf="addServiceForm.get('name').invalid && (addServiceForm.get('name').dirty || addServiceForm.get('name').touched)"
-    class="invalid-feedback"
-    >
-    <div *ngIf="form.get('name').errors?.required">
-      Name is required.
+      <label for="department">Дирекция</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Изберете дирекция за услугата</mat-label>
+        <mat-select formControlName="department" required>
+          <mat-option>--</mat-option>
+          <mat-option
+            *ngFor="let department of departments"
+            [value]="department"
+          >
+            {{ department.name }}
+          </mat-option>
+        </mat-select>
+        <!-- <mat-hint>{{department.value?.sound}}</mat-hint> -->
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-6">
+          <label for="department">Категория за файл:</label>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Изберете категория за фаила</mat-label>
+            <mat-select formControlName="department" required>
+              <mat-option>--</mat-option>
+              <mat-option
+                *ngFor="let isoFileCategory of isoFileCategories"
+                [value]="isoFileCategory"
+              >
+                {{ isoFileCategory.name }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="isoFileCategory.hasError('required')">Моля изберете категория</mat-error> -->
+            <!-- <mat-hint>{{isoFileCategory.value?.name}}</mat-hint>  -->
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <upload-button [document]=""></upload-button>
+        </div>
+      </div>
     </div>
+
+    {{ addServiceForm.value | json }}
+    {{ addServiceForm.valid }}
+
+    <mat-button-toggle-group
+      class="full-width"
+      name="fontStyle"
+      aria-label="Font Style"
+    >
+      <mat-button-toggle class="close" (click)="onNoClick()">
+        Close
+      </mat-button-toggle>
+      <mat-button-toggle class="ok" (click)="onSaveClick()">
+        Save
+      </mat-button-toggle>
+      <mat-button-toggle class="ok" [mat-dialog-close]="data.serviceNumber">
+        OK
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
-  </mat-form-field>
-
-
-  <p>Дирекция</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Въведете дирекция за услугата</mat-label>
-    <mat-select formControlName="department" required>
-      <mat-option>--</mat-option>
-      <mat-option *ngFor="let department of departments" [value]="department">
-        {{department.name}}
-      </mat-option>
-    </mat-select>
-    <!-- <mat-error *ngIf="department.hasError('required')">Моля изберете дирекция</mat-error>
-    <mat-hint>{{department.value?.sound}}</mat-hint> -->
-  </mat-form-field>
-</div>
-
-{{addServiceForm.value | json}}
-{{addServiceForm.valid}}
-
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-  <mat-button-toggle class="close" (click)="onNoClick()">Close</mat-button-toggle>
-  <mat-button-toggle class="ok" [mat-dialog-close]="data.serviceNumber">ОK</mat-button-toggle>
-</mat-button-toggle-group>
-
-</div>
 </form>

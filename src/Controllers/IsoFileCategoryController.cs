@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
     using AutoMapper;
+    using IntraSoft.Data.Dtos.IsoCategory;
     using IntraSoft.Data.Dtos.IsoService;
-    using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Mvc;
 
@@ -13,10 +13,12 @@
     {
         private readonly IMapper mapper;
         private readonly IIsoService isoService;
+        private readonly IIsoFileCategoryService isoFileCategoryService;
 
-        public IsoFileCategoryController(IMapper mapper, IIsoService isoService)
+        public IsoFileCategoryController(IMapper mapper, IIsoService isoService,IIsoFileCategoryService isoFileCategoryService)
         {
             this.isoService = isoService;
+            this.isoFileCategoryService = isoFileCategoryService;
             this.mapper = mapper;
         }
 
@@ -24,7 +26,7 @@
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var isoServiceReadDto = await this.isoService.GetAllAsync<IsoServiceReadDto>();
+            var isoServiceReadDto = await this.isoFileCategoryService.GetAllAsync<IsoFileCategoryReadDto>();
 
             if (isoServiceReadDto == null)
             {
