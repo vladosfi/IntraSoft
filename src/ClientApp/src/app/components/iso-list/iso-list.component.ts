@@ -8,7 +8,7 @@ import { DepartmentService } from 'src/app/core/services/department.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { IIsoFiles } from 'src/app/core/interfaces/IsoFiles';
-import { EditDialogComponent } from '../dialog/edit/edit-dialog.component';
+import { ModalDialogComponent } from '../dialog/modal/modal-dialog.component';
 
 
 @Component({
@@ -121,8 +121,8 @@ export class IsoListComponent implements OnInit {
 
   // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow(): void {
-    const dialogRef = this.dialog.open(EditDialogComponent, {
-      width: '80%',
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      width: '60%',
       data: { title: 'Добавяне на услуга', serviceNumber: '234234' },
     });
 

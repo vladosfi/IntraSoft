@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Department } from 'src/app/core/interfaces/Department';
 import { IIsoFileCategory } from 'src/app/core/interfaces/IsoFileCategory';
@@ -17,23 +17,60 @@ export interface DialogData {
 
 
 @Component({
-  selector: 'app-edit-dialog',
-  templateUrl: './edit-dialog.component.html',
-  styleUrls: ['./edit-dialog.component.css']
+  selector: 'app-modal-dialog',
+  templateUrl: './modal-dialog.component.html',
+  styleUrls: ['./modal-dialog.component.css']
 })
-export class EditDialogComponent implements OnInit {
-  addServiceForm: FormGroup;
+export class ModalDialogComponent implements OnInit {
+  //form: FormGroup;
   departments: Department[];
   isoFileCategories: IIsoFileCategory[];
   isoServiceItem: IIsoService;
 
+  categoryForm: FormGroup;
+
+
   constructor(
-    public dialogRef: MatDialogRef<EditDialogComponent>,
+    public dialogRef: MatDialogRef<ModalDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private departmentService: DepartmentService,
     private isoFileCategoryService: IsoFileCategoryService,
     private isoService: IsoService,
-  ) { }
+    private fb:FormBuilder,
+  ) {
+
+    this.categoryForm = this.fb.group({
+      number: new FormControl(this.data.serviceNumber, Validators.required),
+      name: new FormControl(this.data.serviceName, Validators.required),
+      department: new FormControl('', Validators.required),
+      buttonCategories: this.fb.array([]),
+    });
+
+   }
+
+  
+   buttonCategories() : FormArray {
+    return this.categoryForm.get("buttonCategories") as FormArray
+  }
+   
+  newButtonCategory(): FormGroup {
+    return this.fb.group({
+      buttonsWithCategory: '',
+    })
+  }
+   
+  addButtonCategory() {
+    this.buttonCategories().push(this.newButtonCategory());
+  }
+   
+  removeButtonCategory(i:number) {
+    this.buttonCategories().removeAt(i);
+  }
+   
+  onSubmit() {
+    console.log(this.categoryForm.value);
+  }
+
 
 
   ngOnInit(): void {
@@ -52,21 +89,22 @@ export class EditDialogComponent implements OnInit {
         }
       });
 
-    this.addServiceForm = new FormGroup({
+      this.categoryForm = this.fb.group({
       number: new FormControl(this.data.serviceNumber, Validators.required),
       name: new FormControl(this.data.serviceName, Validators.required),
       department: new FormControl('', Validators.required),
+      buttonCategories: this.fb.array([]),
       // isoFileCategory: new FormControl('', Validators.required),
     });
   }
 
   onSaveClick(): void {
     // stop here if form is invalid
-    if (this.addServiceForm.invalid) {
+    if (this.categoryForm.invalid) {
       return;
     }
     
-    const { name, number, department } = this.addServiceForm.value;
+    const { name, number, department } = this.categoryForm.value;
 
     this.isoServiceItem = Object.assign({}, 
         {
@@ -93,7 +131,7 @@ export class EditDialogComponent implements OnInit {
     //this.dialogRef.close();
   }
 
-  onNoClick(): void {
+  onCancelClick(): void {
     this.dialogRef.close();
   }
 }

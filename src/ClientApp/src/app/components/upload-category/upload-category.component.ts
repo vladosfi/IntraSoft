@@ -17,13 +17,14 @@ export class UploadCategoryComponent implements OnInit {
   fileId: number;
   defaultLinkPath = 'uploads\\isofile';
   @Input() sourcePath: string = this.defaultLinkPath;
-  @Input() MenuId: string = null;
+  @Input() CategoryId: string = null;
   @Input() document: IFileDocument = null;
   @Input() isoFileCategories: IIsoFileCategory[];
 
   form = new FormGroup({
     file: new FormControl(''),
-    fileSource: new FormControl('')
+    fileSource: new FormControl(''),
+    isoCategory: new FormControl(''),
   });
 
   constructor(
@@ -71,7 +72,7 @@ export class UploadCategoryComponent implements OnInit {
       return;
     }
 
-    if (this.MenuId == null) {
+    if (this.CategoryId == null) {
       console.log("No item ID!");
       return;
     }
@@ -83,7 +84,7 @@ export class UploadCategoryComponent implements OnInit {
 
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('MenuId', this.MenuId);
+    formData.append('MenuId', this.CategoryId);
     formData.append('path', this.defaultLinkPath);
 
     this.fileService.uploadFile(formData)

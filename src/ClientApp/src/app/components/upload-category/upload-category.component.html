@@ -1,31 +1,45 @@
-<form [formGroup]="form">
-  <div class="row">
-    <div class="col-6">
-      <label for="department">Категория за файл:</label>
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Изберете категория за фаила</mat-label>
-        <mat-select formControlName="department" required>
-          <mat-option>--</mat-option>
-          <mat-option *ngFor="let isoFileCategory of isoFileCategories" [value]="isoFileCategory">
-            {{ isoFileCategory.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-6">
-      <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
-        <label for="file">File:</label>
-        <input formControlName="file" id="file" type="file" class="form-control" (change)="onFileChange($event)">
-        <small class="form-text text-muted">{{fileInfoMessage}}</small>
-      </div>
-      <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
-        <div>
-          <label>File:</label>
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-6">
+          <label for="isoCategory">Категория за файл:</label>
+          <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Изберете категория за фаила</mat-label>
+            <mat-select formControlName="isoCategory" required>
+              <mat-option>--</mat-option>
+              <mat-option
+                *ngFor="let isoFileCategory of isoFileCategories"
+                [value]="isoFileCategory"
+              >
+                {{ isoFileCategory.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
-        <button id="btn-delete" type="button" (click)="deleteFile()" class="btn btn-danger">
-          Delete File: " {{deleteButtonText}} "
-        </button>
+        <div class="col-6">
+          <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
+            <label for="file">Файл:</label>
+            <input
+              formControlName="file"
+              id="file"
+              type="file"
+              class="form-control"
+              (change)="onFileChange($event)"
+            />
+            <small class="form-text text-muted">{{ fileInfoMessage }}</small>
+          </div>
+          <div [ngClass]="fileId != null ? 'show' : 'hide'" class="form-group">
+            <div>
+              <label>Файл:</label>
+            </div>
+            <button
+              id="btn-delete"
+              type="button"
+              (click)="deleteFile()"
+              class="btn btn-danger"
+            >
+              Delete File: " {{ deleteButtonText }} "
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</form>
+    </form>

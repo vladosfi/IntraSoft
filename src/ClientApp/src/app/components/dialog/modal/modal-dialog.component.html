@@ -1,0 +1,95 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="categoryForm">
+    <div class="form-group">
+      <label for="number">Номер на услуга</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете номер на услуга</mat-label>
+        <input matInput formControlName="number" />
+        <!-- <mat-error *ngIf="form.get('number').hasError('required')">
+          Моля въведете номер на услуга
+        </mat-error> -->
+      </mat-form-field>
+
+      <label for="name">Име на услуга</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете име на услуга</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <label for="department">Дирекция</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Изберете дирекция за услугата</mat-label>
+        <mat-select formControlName="department" required>
+          <mat-option>--</mat-option>
+          <mat-option
+            *ngFor="let department of departments"
+            [value]="department"
+          >
+            {{ department.name }}
+          </mat-option>
+        </mat-select>
+        <!-- <mat-hint>{{department.value?.sound}}</mat-hint> -->
+      </mat-form-field>
+
+      <div class="cotainer">
+      <div class="row">
+        <div class="col-6"><h2>Файлове:</h2></div>
+        <div class="col-6 right">
+          <button
+            mat-raised-button
+            (click)="addButtonCategory()"
+          >
+            Добави фаил
+          </button>
+        </div>
+      </div>
+    </div>
+      
+        <div formArrayName="buttonCategories">
+          <div
+            *ngFor="let quantity of buttonCategories().controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div>
+              
+              <upload-category
+                ngDefaultControl
+                [isoFileCategories]="this.isoFileCategories"
+                formControlName="buttonsWithCategory"
+              ></upload-category>
+              <mat-divider></mat-divider>
+            </div>
+            <div>
+              <!-- <button (click)="removeButtonCategory(i)" class="btn btn-danger">
+                Remove
+              </button> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- <button type="submit" class="btn btn-success">Submit</button> -->
+
+      {{ categoryForm.value | json }}
+      {{ categoryForm.valid }}
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close (click)="onCancelClick()">
+    Cancel
+  </button>
+  <button color="primary" mat-raised-button [mat-dialog-close]="data.serviceNumber">
+    Save
+  </button>
+  <button
+    color="primary"
+    mat-raised-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    (click)="onSaveClick()"
+  >
+    OK
+  </button>
+</mat-dialog-actions>
