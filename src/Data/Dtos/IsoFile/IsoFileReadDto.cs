@@ -8,6 +8,8 @@ namespace src.Data.Dtos.IsoFile
     {
         public string FilePath { get; set; }
 
+        public int Id { get; set; }
+
         public IsoFileCategoryReadDto IsoFileCategory { get; set; }
     }
 }

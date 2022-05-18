@@ -38,9 +38,13 @@ mat-dialog-content{
 }
 
 mat-dialog-actions{
-  
+  display: flex; justify-content: flex-end
 }
 
 .right{
 text-align: end;
+}
+
+mat-divider{
+  padding-bottom: 10px;
 }

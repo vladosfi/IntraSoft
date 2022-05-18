@@ -12,6 +12,8 @@ export class MenuItemComponent implements OnInit {
   @Input() items: Menu[];
   @ViewChild('childMenu', { static: true }) public childMenu: any;
   maxLenghtForTooltip = 30;
+  pathToFile = 'api/document';
+
 
   constructor(
     public router: Router,
@@ -21,7 +23,7 @@ export class MenuItemComponent implements OnInit {
   ngOnInit() {  }
 
   downloadFile(fileId: string){
-    this.fileService.downloadFile(fileId);
+    this.fileService.downloadFile(fileId, this.pathToFile);
   }
 
 

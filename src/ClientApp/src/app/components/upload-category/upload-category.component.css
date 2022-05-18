@@ -40,3 +40,11 @@ button{
     width: 100%;
   }
 
+  .form-group{
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  #btn-delete{
+    padding: 12px;
+  }

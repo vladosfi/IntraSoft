@@ -2,6 +2,10 @@ h1 {
   text-align: center;
 }
 
+a{
+  cursor: pointer;
+}
+
 table {
   width: 100%;
 }
@@ -40,7 +44,6 @@ tr.element-row:not(.expanded-row):active {
 }
 .element-name{
   height: 60px;
-  line-height: 60px;
 }
 
 .element-name::before{

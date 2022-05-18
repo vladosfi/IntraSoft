@@ -9,6 +9,8 @@ import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { IIsoFiles } from 'src/app/core/interfaces/IsoFiles';
 import { ModalDialogComponent } from '../dialog/modal/modal-dialog.component';
+import { FileService } from 'src/app/core/services/file.service';
+import { DialogComponent } from '../dialog/delete/dialog.component';
 
 
 @Component({
@@ -33,6 +35,8 @@ export class IsoListComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
   isLoading = true;
+  pathToFile = 'api/isofile';
+  endPointPath = 'api/isoservice';
 
   pageNumber: number = 1;
   isEditableNew: boolean = true;
@@ -42,6 +46,7 @@ export class IsoListComponent implements OnInit {
     private departmentService: DepartmentService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -77,9 +82,11 @@ export class IsoListComponent implements OnInit {
       item.isoServices.map((isoService) =>
         Object.assign({}, item,
           {
-            isoServiceName: isoService.name, isoServiceNumber: isoService.number,
+            isoServiceName: isoService.name, 
+            isoServiceNumber: isoService.number,
+            isoServiceId: isoService.id,
             isoFiles: isoService.isoFiles.map(f =>
-              <IIsoFiles>{ filePath: f.filePath, categoryName: f.isoFileCategory.name })
+              <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })
           }
         ))));
 
@@ -132,6 +139,49 @@ export class IsoListComponent implements OnInit {
     });
 
   }
+
+  downloadFile(fileId: string) {
+    this.fileService.downloadFile(fileId, this.pathToFile);
+  }
+
+  deleteService(event, serviceId: number) {
+    event.stopPropagation();
+    this.fileService.deleteFile(serviceId, this.endPointPath);
+  }
+
+  // DeleteSVO(VOFormElement, i, event) {
+  //   event.stopPropagation();
+  //   let serviceId = VOFormElement.get('VORows').at(i).value.isoServiceId;
+  //   let serviceName = VOFormElement.get('VORows').at(i).value.isoServiceName;
+
+  //   if (!serviceId) {
+  //     const data = this.dataSource.data;
+  //     data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
+  //     this.dataSource.data = data;
+  //     return;
+  //   }
+
+  //   let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' } });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result === 'true') {
+  //       this.fileService.deleteFile(serviceId, this.endPointPath)
+  //         .subscribe({
+  //           next: () => {
+  //             const data = this.dataSource.data;
+  //             data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
+  //             this.dataSource.data = data;
+  //             this.snackbar.success('Услугата беше изтрита');
+  //           },
+  //           error: (error) => {
+  //             this.snackbar.error('Грешка при изтриване на услуга!');
+  //           }
+  //         });
+  //     } else {
+  //       console.log(`Dialog result is: ${result}`);
+  //     }
+  //   });
+  // }
+
 
 
   paginatorList: HTMLCollectionOf<Element>;

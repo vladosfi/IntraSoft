@@ -5,7 +5,7 @@
       <label for="number">Номер на услуга</label>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Въведете номер на услуга</mat-label>
-        <input matInput formControlName="number" />
+        <input [disableControl]="isoServiceItem?.id" matInput formControlName="number" />
         <!-- <mat-error *ngIf="form.get('number').hasError('required')">
           Моля въведете номер на услуга
         </mat-error> -->
@@ -14,13 +14,13 @@
       <label for="name">Име на услуга</label>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Въведете име на услуга</mat-label>
-        <input matInput formControlName="name" />
+        <input [disableControl]="isoServiceItem?.id" matInput formControlName="name" />
       </mat-form-field>
 
       <label for="department">Дирекция</label>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Изберете дирекция за услугата</mat-label>
-        <mat-select formControlName="department" required>
+        <mat-select [disableControl]="isoServiceItem?.id" formControlName="department" required>
           <mat-option>--</mat-option>
           <mat-option
             *ngFor="let department of departments"
@@ -32,63 +32,72 @@
         <!-- <mat-hint>{{department.value?.sound}}</mat-hint> -->
       </mat-form-field>
 
-      <div class="cotainer">
-      <div class="row">
-        <div class="col-6"><h2>Файлове:</h2></div>
-        <div class="col-6 right">
-          <button
-            mat-raised-button
-            (click)="addButtonCategory()"
-          >
-            Добави фаил
-          </button>
-        </div>
-      </div>
-    </div>
-      
-        <div formArrayName="buttonCategories">
-          <div
-            *ngFor="let quantity of buttonCategories().controls; let i = index"
-            [formGroupName]="i"
-          >
-            <div>
-              
-              <upload-category
-                ngDefaultControl
-                [isoFileCategories]="this.isoFileCategories"
-                formControlName="buttonsWithCategory"
-              ></upload-category>
-              <mat-divider></mat-divider>
-            </div>
-            <div>
-              <!-- <button (click)="removeButtonCategory(i)" class="btn btn-danger">
-                Remove
-              </button> -->
-            </div>
+      <div *ngIf="isoServiceItem?.id" class="cotainer">
+        <div class="row">
+          <div class="col-6"><h2>Файлове:</h2></div>
+          <div class="col-6 right">
+            <button mat-raised-button (click)="addButtonCategory()">
+              Добави фаил
+            </button>
           </div>
         </div>
 
-        <!-- <button type="submit" class="btn btn-success">Submit</button> -->
+        <div class="row">
+          <div formArrayName="buttonCategories">
+            <div
+              *ngFor="
+                let quantity of buttonCategories().controls;
+                let i = index
+              "
+              [formGroupName]="i"
+            >
+              <div>
+                <mat-divider></mat-divider>
+                <upload-category
+                  ngDefaultControl
+                  [isoFileCategories]="this.isoFileCategories"
+                  [isoServiceId]="isoServiceItem?.id"
+                  formControlName="buttonsWithCategory"
+                ></upload-category>
+                
+              </div>
+              <div>
+                <!-- <button (click)="removeButtonCategory(i)" class="btn btn-danger">
+                  Remove
+                </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {{ categoryForm.value | json }}
-      {{ categoryForm.valid }}
+      <!-- <button type="submit" class="btn btn-success">Submit</button> -->
+
+      <!-- {{ categoryForm.value | json }}
+      {{ categoryForm.valid }} -->
     </div>
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions >
   <button mat-raised-button mat-dialog-close (click)="onCancelClick()">
     Cancel
   </button>
-  <button color="primary" mat-raised-button [mat-dialog-close]="data.serviceNumber">
-    Save
-  </button>
-  <button
+  <button *ngIf="!isoServiceItem?.id"
+  [disabled]="!categoryForm.valid"
     color="primary"
     mat-raised-button
-    [mat-dialog-close]="true"
-    cdkFocusInitial
     (click)="onSaveClick()"
+  >
+    Save
+  </button>
+  <button *ngIf="isoServiceItem?.id"
+    color="primary"
+    mat-raised-button
+    cdkFocusInitial
+    [mat-dialog-close]="true"
+    [mat-dialog-close]="data.serviceNumber"    
+    
   >
     OK
   </button>

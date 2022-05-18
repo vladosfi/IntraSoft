@@ -11,6 +11,7 @@ export class MenuItemAMComponent implements OnInit {
   @Input("menuitem") menuitem;
   style;
   styleLink;
+  pathToFile = 'api/document';
 
   constructor(private fileService: FileService,
   ) { }
@@ -31,7 +32,7 @@ export class MenuItemAMComponent implements OnInit {
     };
   }
 
-  downloadFile(fileId: string){
-    this.fileService.downloadFile(fileId);
+  downloadFile(fileId: string) {
+    this.fileService.downloadFile(fileId, this.pathToFile);
   }
 }

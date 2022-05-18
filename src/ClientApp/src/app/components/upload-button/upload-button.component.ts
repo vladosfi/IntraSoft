@@ -16,6 +16,7 @@ export class UploadButtonComponent implements OnInit {
   deleteButtonText: string;
   fileId: number;
   defaultLinkPath = 'uploads\\menu';
+  endPointPath = 'api/document';
   @Input() sourcePath: string = this.defaultLinkPath;
   @Input() MenuId: string = null;
   @Input() document: IFileDocument = null;
@@ -50,7 +51,7 @@ export class UploadButtonComponent implements OnInit {
   deleteFile() {
     if (this.fileId === null) return;
 
-    this.fileService.deleteFile(this.fileId)
+    this.fileService.deleteFile(this.fileId,  this.endPointPath)
       .subscribe({
         next: () => {
           this.snackbar.success('File has been deleted');
@@ -86,7 +87,7 @@ export class UploadButtonComponent implements OnInit {
     formData.append('MenuId', this.MenuId);
     formData.append('path', this.defaultLinkPath);
 
-    this.fileService.uploadFile(formData)
+    this.fileService.uploadFile(formData, this.endPointPath)
       .subscribe(
         {
           next: (event) => {

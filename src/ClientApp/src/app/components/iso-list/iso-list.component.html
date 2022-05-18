@@ -62,7 +62,7 @@
       </button>
     </td>
   </ng-container>
-
+<!-- (click)="deleteService($event, element.isoServiceId)" -->
 
   <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of columnNames">
     <th mat-header-cell *matHeaderCellDef> {{column}}</th>
@@ -84,7 +84,8 @@
           <!-- {{element.isoFiles | json}} -->
           <div class="row" *ngFor="let f of element.isoFiles"> 
             <div class="col-2">{{f.categoryName}}:</div> 
-            <div class="col-8"><a [routerLink]='f.filePath'>Изтегли</a></div>
+            <div class="col-8"><a  (click)="downloadFile(f.id)">Изтегли</a></div>
+            
           </div>
           
           <div class="element-description-attribution">Налични файлове: {{element.isoFiles.length}}</div>

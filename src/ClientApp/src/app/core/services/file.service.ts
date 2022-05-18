@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject, } from 'rxjs';
   providedIn: 'root',
 })
 export class FileService {
-  private endPoint = this.baseUrl + 'api/document';
+  private endPoint = this.baseUrl;
   private headers = new Headers();
   private renderer: Renderer2;
 
@@ -19,16 +19,16 @@ export class FileService {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  downloadFile(id: string) {
+  downloadFile(id: string, pathToFile: string) {
     const link = this.renderer.createElement('a');
     link.setAttribute('target', '_blank');
-    link.setAttribute('href', `api/document/${id}/true`);
+    link.setAttribute('href', `${pathToFile}/${id}/true`);
     //link.setAttribute('href',  `api/document/${id}`);
     link.click();
     link.remove();
   }
 
-  uploadFile(formData: FormData): Observable<HttpEvent<any>> {
+  uploadFile(formData: FormData, endPointPath: string): Observable<HttpEvent<any>> {
     //var path = formData.get('path') as string;
     //let params = new HttpParams().set('path', path);
 
@@ -37,11 +37,11 @@ export class FileService {
       reportProgress: true,
     };
 
-    const req = new HttpRequest('POST', this.endPoint, formData, options);
+    const req = new HttpRequest('POST', this.endPoint + endPointPath, formData, options);
     return this.http.request(req);
   }
 
-  deleteFile(fileId: number) {
-    return this.http.delete(this.endPoint + `/${fileId}`);
+  deleteFile(fileId: number, endPointPath: string) {
+    return this.http.delete(this.endPoint + endPointPath + `/${fileId}`);
   }
 }
