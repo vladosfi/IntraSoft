@@ -10,6 +10,11 @@ table {
   width: 100%;
 }
 
+table th {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 tr.detail-row {
   height: 0;
 }
@@ -87,12 +92,6 @@ tr.element-row:not(.expanded-row):active {
   opacity: 0.5;
 }
 
-  table th {
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-
 .mat-form-field {
   font-size: 14px;
   width: 100%;
@@ -137,5 +136,38 @@ input.mat-input-element {
 
 .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
   color: #3498DB;
+}
+
+
+
+
+
+/* Structure */
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+  padding-left: 15px;
+}
+
+.mat-select {
+  width: 95% !important;
+  min-width: 95% !important;
+  max-width: 95% !important;
+  cursor: pointer !important;
+  color: rgb(125, 125, 125) !important;
+}
+
+
+::ng-deep td .mat-form-field-wrapper{
+  padding-bottom: 0 !important;
+}
+
+::ng-deep td .mat-form-field-infix{
+  /* border-top: 0; */
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 1.1em 0 1.4em 0;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
+  /* padding-top: 10px; */
 }
 

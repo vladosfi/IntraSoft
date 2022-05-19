@@ -5,6 +5,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  Validators,
 } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
@@ -26,7 +27,6 @@ export class ContactComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
   displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','departments', 'action'];
-  //displayedColumns: string[] = ['id', 'fullName','phone', 'email', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
   isLoading = true;
@@ -38,7 +38,6 @@ export class ContactComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _formBuilder: FormBuilder,
     private contactService: ContactService,
     private departmentService: DepartmentService,
     private snackbar: SnackbarService,
@@ -68,8 +67,8 @@ export class ContactComponent implements OnInit {
   }
 
   initiateForm() {
-    this.VOForm = this._formBuilder.group({
-      VORows: this._formBuilder.array([]),
+    this.VOForm = this.fb.group({
+      VORows: this.fb.array([]),
     })
 
     this.VOForm = this.fb.group({
@@ -79,7 +78,7 @@ export class ContactComponent implements OnInit {
             id: new FormControl(val.id),
             fullName: new FormControl(val.fullName),
             phone: new FormControl(val.phone),
-            email: new FormControl(val.email),
+            email: new FormControl(val.email, Validators.email),
             departmentId: new FormControl({ value: val.departmentId, disabled: true }),
             departments: new FormControl(this.departments),
             action: new FormControl('existingRecord'),
@@ -93,6 +92,7 @@ export class ContactComponent implements OnInit {
     this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
     this.dataSource.paginator = this.paginator;
     this.onPaginateChange(this.paginator, this.paginatorList);
+
 
     const filterPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {

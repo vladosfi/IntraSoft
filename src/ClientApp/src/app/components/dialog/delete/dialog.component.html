@@ -1,13 +1,16 @@
+<div class="content">
 <!-- <h2 mat-dialog-title>Session timeout</h2> -->
 <!-- <h2 mat-dialog-title>Are you sure you want to delete menu {{data.name}}?</h2> -->
 <h2 mat-dialog-title>{{data.name}}</h2>
 
-<!-- <mat-dialog-actions>
-    <button mat-raised-button color="warn" mat-dialog-close mat-dialog-close="true">Yes</button>
-    <button mat-raised-button color="accent" mat-dialog-close mat-dialog-close="false" cdkFocusInitial>No</button>
-</mat-dialog-actions> -->
+<mat-dialog-actions>
+    <button color="primary" mat-raised-button mat-dialog-close mat-dialog-close="true">Да</button>
+    <button mat-raised-button mat-dialog-close mat-dialog-close="false" cdkFocusInitial>Не</button>
+</mat-dialog-actions>
+</div>
 
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+
+<!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
     <mat-button-toggle class="warn" mat-dialog-close mat-dialog-close="true">Yes</mat-button-toggle>
-    <mat-button-toggle class="no-warn" mat-dialog-close mat-dialog-close="false" cdkFocusInitial>No</mat-button-toggle>
-  </mat-button-toggle-group>
+    <mat-button-toggle class="no-warn" mat-dialog-close mat-dialog-close="false">No</mat-button-toggle>
+  </mat-button-toggle-group> -->

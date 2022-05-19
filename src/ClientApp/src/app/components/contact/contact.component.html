@@ -91,6 +91,8 @@
                        type="text"
                        formControlName="email"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" />
+                       <mat-error *ngIf="emailFormControl?.hasError('email')">
+                      </mat-error>
               </mat-form-field>
               <!-- </span> -->
             </td>

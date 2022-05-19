@@ -11,6 +11,7 @@ import { IIsoFiles } from 'src/app/core/interfaces/IsoFiles';
 import { ModalDialogComponent } from '../dialog/modal/modal-dialog.component';
 import { FileService } from 'src/app/core/services/file.service';
 import { DialogComponent } from '../dialog/delete/dialog.component';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -28,9 +29,11 @@ import { DialogComponent } from '../dialog/delete/dialog.component';
 export class IsoListComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  columnNames: string[] = ['isoServicenumber', 'isoServiceName', 'department', 'action'];
-  //columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
+  columnNames: string[] = ['isoServiceNumber', 'isoServiceName', 'departments', 'action'];
+
   expandedElement: null;
+  VOForm: FormGroup;
+
 
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
@@ -39,14 +42,14 @@ export class IsoListComponent implements OnInit {
   endPointPath = 'api/isoservice';
 
   pageNumber: number = 1;
-  isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private departmentService: DepartmentService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
-    private fileService: FileService
+    private fileService: FileService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
@@ -55,48 +58,68 @@ export class IsoListComponent implements OnInit {
       {
         next: (result) => {
           this.departments = result as Department[];
-
-          // this.departments.forEach(svc => {
-          //   //console.log(svc.isoServices);
-          //   svc.isoServices.forEach(element => {
-          //     //console.log(element.isoFiles);                  
-          //     element.isoFiles.forEach(file => {
-          //       console.log(file.filePath);
-          //       console.log(file.isoFileCategory.name);
-          //     });
-          //   });
-          // });
-
-
           this.initiateTableData();
         }
       });
   }
 
   initiateTableData() {
-    // this.departments.map((val) => {
-    //   console.log(val)
-    // });
 
-    const result = [].concat(...this.departments.map((item) =>
-      item.isoServices.map((isoService) =>
-        Object.assign({}, item,
-          {
-            isoServiceName: isoService.name, 
-            isoServiceNumber: isoService.number,
-            isoServiceId: isoService.id,
-            isoFiles: isoService.isoFiles.map(f =>
-              <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })
-          }
-        ))));
+    this.VOForm = this.fb.group({
+      VORows: this.fb.array([]),
+    })
 
-    this.dataSource.data = result;
+    //const result = [].concat(...this.departments.map((item) => item.isoServices));
+     var result = this.departments.map(value =>
+       value.isoServices.map(child => Object.assign({ departmentId: value.id, departmentName: value.name }, child))
+    ).reduce((l, n) => l.concat(n), []);
 
+    console.log(result);
+
+    this.VOForm = this.fb.group({
+      VORows: this.fb.array(
+        result.map((val) =>
+          this.fb.group({
+            departmentId:  new FormControl({ value: val.departmentId, disabled: true }),
+            isoServiceName: new FormControl(val.name),
+            isoServiceNumber: new FormControl(val.number),
+            isoServiceId: new FormControl(val.id),
+            isoFiles: new FormControl(val.isoFiles.map(f =>
+              <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })),
+            action: new FormControl('existingRecord'),
+            isEditable: new FormControl(true),
+            isNewRow: new FormControl(false),
+          }),
+        ),
+      ), //end of fb array
+    }) // end of form group cretation
+
+    // const result = [].concat(...this.departments.map((item) =>
+    //   item.isoServices.map((isoService) =>
+    //     Object.assign({}, item,
+    //       {
+    //         isoServiceName: isoService.name,
+    //         isoServiceNumber: isoService.number,
+    //         isoServiceId: isoService.id,
+    //         isoFiles: isoService.isoFiles.map(f =>
+    //           <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })
+    //       }
+    //     ))));
+    // this.dataSource.data = result;
 
     this.isLoading = false;
-    this.dataSource = new MatTableDataSource(this.dataSource.data);
+    //this.dataSource = new MatTableDataSource(this.dataSource.data);
+    this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
     this.dataSource.paginator = this.paginator;
     this.onPaginateChange(this.paginator, this.paginatorList);
+
+    
+
+    const filterPredicate = this.dataSource.filterPredicate;
+    this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
+      return filterPredicate.call(this.dataSource, data.value, filter);
+    }
+
 
     //this.dataSource.filter = 'оа';
   }
@@ -144,43 +167,47 @@ export class IsoListComponent implements OnInit {
     this.fileService.downloadFile(fileId, this.pathToFile);
   }
 
-  deleteService(event, serviceId: number) {
+  // this function will enabled the select field for editd
+  EditSVO(event, VOFormElement, i) {
     event.stopPropagation();
-    this.fileService.deleteFile(serviceId, this.endPointPath);
+    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false);
+    VOFormElement.get('VORows').at(i).get('departmentId').enable(true);
+    // this.isEditableNew = true;
   }
 
-  // DeleteSVO(VOFormElement, i, event) {
-  //   event.stopPropagation();
-  //   let serviceId = VOFormElement.get('VORows').at(i).value.isoServiceId;
-  //   let serviceName = VOFormElement.get('VORows').at(i).value.isoServiceName;
+  deleteService(event, VOFormElement, i) {
+    event.stopPropagation();
+    let serviceId = VOFormElement.get('VORows').at(i).value.isoServiceId;
+    let serviceName = VOFormElement.get('VORows').at(i).value.isoServiceName;
 
-  //   if (!serviceId) {
-  //     const data = this.dataSource.data;
-  //     data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
-  //     this.dataSource.data = data;
-  //     return;
-  //   }
+    if (!serviceId) {
+      const data = this.dataSource.data;
+      data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
+      this.dataSource.data = data;
+      return;
+    }
 
-  //   let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' } });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result === 'true') {
-  //       this.fileService.deleteFile(serviceId, this.endPointPath)
-  //         .subscribe({
-  //           next: () => {
-  //             const data = this.dataSource.data;
-  //             data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
-  //             this.dataSource.data = data;
-  //             this.snackbar.success('Услугата беше изтрита');
-  //           },
-  //           error: (error) => {
-  //             this.snackbar.error('Грешка при изтриване на услуга!');
-  //           }
-  //         });
-  //     } else {
-  //       console.log(`Dialog result is: ${result}`);
-  //     }
-  //   });
-  // }
+    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' }});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        this.fileService.deleteFile(serviceId, this.endPointPath)
+          .subscribe({
+            next: () => {
+              const data = this.dataSource.data;
+              data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
+              this.dataSource.data = data;
+              this.snackbar.success('Услугата беше изтрита');
+            },
+            error: (error) => {
+              this.snackbar.error('Грешка при изтриване на услуга!');
+            }
+          });
+      } else {
+        console.log(`Dialog result is: ${result}`);
+      }
+    });
+  }
+
 
 
 
