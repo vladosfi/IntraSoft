@@ -26,7 +26,6 @@
     />
   </mat-form-field>
 
-
   <form [formGroup]="VOForm" autocomplete="off" *ngIf="this.VOForm">
     <ng-container formArrayName="VORows">
       <table
@@ -34,49 +33,79 @@
         mat-table
         [dataSource]="dataSource"
         class="mat-elevation-z8"
-        multiTemplateDataRows>
-
+        multiTemplateDataRows
+      >
         <!-- Number Column -->
         <ng-container matColumnDef="isoServiceNumber">
           <th mat-header-cell *matHeaderCellDef>Име</th>
-          <td mat-cell
-          *matCellDef="let element; let i = dataIndex"
-              [formGroup]="element">
-            <mat-form-field [appearance]="VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'">
-              <input matInput
-                     type="text"
-                     formControlName="isoServiceNumber"
-                     [readonly]="VOForm.get('VORows').value[i].isEditable"/>
-            </mat-form-field>            
+          <td
+            mat-cell
+            *matCellDef="let element; let i = dataIndex"
+            [formGroup]="element"
+          >
+            <mat-form-field
+              [appearance]="
+                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+              "
+            >
+              <input
+                matInput
+                type="text"
+                formControlName="isoServiceNumber"
+                [readonly]="VOForm.get('VORows').value[i].isEditable"
+              />
+            </mat-form-field>
           </td>
         </ng-container>
 
         <!-- Name Column -->
-          <ng-container matColumnDef="isoServiceName">
-            <th mat-header-cell *matHeaderCellDef>Име</th>
-            <td mat-cell
+        <ng-container matColumnDef="isoServiceName">
+          <th mat-header-cell *matHeaderCellDef>Име</th>
+          <td
+            mat-cell
             *matCellDef="let element; let i = dataIndex"
-                [formGroup]="element">
-              <mat-form-field [appearance]="VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'">
-                <input matInput
-                       type="text"
-                       formControlName="isoServiceName"
-                       [readonly]="VOForm.get('VORows').value[i].isEditable"/>
-              </mat-form-field>            
-            </td>
-          </ng-container>
+            [formGroup]="element"
+          >
+            <mat-form-field
+              [appearance]="
+                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+              "
+            >
+              <input
+                matInput
+                type="text"
+                formControlName="isoServiceName"
+                [readonly]="VOForm.get('VORows').value[i].isEditable"
+              />
+            </mat-form-field>
+          </td>
+        </ng-container>
 
         <!-- Department Column -->
 
         <ng-container matColumnDef="departments">
           <th mat-header-cell *matHeaderCellDef>Дирекция</th>
-          <td mat-cell
-              *matCellDef="let element; let i = dataIndex"
-              [formGroup]="element">
-            <mat-form-field [appearance]="VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'">
-              <mat-select [readonly]="VOForm.get('VORows').value[i].isEditable"
-                          formControlName="departmentId" placeholder="{{departmentId}}">
-                <mat-option *ngFor="let dep of departments; index as i;" [value]="dep.id"> {{dep.name}}</mat-option>
+          <td
+            mat-cell
+            *matCellDef="let element; let i = dataIndex"
+            [formGroup]="element"
+          >
+            <mat-form-field
+              [appearance]="
+                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+              "
+            >
+              <mat-select
+                [readonly]="VOForm.get('VORows').value[i].isEditable"
+                formControlName="departmentId"
+                placeholder="{{ departmentId }}"
+              >
+                <mat-option
+                  *ngFor="let dep of departments; index as i"
+                  [value]="dep.id"
+                >
+                  {{ dep.name }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </td>
@@ -89,8 +118,20 @@
             <button
               mat-icon-button
               class="material-icons app-toolbar-menu save-button"
+              matTooltip="Save Changes"
+              (click)="SaveVO(VOForm, i)"
+              *ngIf="!VOForm.get('VORows').value[i].isEditable"
+              color="primary"
+            >
+              <mat-icon>check_circle</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              class="material-icons app-toolbar-menu save-button"
               matTooltip="Edit"
               color="primary"
+              *ngIf="VOForm.get('VORows').value[i].isEditable"
               (click)="EditSVO($event, VOForm, i)"
             >
               <mat-icon>edit</mat-icon>
@@ -98,9 +139,21 @@
 
             <button
               mat-icon-button
+              class="material-icons app-toolbar-menu cancel-button"
+              matTooltip="Cancel Changes"
+              color="warn"
+              (click)="CancelSVO(VOForm, i)"
+              *ngIf="!VOForm.get('VORows').value[i].isEditable"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
               class="material-icons app-toolbar-menu delete-button"
               matTooltip="Delete"
               color="warn"
+              *ngIf="VOForm.get('VORows').value[i].isEditable"
               (click)="deleteService($event, VOForm, i)"
             >
               <mat-icon>delete</mat-icon>

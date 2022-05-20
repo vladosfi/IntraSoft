@@ -224,6 +224,7 @@ export class ContactComponent implements OnInit {
   CancelSVO(VOFormElement, i) {
     //this.initiateForm();
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+    VOFormElement.get('VORows').at(i).get('departmentId').disable(true);
   }
 
   paginatorList: HTMLCollectionOf<Element>;

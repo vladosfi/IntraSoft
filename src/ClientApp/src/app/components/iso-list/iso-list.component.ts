@@ -175,6 +175,18 @@ export class IsoListComponent implements OnInit {
     // this.isEditableNew = true;
   }
 
+  SaveVO(VOFormElement, i) {
+    event.stopPropagation();
+    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+    VOFormElement.get('VORows').at(i).get('departmentId').enable(false);
+  }
+
+  CancelSVO(VOFormElement, i) {
+    event.stopPropagation();
+    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
+    VOFormElement.get('VORows').at(i).get('departmentId').disable(true);
+  }
+
   deleteService(event, VOFormElement, i) {
     event.stopPropagation();
     let serviceId = VOFormElement.get('VORows').at(i).value.isoServiceId;
