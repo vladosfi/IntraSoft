@@ -27,12 +27,11 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
   ],
 })
 export class IsoListComponent implements OnInit {
-  contacts: Contact[] = [];
   departments: Department[] = [];
-  columnNames: string[] = ['isoServiceNumber', 'isoServiceName', 'departments', 'action'];
-
-  expandedElement: null;
+  columnsToDisplay: string[] = ['isoServiceNumber', 'isoServiceName', 'departments', 'action'];
+  expandedElement: Department | null;
   VOForm: FormGroup;
+
 
 
   dataSource = new MatTableDataSource<any>();
@@ -74,7 +73,7 @@ export class IsoListComponent implements OnInit {
        value.isoServices.map(child => Object.assign({ departmentId: value.id, departmentName: value.name }, child))
     ).reduce((l, n) => l.concat(n), []);
 
-    console.log(result);
+    //console.log(result);
 
     this.VOForm = this.fb.group({
       VORows: this.fb.array(
@@ -113,16 +112,23 @@ export class IsoListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.onPaginateChange(this.paginator, this.paginatorList);
 
-    
+    // console.log(this.dataSource.data);
 
     const filterPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
       return filterPredicate.call(this.dataSource, data.value, filter);
     }
 
-
+  
     //this.dataSource.filter = 'оа';
+    //this.dataSource.filter = '1011';
+
+          //Custom filter according to name column
+    // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
+    //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
   }
+
+
 
   goToPage() {
     this.paginator.pageIndex = this.pageNumber - 1
@@ -175,16 +181,16 @@ export class IsoListComponent implements OnInit {
     // this.isEditableNew = true;
   }
 
-  SaveVO(VOFormElement, i) {
+  SaveVO(event, VOFormElement, i) {
     event.stopPropagation();
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
-    VOFormElement.get('VORows').at(i).get('departmentId').enable(false);
+    VOFormElement.get('VORows').at(i).get('departmentId').disable(false);
   }
 
-  CancelSVO(VOFormElement, i) {
+  CancelSVO(event, VOFormElement, i) {
     event.stopPropagation();
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
-    VOFormElement.get('VORows').at(i).get('departmentId').disable(true);
+    VOFormElement.get('VORows').at(i).get('departmentId').disable(false);
   }
 
   deleteService(event, VOFormElement, i) {

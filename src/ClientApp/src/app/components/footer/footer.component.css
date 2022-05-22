@@ -1,0 +1,17 @@
+footer {
+    color: #946666;
+}
+
+a {
+    color: #946666;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+
+.footer-shadow {
+    -webkit-box-shadow: inset 0 5px 5px -5px rgba(0,0,0,0.6);
+    -moz-box-shadow: inset 0 5px 5px -5px rgba(0,0,0,0.6);
+    box-shadow: inset 0 5px 5px -5px rgba(0,0,0,0.6);
+}

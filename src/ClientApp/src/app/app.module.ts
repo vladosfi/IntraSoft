@@ -26,6 +26,7 @@ import { IsoListComponent } from './components/iso-list/iso-list.component';
 import { DialogComponent } from './components/dialog/delete/dialog.component';
 import { UploadCategoryComponent } from './components/upload-category/upload-category.component';
 import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
@@ -48,6 +49,7 @@ import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.com
     UploadCategoryComponent,
     EllipsifyMeDirective,
     IsoListComponent,
+    FooterComponent,
   ],
   entryComponents:[
     DialogComponent

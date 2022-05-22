@@ -15,6 +15,24 @@ table th {
   text-transform: uppercase;
 }
 
+.table>:not(:first-child) {
+  border-top: 1px solid #3498DB;;
+}
+
+table tbody td{
+  font-size: 14px;
+  vertical-align: baseline;
+}
+
+table tbody tr:hover {
+  background-color: #F0F0F0;
+}
+
+.element-detail th{
+  color: rgba(0,0,0,.54);
+  font-size: 12px;
+}
+
 tr.detail-row {
   height: 0;
 }
@@ -87,9 +105,9 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .element-description-attribution {
-  padding-top: 10px;
   text-align: right;
   opacity: 0.5;
+  text-decoration: underline;
 }
 
 .mat-form-field {
@@ -155,6 +173,27 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   color: rgb(125, 125, 125) !important;
 }
 
+.mat-select-value{
+  cursor: pointer;
+}
+
+mat-form-field input{
+  cursor: pointer;
+}
+
+.mat-raised-button{
+ width: 100%; 
+}
+
+.mat-raised-button:hover{
+  background-color: #3498DB;
+}
+
+
+
+.mat-form-field-appearance-legacy{
+  cursor: text;
+}
 
 ::ng-deep td .mat-form-field-wrapper{
   padding-bottom: 0 !important;

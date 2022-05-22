@@ -30,6 +30,15 @@
             IQueryable<Contact> query =
                 this.contactRepo
                 .All()
+                .Select(c => new Contact(){
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    MiddleName = c.MiddleName,
+                    LastName = c.LastName,
+                    Email = c.Email,
+                    Phone = c.Phone,
+                    DepartmentId = c.DepartmentId,
+                })
                 .OrderBy(x => x.DepartmentId)
                 .ThenBy(x => x.Id)
                 .AsNoTracking()
