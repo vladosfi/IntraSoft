@@ -8,7 +8,7 @@
 
   <mat-form-field style="width: 40%;">
     <mat-label>Филтриране</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Въведете текст за търсене" #input />
+    <input matInput  [formControl]="filterField" (keyup)="applyFilter($event)" placeholder="Въведете текст за търсене" #input />
   </mat-form-field>
   <mat-form-field style="width: 20%; float: right;">
     <mat-label>Отиди на страница</mat-label>
@@ -29,6 +29,7 @@
               <input matInput type="text" formControlName="isoServiceNumber"
                 [readonly]="VOForm.get('VORows').value[i].isEditable" />
             </mat-form-field>
+            <!-- {{element.value | json}} -->
           </td>
         </ng-container>
 
@@ -68,7 +69,7 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let element; let i = dataIndex">
             <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
-              (click)="SaveVO($event, VOForm, i)" *ngIf="!VOForm.get('VORows').value[i].isEditable" color="primary">
+              (click)="SaveVO($event, VOForm, i,element)" *ngIf="!VOForm.get('VORows').value[i].isEditable" color="primary">
               <mat-icon>check_circle</mat-icon>
             </button>
 
@@ -83,7 +84,7 @@
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu delete-button" matTooltip="Delete"
-              color="warn" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="deleteService($event, VOForm, i)">
+              color="warn" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="deleteService($event, VOForm, i, element)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

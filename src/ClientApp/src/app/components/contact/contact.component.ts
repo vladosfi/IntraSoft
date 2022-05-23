@@ -188,9 +188,9 @@ export class ContactComponent implements OnInit {
     }
   }
 
-  DeleteSVO(VOFormElement, i) {
-    let id = VOFormElement.get('VORows').at(i).value.id;
-    let fullName = VOFormElement.get('VORows').at(i).value.fullName;
+  DeleteSVO(VOFormElement, i, element) {
+    let id = element.value.id;
+    let fullName = element.value.fullName;
 
     if (!id) {
       const data = this.dataSource.data;
@@ -207,7 +207,7 @@ export class ContactComponent implements OnInit {
             next: () => {
               const data = this.dataSource.data;
               data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
-              this.dataSource.data = data;
+              this.dataSource = new MatTableDataSource(data);
               this.snackbar.success('Контакта беше изтрит');
             },
             error: (error) => {

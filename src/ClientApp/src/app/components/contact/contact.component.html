@@ -152,7 +152,7 @@
                       *ngIf="VOForm.get('VORows').value[i].isEditable"
                       matTooltip="Delete"
                       color="warn"
-                      (click)="DeleteSVO(VOForm, i)">
+                      (click)="DeleteSVO(VOForm, i, element)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

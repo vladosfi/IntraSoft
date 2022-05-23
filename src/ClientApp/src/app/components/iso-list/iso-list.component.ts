@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { Contact } from 'src/app/core/interfaces/Contact';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Department } from 'src/app/core/interfaces/Department';
 import { DepartmentService } from 'src/app/core/services/department.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
@@ -12,6 +11,7 @@ import { ModalDialogComponent } from '../dialog/modal/modal-dialog.component';
 import { FileService } from 'src/app/core/services/file.service';
 import { DialogComponent } from '../dialog/delete/dialog.component';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { IIsoService } from 'src/app/core/interfaces/IsoService';
 
 
 @Component({
@@ -27,19 +27,19 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
   ],
 })
 export class IsoListComponent implements OnInit {
-  departments: Department[] = [];
   columnsToDisplay: string[] = ['isoServiceNumber', 'isoServiceName', 'departments', 'action'];
   expandedElement: Department | null;
   VOForm: FormGroup;
+  @ViewChild(MatTable) table: MatTable<any>;
+  filterField = new FormControl('');
+  departments: Department[] = [];
 
 
-
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource();
   title = 'Услуги';
   isLoading = true;
   pathToFile = 'api/isofile';
   endPointPath = 'api/isoservice';
-
   pageNumber: number = 1;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -51,84 +51,81 @@ export class IsoListComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
-  ngOnInit(): void {
-
+  ngOnInit(): void {  
     this.departmentService.getAllWithIsoServices().subscribe(
       {
         next: (result) => {
           this.departments = result as Department[];
-          this.initiateTableData();
+          this.isLoading = false;
+          this.prepareDataSource();
         }
       });
   }
 
-  initiateTableData() {
-
-    this.VOForm = this.fb.group({
-      VORows: this.fb.array([]),
-    })
-
-    //const result = [].concat(...this.departments.map((item) => item.isoServices));
-     var result = this.departments.map(value =>
-       value.isoServices.map(child => Object.assign({ departmentId: value.id, departmentName: value.name }, child))
-    ).reduce((l, n) => l.concat(n), []);
-
-    //console.log(result);
-
-    this.VOForm = this.fb.group({
-      VORows: this.fb.array(
-        result.map((val) =>
-          this.fb.group({
-            departmentId:  new FormControl({ value: val.departmentId, disabled: true }),
-            isoServiceName: new FormControl(val.name),
-            isoServiceNumber: new FormControl(val.number),
-            isoServiceId: new FormControl(val.id),
-            isoFiles: new FormControl(val.isoFiles.map(f =>
-              <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })),
-            action: new FormControl('existingRecord'),
-            isEditable: new FormControl(true),
-            isNewRow: new FormControl(false),
-          }),
-        ),
-      ), //end of fb array
-    }) // end of form group cretation
-
-    // const result = [].concat(...this.departments.map((item) =>
-    //   item.isoServices.map((isoService) =>
-    //     Object.assign({}, item,
-    //       {
-    //         isoServiceName: isoService.name,
-    //         isoServiceNumber: isoService.number,
-    //         isoServiceId: isoService.id,
-    //         isoFiles: isoService.isoFiles.map(f =>
-    //           <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })
-    //       }
-    //     ))));
-    // this.dataSource.data = result;
-
-    this.isLoading = false;
-    //this.dataSource = new MatTableDataSource(this.dataSource.data);
-    this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
+  prepareDataSource(): void {
+    this.dataSource = this.getDataSource();
     this.dataSource.paginator = this.paginator;
     this.onPaginateChange(this.paginator, this.paginatorList);
 
-    // console.log(this.dataSource.data);
+    console.log(this.dataSource.data);
 
     const filterPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
       return filterPredicate.call(this.dataSource, data.value, filter);
     }
 
-  
+
     //this.dataSource.filter = 'оа';
     //this.dataSource.filter = '1011';
 
-          //Custom filter according to name column
+    //Custom filter according to name column
     // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
     //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
   }
 
+  getDataSource() {
+    
+    let data: IIsoService[] = [];
 
+    this.VOForm = this.fb.group({
+      VORows: this.fb.array([]),
+    })
+
+    //const result = [].concat(...this.departments.map((item) => item.isoServices));
+    let result = this.departments.map(value =>
+      value.isoServices.map(child => Object.assign({ departmentId: value.id, departmentName: value.name }, child))).reduce((l, n) => l.concat(n), []);
+
+      data = result.map((val) => Object.assign(
+      {
+        id: val.id,
+        departmentId: val.departmentId,
+        name: val.name,
+        number: val.number,
+        isoServiceId: val.id,
+        isoFiles: val.isoFiles.map(f =>
+          <IIsoFiles>{ id: f.id, filePath: f.filePath, categoryName: f.isoFileCategory.name })
+      }));
+
+    this.VOForm = this.fb.group({
+      VORows: this.fb.array(
+        data.map((val) =>
+          this.fb.group({
+            departmentId: new FormControl({ value: val.departmentId, disabled: true }),
+            isoServiceName: new FormControl(val.name),
+            isoServiceNumber: new FormControl(val.number),
+            isoServiceId: new FormControl(val.id),
+            isoFiles: new FormControl(val.isoFiles),
+            action: new FormControl('existingRecord'),
+            isEditable: new FormControl(true),
+            isNewRow: new FormControl(false),
+          }),
+        ),
+      ), 
+    }) 
+
+    //this.dataSource = new MatTableDataSource(this.dataSource.data);
+    return new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
+  }
 
   goToPage() {
     this.paginator.pageIndex = this.pageNumber - 1
@@ -181,7 +178,7 @@ export class IsoListComponent implements OnInit {
     // this.isEditableNew = true;
   }
 
-  SaveVO(event, VOFormElement, i) {
+  SaveVO(event, VOFormElement, i, element) {
     event.stopPropagation();
     VOFormElement.get('VORows').at(i).get('isEditable').patchValue(true);
     VOFormElement.get('VORows').at(i).get('departmentId').disable(false);
@@ -193,10 +190,12 @@ export class IsoListComponent implements OnInit {
     VOFormElement.get('VORows').at(i).get('departmentId').disable(false);
   }
 
-  deleteService(event, VOFormElement, i) {
+  deleteService(event, VOFormElement, i, element) {
     event.stopPropagation();
-    let serviceId = VOFormElement.get('VORows').at(i).value.isoServiceId;
-    let serviceName = VOFormElement.get('VORows').at(i).value.isoServiceName;
+    let serviceId = element.value.isoServiceId;
+    let serviceName = element.value.isoServiceName;
+    //console.log(this.dataSource.filteredData.indexOf(element))
+    console.log(i);
 
     if (!serviceId) {
       const data = this.dataSource.data;
@@ -205,15 +204,22 @@ export class IsoListComponent implements OnInit {
       return;
     }
 
-    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' }});
+    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
         this.fileService.deleteFile(serviceId, this.endPointPath)
           .subscribe({
             next: () => {
-              const data = this.dataSource.data;
-              data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
-              this.dataSource.data = data;
+              this.removeDepartment(serviceId);
+              // const data = this.dataSource.data;
+              // data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
+              // this.dataSource = new MatTableDataSource(data);
+              //this.isoService.splice(1);
+
+              this.dataSource.paginator = this.paginator;
+              this.onPaginateChange(this.paginator, this.paginatorList);
+              this.table.renderRows();
+              this.filterField.setValue(' ');
               this.snackbar.success('Услугата беше изтрита');
             },
             error: (error) => {
@@ -225,6 +231,11 @@ export class IsoListComponent implements OnInit {
       }
     });
   }
+
+  removeDepartment(id: number): void {
+    //this.dataSource = this.dataSource.data.filter(item => item.id != id);
+  }
+
 
 
 
