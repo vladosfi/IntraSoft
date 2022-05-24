@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+
+    <mat-list>
+        <mat-list-item>Услуга номер: {{data.serviceNumber}}</mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item title="{{data.serviceName}}">Име на услуга: {{data.serviceName}}
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </mat-list>
+
+
+    <form [formGroup]="form">
+        <div class="form-group">
+            <div class="cotainer">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>Файлове:</h2>
+                    </div>
+                    <div class="col-6 right">
+                        <button mat-raised-button (click)="addButtonCategory()">
+                            Добави фаил
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div formArrayName="buttonCategories">
+                        <div *ngFor="let quantity of buttonCategories().controls; let i = index "[formGroupName]="i">
+                            <div>
+                                <mat-divider></mat-divider>
+                                <upload-category ngDefaultControl [isoFileCategories]="this.isoFileCategories"
+                                    [isoServiceId]="data.serviceId" formControlName="buttonsWithCategory">
+                                </upload-category>
+
+                            </div>
+                            <div>
+                                <!-- <button (click)="removeButtonCategory(i)" class="btn btn-danger">
+                  Remove
+                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close cdkFocusInitial [mat-dialog-close]="true"
+        [mat-dialog-close]="data.serviceNumber" (click)="onCancelClick()">
+        Cancel
+    </button>
+</mat-dialog-actions>

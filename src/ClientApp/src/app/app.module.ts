@@ -24,9 +24,10 @@ import { UploadButtonComponent } from './components/upload-button/upload-button.
 import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
 import { IsoListComponent } from './components/iso-list/iso-list.component';
 import { DialogComponent } from './components/dialog/delete/dialog.component';
-import { UploadCategoryComponent } from './components/upload-category/upload-category.component';
+import { UploadFileWithCategoryComponent } from './components/upload-file-with-category/upload-file-with-category.component';
 import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AddFileComponent } from './components/dialog/add-file/add-file.component';
 
 
 
@@ -46,10 +47,11 @@ import { FooterComponent } from './components/footer/footer.component';
     DisableControlDirective,
     NotFoundComponent,
     UploadButtonComponent,
-    UploadCategoryComponent,
+    UploadFileWithCategoryComponent,
     EllipsifyMeDirective,
     IsoListComponent,
     FooterComponent,
+    AddFileComponent,
   ],
   entryComponents:[
     DialogComponent

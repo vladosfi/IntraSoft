@@ -8,10 +8,10 @@ import { IIsoFileCategory } from 'src/app/core/interfaces/IsoFileCategory';
 
 @Component({
   selector: 'upload-category',
-  templateUrl: './upload-category.component.html',
-  styleUrls: ['./upload-category.component.css']
+  templateUrl: './upload-file-with-category.component.html',
+  styleUrls: ['./upload-file-with-category.component.css']
 })
-export class UploadCategoryComponent implements OnInit {
+export class UploadFileWithCategoryComponent implements OnInit {
   fileInfoMessage = '';
   deleteButtonText: string;
   fileId: number;
@@ -36,6 +36,8 @@ export class UploadCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.deleteButtonText = this.file?.fileName;
     this.fileId = this.file?.id;
+
+    console.log(this.isoServiceId);
   }
 
   // At the file input element
@@ -67,9 +69,12 @@ export class UploadCategoryComponent implements OnInit {
       });
   }
 
-  uploadFile(file: any) {
+  onCategoryChange() {
+    this.isoFileCategoryId = this.form.controls['isoCategory'].value?.id;
+    console.log(this.isoFileCategoryId);
+ } 
 
-    this.isoFileCategoryId = this.form.controls['isoCategory'].value.id;
+  uploadFile(file: any) {
 
     if (file == undefined) {
       console.log("No file selected!");

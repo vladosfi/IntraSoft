@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Department } from '../interfaces/Department'
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,10 +15,11 @@ export class DepartmentService {
   ) {}
 
 
-  getAllWithIsoServices<Department>(): Observable<Department> {
+  getAllWithIsoServices(): Observable<Department[]> {
     var params = new HttpParams();
-    
-    return this.http.get<Department>(this.endPoint + '/GetAllWithIsoServices', { params });
+
+    return this.http.get<Department[]>(this.endPoint + '/GetAllWithIsoServices', { params })
+      .pipe(map(result => result as Department[]));
   }
 
   getData<Department>(): Observable<Department> {

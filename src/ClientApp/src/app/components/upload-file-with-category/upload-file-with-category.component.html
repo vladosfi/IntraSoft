@@ -4,7 +4,7 @@
           <label for="isoCategory">Категория за файл:</label>
           <mat-form-field class="full-width" appearance="fill">
             <mat-label>Изберете категория за фаила</mat-label>
-            <mat-select formControlName="isoCategory" required>
+            <mat-select formControlName="isoCategory" (selectionChange)="onCategoryChange()">
               <mat-option>--</mat-option>
               <mat-option
                 *ngFor="let isoFileCategory of isoFileCategories"
@@ -15,7 +15,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-6">
+        <div *ngIf="!!isoFileCategoryId" class="col-6">
           <div [ngClass]="fileId == null ? 'show' : 'hide'" class="form-group">
             <label for="file">Файл:</label>
             <input

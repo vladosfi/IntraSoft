@@ -2,7 +2,7 @@ h1 {
   text-align: center;
 }
 
-a{
+a {
   cursor: pointer;
 }
 
@@ -16,20 +16,22 @@ table th {
 }
 
 .table>:not(:first-child) {
-  border-top: 1px solid #3498DB;;
+  border-top: 1px solid #3498DB;
+  ;
 }
 
-table tbody td{
+table tbody td {
   font-size: 14px;
   vertical-align: baseline;
+  padding-top: 0;
 }
 
 table tbody tr:hover {
-  background-color: #F0F0F0;
+  background-color: #FAFAFA;
 }
 
-.element-detail th{
-  color: rgba(0,0,0,.54);
+.element-detail th {
+  color: rgba(0, 0, 0, .54);
   font-size: 12px;
 }
 
@@ -65,17 +67,18 @@ tr.element-row:not(.expanded-row):active {
   text-align: center;
   font-weight: bold;
 }
-.element-name{
+
+.element-name {
   height: 60px;
 }
 
-.element-name::before{
+.element-name::before {
   content: '\0023';
 }
 
 .mat-column-isoServicenumber {
-  
-  padding-right: 15px; 
+
+  padding-right: 15px;
   text-align: center;
   width: 5%;
   color: #3498DB;
@@ -101,13 +104,18 @@ tr.element-row:not(.expanded-row):active {
 }
 
 .element-description {
-  padding: 16px;
+  padding-bottom: 5px;
 }
 
-.element-description-attribution {
-  text-align: right;
+.element-description-attribut {
   opacity: 0.5;
   text-decoration: underline;
+  flex-grow: 1;
+  margin-bottom: auto;
+}
+
+.element-description-button {
+  text-align: right;
 }
 
 .mat-form-field {
@@ -125,18 +133,21 @@ tr.element-row:not(.expanded-row):active {
   color: #3498DB;
 }
 
-.mat-elevation-z8 > button {
+.mat-elevation-z8>button {
   float: right;
-  border-color: #3498DB;
-  padding: 5px 5px 0px 5px;
-  font-size: 14px;
+  padding: 0px 0px 0px 0px;
+  border: #3498DB 1px solid;
+  border-radius: 3px;
+  border-spacing: 10px;
+  font-size: 0px;
+  margin: 3px;
 }
 
-  .mat-elevation-z8 > button::after {
-    content: "";
-    display: block;
-    clear: both;
-  }
+.mat-elevation-z8>button::after {
+  content: "";
+  display: block;
+  clear: both;
+}
 
 .mat-paginator-range-label {
   display: none;
@@ -147,6 +158,7 @@ tr.element-row:not(.expanded-row):active {
   color: rgb(255, 255, 255);
   /* background-color: white; */
 }
+
 /* Font color */
 input.mat-input-element {
   color: rgb(0, 0, 0);
@@ -161,7 +173,7 @@ input.mat-input-element {
 
 
 /* Structure */
-th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type{
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
   padding-left: 15px;
 }
 
@@ -173,40 +185,38 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   color: rgb(125, 125, 125) !important;
 }
 
-.mat-select-value{
+.mat-select-value {
   cursor: pointer;
 }
 
-mat-form-field input{
+mat-form-field input {
   cursor: pointer;
 }
 
-.mat-raised-button{
- width: 100%; 
+.mat-button {
+  width: 100%;
 }
 
-.mat-raised-button:hover{
-  background-color: #3498DB;
+.element-description.container{
+  padding-top: 10px;
 }
 
-
-
-.mat-form-field-appearance-legacy{
+.mat-form-field-appearance-legacy {
   cursor: text;
 }
 
-::ng-deep td .mat-form-field-wrapper{
+::ng-deep td .mat-form-field-wrapper {
   padding-bottom: 0 !important;
 }
 
-::ng-deep td .mat-form-field-infix{
+::ng-deep td .mat-form-field-infix {
   /* border-top: 0; */
 }
 
 ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
   padding: 1.1em 0 1.4em 0;
 }
-::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix{
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
   /* padding-top: 10px; */
 }
-

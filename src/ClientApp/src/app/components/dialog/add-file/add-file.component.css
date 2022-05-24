@@ -1,0 +1,58 @@
+mat-button-toggle-group, mat-form-field{
+    /* width: 100%; */
+}
+
+mat-button {
+    flex-grow: 2;
+    border: none;
+}
+
+
+.mat-list-base .mat-list-item{
+    min-height: 30px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.form-group {
+    padding-top: 5px;
+    margin-top: 10px;
+  }
+  
+  .margin-left mat-radio-button:not(:first-child) {
+    margin-left: 10px;
+  }
+  
+  .form-container {
+    margin: 100px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+
+.form-grup-viewer-title{
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 8px 8px 8px 16px;
+}
+mat-dialog-content{
+  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 20%), 0px 0px 1px 1px rgb(0 0 0 / 4%), 0px 3px 1px 2px rgb(0 0 0 / -3%);
+  padding-bottom: 20px;
+}
+
+mat-dialog-actions{
+  display: flex; justify-content: flex-end
+}
+
+.right{
+text-align: end;
+}
+
+mat-divider{
+  padding-bottom: 10px;
+}
