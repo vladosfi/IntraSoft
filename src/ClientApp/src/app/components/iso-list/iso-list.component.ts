@@ -210,16 +210,9 @@ export class IsoListComponent implements OnInit {
         this.fileService.deleteFile(serviceId, this.endPointPath)
           .subscribe({
             next: () => {
-              this.removeDepartment(serviceId);
-              // const data = this.dataSource.data;
-              // data.splice((this.paginator.pageIndex * this.paginator.pageSize) + i, 1);
-              // this.dataSource = new MatTableDataSource(data);
-              //this.isoService.splice(1);
-
-              this.dataSource.paginator = this.paginator;
-              this.onPaginateChange(this.paginator, this.paginatorList);
+              this.removeDepartment(element);
               this.table.renderRows();
-              this.filterField.setValue(' ');
+              
               this.snackbar.success('Услугата беше изтрита');
             },
             error: (error) => {
@@ -232,12 +225,9 @@ export class IsoListComponent implements OnInit {
     });
   }
 
-  removeDepartment(id: number): void {
-    //this.dataSource = this.dataSource.data.filter(item => item.id != id);
+  removeDepartment(element: any): void {
+    this.dataSource.data = this.dataSource.data.filter(item => item != element);
   }
-
-
-
 
 
   paginatorList: HTMLCollectionOf<Element>;
