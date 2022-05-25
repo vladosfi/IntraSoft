@@ -23,11 +23,11 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
 import { EllipsifyMeDirective } from './core/directives/ellipsify-me.directive';
 import { IsoListComponent } from './components/iso-list/iso-list.component';
-import { DialogComponent } from './components/dialog/delete/dialog.component';
 import { UploadFileWithCategoryComponent } from './components/upload-file-with-category/upload-file-with-category.component';
 import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AddFileComponent } from './components/dialog/add-file/add-file.component';
+import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
 
 
 
@@ -41,7 +41,7 @@ import { AddFileComponent } from './components/dialog/add-file/add-file.componen
     MenuItemAMComponent,
     MenuComponent,
     SingleMenuItemComponent,
-    DialogComponent,
+    DeleteDialogComponent,
     ModalDialogComponent,
     ContactComponent,
     DisableControlDirective,
@@ -54,7 +54,7 @@ import { AddFileComponent } from './components/dialog/add-file/add-file.componen
     AddFileComponent,
   ],
   entryComponents:[
-    DialogComponent
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

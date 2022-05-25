@@ -4,7 +4,8 @@
 html,
 body {
   margin: 0;
-  height: 100%;
+  padding: 0;
+  min-height: 100%;
   background-color: #fafafa;
 }
 
@@ -15,6 +16,7 @@ body {
 body .container {
   padding: 0;
 }
+
 
 main {
   /*margin: 0 auto;

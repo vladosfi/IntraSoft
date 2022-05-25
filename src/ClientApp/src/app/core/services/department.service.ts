@@ -22,9 +22,11 @@ export class DepartmentService {
       .pipe(map(result => result as Department[]));
   }
 
-  getData<Department>(): Observable<Department> {
+  getData<Department>(): Observable<Department[]> {
     var params = new HttpParams();
-    return this.http.get<Department>(this.endPoint, { params });
+
+    return this.http.get<Department[]>(this.endPoint, { params })
+    .pipe(map(result => result as Department[]));
   }
 
   deleteDepartmentItem(departmentId: number): any {

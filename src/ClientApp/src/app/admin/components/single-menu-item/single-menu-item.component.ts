@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MenuService } from 'src/app/core/services/menu.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
 import { ShareNavigationDataService } from '../../../core/services/share-navigation-data.service';
-import { DialogComponent } from 'src/app/components/dialog/delete/dialog.component';
+import { DeleteDialogComponent } from 'src/app/components/dialog/delete/delete-dialog.component';
 
 
 @Component({
@@ -92,7 +92,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Are you sure you want to delete menu ' + this.currentMenu.text + '?' } });
+    let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Are you sure you want to delete menu ' + this.currentMenu.text + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
         var res = this.menuService.deleteMenuItem(this.currentMenu.id)

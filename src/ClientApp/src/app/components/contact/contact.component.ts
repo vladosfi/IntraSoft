@@ -15,7 +15,7 @@ import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
-import { DialogComponent } from '../dialog/delete/dialog.component'
+import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
 
 
 @Component({
@@ -26,7 +26,7 @@ import { DialogComponent } from '../dialog/delete/dialog.component'
 export class ContactComponent implements OnInit {
   contacts: Contact[] = [];
   departments: Department[] = [];
-  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email','departments', 'action'];
+  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email', 'departments', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
   isLoading = true;
@@ -45,15 +45,16 @@ export class ContactComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
-    this.departmentService.getData().subscribe(
+    this.departmentService.getData<Department>().subscribe(
       {
         next: (result) => {
-          this.departments = result as Department[];
+          this.departments = result;
           this.getContacts();
         }
-      });    
+      });
   }
+
+
 
   getContacts() {
     this.contactService.getData().subscribe((result) => {
@@ -157,7 +158,7 @@ export class ContactComponent implements OnInit {
   SaveVO(VOFormElement, i) {
     let contact = this.generateContact(VOFormElement, i);
     let recordType = VOFormElement.get('VORows').at(i).get('action').value;
-    
+
     if (contact === null) {
       return;
     }
@@ -199,7 +200,7 @@ export class ContactComponent implements OnInit {
       return;
     }
 
-    let dialogRef = this.dialog.open(DialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете контакт: ' + fullName + '?' } });
+    let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете контакт: ' + fullName + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
         this.contactService.deleteContactItem(id)
@@ -232,7 +233,7 @@ export class ContactComponent implements OnInit {
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout((idx) => {
       let from = (paginator.pageSize * paginator.pageIndex) + 1;
-      
+
       let to = (paginator.length < paginator.pageSize * (paginator.pageIndex + 1))
         ? paginator.length
         : paginator.pageSize * (paginator.pageIndex + 1);

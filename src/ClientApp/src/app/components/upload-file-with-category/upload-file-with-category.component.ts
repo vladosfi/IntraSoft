@@ -36,8 +36,6 @@ export class UploadFileWithCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.deleteButtonText = this.file?.fileName;
     this.fileId = this.file?.id;
-
-    console.log(this.isoServiceId);
   }
 
   // At the file input element
@@ -71,7 +69,6 @@ export class UploadFileWithCategoryComponent implements OnInit {
 
   onCategoryChange() {
     this.isoFileCategoryId = this.form.controls['isoCategory'].value?.id;
-    console.log(this.isoFileCategoryId);
  } 
 
   uploadFile(file: any) {

@@ -44,6 +44,8 @@ export class AddFileComponent implements OnInit {
       buttonCategories: this.fb.array([]),
       // isoFileCategory: new FormControl('', Validators.required),
     });
+
+    this.addButtonCategory();
   }
 
   buttonCategories(): FormArray {

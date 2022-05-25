@@ -24,10 +24,15 @@ table tbody td {
   font-size: 14px;
   vertical-align: baseline;
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 table tbody tr:hover {
   background-color: #FAFAFA;
+}
+
+table thead tr th {
+  width: 50%;
 }
 
 .element-detail th {

@@ -1,15 +1,6 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
+<h5>{{data.serviceName}}</h5>
 <mat-dialog-content>
-
-    <mat-list>
-        <mat-list-item>Услуга номер: {{data.serviceNumber}}</mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item title="{{data.serviceName}}">Име на услуга: {{data.serviceName}}
-        </mat-list-item>
-        <mat-divider></mat-divider>
-    </mat-list>
-
-
     <form [formGroup]="form">
         <div class="form-group">
             <div class="cotainer">
@@ -50,6 +41,6 @@
 <mat-dialog-actions>
     <button mat-raised-button mat-dialog-close cdkFocusInitial [mat-dialog-close]="true"
         [mat-dialog-close]="data.serviceNumber" (click)="onCancelClick()">
-        Cancel
+        OK
     </button>
 </mat-dialog-actions>

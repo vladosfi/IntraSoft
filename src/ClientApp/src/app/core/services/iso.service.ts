@@ -20,6 +20,11 @@ export class IsoService {
     return currentIsoService;
   }
 
+  getIsoServiceById<IIsoService>(id: number): Observable<IIsoService> {
+    var params = new HttpParams();
+    return this.http.get<IIsoService>(this.endPoint + '/' + id, { params }).pipe(map(result => result as IIsoService));
+  }
+
   getIsoFileCategoryServices<IsoFileCategory>(): Observable<IsoFileCategory> {
     var currentIsoFileCategory = this.http.get<IsoFileCategory>(this.baseUrl + 'api/isofilecategory');
     return currentIsoFileCategory;
@@ -33,7 +38,7 @@ export class IsoService {
     return this.http.put(this.endPoint + `/${isoServiceItem.id}`, isoServiceItem);
   }
 
-  createIsoItem(isoItem: IIsoService): any {    
+  createIsoItem(isoItem: IIsoService): any {
     return this.http.post(this.endPoint, isoItem);
   }
 }

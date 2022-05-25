@@ -6,12 +6,12 @@ import { Department } from 'src/app/core/interfaces/Department';
 import { DepartmentService } from 'src/app/core/services/department.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ModalDialogComponent } from '../dialog/modal/modal-dialog.component';
 import { FileService } from 'src/app/core/services/file.service';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IIsoService } from 'src/app/core/interfaces/IsoService';
 import { IsoService } from 'src/app/core/services/iso.service';
 import { AddFileComponent } from '../dialog/add-file/add-file.component';
+import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component';
 
 
 @Component({
@@ -56,7 +56,7 @@ export class IsoListComponent implements OnInit {
 
     this.VOForm = this.fb.group({
       VORows: this.fb.array([]),
-    })
+    });
 
     this.departmentService.getAllWithIsoServices().subscribe(
       {
@@ -67,6 +67,7 @@ export class IsoListComponent implements OnInit {
         }
       });
   }
+
 
   prepareDataSource(): void {
     let data: IIsoService[] = [];
@@ -89,8 +90,6 @@ export class IsoListComponent implements OnInit {
     this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
       return filterPredicate.call(this.dataSource, data.value, filter);
     }
-
-
     //this.dataSource.filter = 'оа';
     //Custom filter according to name column
     // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
@@ -160,15 +159,12 @@ export class IsoListComponent implements OnInit {
   }
 
  editSVO(event, element) {
-    event.stopPropagation();
     element.get("isEditable").patchValue(false);
     element.get("departmentId").enable(true);
     // this.isEditableNew = true;
   }
 
   saveVO(event, element) {
-    event.stopPropagation();
-
     if (element.status !== 'VALID') {
       this.snackbar.error('Невалидни данни!');
       return;
@@ -204,7 +200,6 @@ export class IsoListComponent implements OnInit {
   }
 
   deleteService(event, element) {
-    event.stopPropagation();
     let serviceId = element.value.isoServiceId;
     let serviceName = element.value.isoServiceName;
     //console.log(this.dataSource.filteredData.indexOf(element))
@@ -216,7 +211,7 @@ export class IsoListComponent implements OnInit {
       return;
     }
 
-    let dialogRef = this.dialog.open(AddFileComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' } });
+    let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете услугата: ' + serviceName + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
         this.fileService.deleteFile(serviceId, this.endPointPath)
@@ -236,8 +231,6 @@ export class IsoListComponent implements OnInit {
   }
 
   cancelSVO(event, element) {
-    event.stopPropagation();
-
     element.get("departmentId").disable(false);
     element.get("isEditable").patchValue(true);
   }
@@ -251,7 +244,7 @@ export class IsoListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddFileComponent, {
       width: '50%',
       data: { 
-        title: 'Добавяне на файл', 
+        title: `Добавяне на файл за услуга номер ${element.value.isoServiceNumber}`, 
         serviceNumber: element.value.isoServiceNumber, 
         serviceName: element.value.isoServiceName,
         serviceId: element.value.isoServiceId },
@@ -260,9 +253,24 @@ export class IsoListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log("result: " + JSON.stringify(result));
       console.log('The dialog was closed');
+      this.updateServiceItem(element);
     });
   }
+
+  expandRow(event, element){
+    if(!element.get("isEditable").value){
+      event.stopPropagation();
+    }    
+  }
   
+  private updateServiceItem(element){
+    let isoServiceId = element.value.isoServiceId;
+    this.isoService.getIsoServiceById<IIsoService>(isoServiceId)
+      .subscribe(result => {
+        element.get("isoFiles").patchValue(result.isoFiles);
+      });
+  }
+
   private generateServiceElement(element) {
     return Object.assign({},
       {
