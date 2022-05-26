@@ -70,7 +70,7 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td (click)="$event.stopPropagation()" mat-cell *matCellDef="let element; let i = dataIndex">
             <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
-              (click)="saveVO($event, element)" *ngIf="!VOForm.get('VORows').value[i].isEditable"
+              (click)="saveVO(element)" *ngIf="!VOForm.get('VORows').value[i].isEditable"
               color="primary">
               <mat-icon>check_circle</mat-icon>
             </button>
@@ -81,12 +81,12 @@
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
-              color="warn" (click)="cancelSVO($event, element)" *ngIf="!VOForm.get('VORows').value[i].isEditable">
+              color="warn" (click)="cancelSVO(element)" *ngIf="!VOForm.get('VORows').value[i].isEditable">
               <mat-icon>cancel</mat-icon>
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu delete-button" matTooltip="Delete"
-              color="warn" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="deleteService($event, element)">
+              color="warn" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="deleteService(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

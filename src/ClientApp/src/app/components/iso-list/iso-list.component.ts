@@ -164,7 +164,7 @@ export class IsoListComponent implements OnInit {
     // this.isEditableNew = true;
   }
 
-  saveVO(event, element) {
+  saveVO(element) {
     if (element.status !== 'VALID') {
       this.snackbar.error('Невалидни данни!');
       return;
@@ -199,7 +199,7 @@ export class IsoListComponent implements OnInit {
     }
   }
 
-  deleteService(event, element) {
+  deleteService(element) {
     let serviceId = element.value.isoServiceId;
     let serviceName = element.value.isoServiceName;
     //console.log(this.dataSource.filteredData.indexOf(element))
@@ -230,7 +230,7 @@ export class IsoListComponent implements OnInit {
     });
   }
 
-  cancelSVO(event, element) {
+  cancelSVO(element) {
     element.get("departmentId").disable(false);
     element.get("isEditable").patchValue(true);
   }

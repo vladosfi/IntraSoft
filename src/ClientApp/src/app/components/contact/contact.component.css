@@ -60,7 +60,6 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 }
 
 
-
 .mat-select {
   width: 95% !important;
   min-width: 95% !important;
@@ -81,6 +80,7 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   color: #3498DB;
 }
 
+
 .mat-elevation-z8 > button {
   float: right;
   border-color: #3498DB;
@@ -98,6 +98,7 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   display: none;
 }
 
+
 /* Border */
 .mat-form-field-appearance-outline .mat-form-field-outline {
   color: rgb(255, 255, 255);
@@ -111,6 +112,7 @@ input.mat-input-element {
 .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
   color: #3498DB;
 }
+
 
 
 ::ng-deep td .mat-form-field-wrapper{

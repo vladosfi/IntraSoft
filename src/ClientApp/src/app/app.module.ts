@@ -28,6 +28,7 @@ import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.com
 import { FooterComponent } from './components/footer/footer.component';
 import { AddFileComponent } from './components/dialog/add-file/add-file.component';
 import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
+import { fullNameValidDirective } from './shared/full-name-validator.directive';
 
 
 
@@ -52,6 +53,7 @@ import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.
     IsoListComponent,
     FooterComponent,
     AddFileComponent,
+    fullNameValidDirective
   ],
   entryComponents:[
     DeleteDialogComponent

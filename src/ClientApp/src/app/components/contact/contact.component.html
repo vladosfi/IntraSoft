@@ -22,7 +22,7 @@
              [(ngModel)]="pageNumber"
              (ngModelChange)="goToPage()" />
     </mat-form-field>
-    <form [formGroup]="VOForm" autocomplete="off" *ngIf="this.VOForm">
+    <form [formGroup]="VOForm" autocomplete="off" *ngIf="VOForm">
       <ng-container formArrayName="VORows">
         <table #table
                mat-table
@@ -51,7 +51,17 @@
                 <input matInput
                        type="text"
                        formControlName="fullName"
-                       [readonly]="VOForm.get('VORows').value[i].isEditable" />
+                       [readonly]="VOForm.get('VORows').value[i].isEditable" 
+                       fullNameValid/>
+                       <mat-error *ngIf="element?.invalid">  
+                        <!-- <div>{{element.error | json}}</div> -->
+                        <div *ngIf="element.get('fullName')?.hasError('fullNameValidator')">Въведете две или три имена</div>     
+                        <div *ngIf="element.get('fullName')?.errors?.fullNameValidator">Въведете две или три имена</div>         
+
+                        <div *ngIf="element.get('fullName')?.hasError('required')">Полето е задължително</div>  
+                                     <!-- element.get('fullName')?.errors?.fullNameValidator -->
+
+                    </mat-error> 
               </mat-form-field>
               <!-- </span> -->
             </td>
@@ -72,6 +82,7 @@
                        type="text"
                        formControlName="phone"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" />
+                       <mat-error>Полето е задължително</mat-error>
               </mat-form-field>
               <!-- </span> -->
             </td>
@@ -123,7 +134,7 @@
               <button mat-icon-button
                       class="material-icons app-toolbar-menu save-button"
                       matTooltip="Save Changes"
-                      (click)="SaveVO(VOForm, i)"
+                      (click)="saveVO(element)"
                       *ngIf="!VOForm.get('VORows').value[i].isEditable"
                       color="primary">
                 <mat-icon>check_circle</mat-icon>
@@ -133,7 +144,7 @@
                       class="material-icons app-toolbar-menu cancel-button"
                       matTooltip="Cancel Changes"
                       color="warn"
-                      (click)="CancelSVO(VOForm, i)"
+                      (click)="cancelSVO(element)"
                       *ngIf="!VOForm.get('VORows').value[i].isEditable">
                 <mat-icon>cancel</mat-icon>
               </button>
@@ -152,7 +163,7 @@
                       *ngIf="VOForm.get('VORows').value[i].isEditable"
                       matTooltip="Delete"
                       color="warn"
-                      (click)="DeleteSVO(VOForm, i, element)">
+                      (click)="deleteSVO(element)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
