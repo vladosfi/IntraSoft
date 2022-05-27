@@ -28,7 +28,8 @@ import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.com
 import { FooterComponent } from './components/footer/footer.component';
 import { AddFileComponent } from './components/dialog/add-file/add-file.component';
 import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
-import { fullNameValidDirective } from './shared/full-name-validator.directive';
+import { fullNameValidatorDirective } from './shared/full-name-validator.directive';
+import {IMaskModule} from 'angular-imask';
 
 
 
@@ -53,7 +54,7 @@ import { fullNameValidDirective } from './shared/full-name-validator.directive';
     IsoListComponent,
     FooterComponent,
     AddFileComponent,
-    fullNameValidDirective
+    fullNameValidatorDirective,
   ],
   entryComponents:[
     DeleteDialogComponent
@@ -66,6 +67,7 @@ import { fullNameValidDirective } from './shared/full-name-validator.directive';
     RoutingModule,
     ReactiveFormsModule,
     MaterialModule,
+    IMaskModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },

@@ -1,17 +1,17 @@
-import {Directive} from '@angular/core';
+import {Directive, Input} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator} from '@angular/forms';
-import { fullNameValidator } from './full-name-validator.validator';
+import { fullNameValidator } from './validators';
+
 
 @Directive({
     selector: "[fullNameValid]",
     providers: [{
         provide: NG_VALIDATORS,
-        useExisting:fullNameValidDirective,
+        useExisting:fullNameValidatorDirective,
         multi: true
     }]
 })
-export class fullNameValidDirective implements Validator {
-
+export class fullNameValidatorDirective implements Validator {
     validate(control: AbstractControl): ValidationErrors | null {
         return fullNameValidator()(control);
     }

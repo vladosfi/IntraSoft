@@ -50,17 +50,13 @@
               ">
                 <input matInput
                        type="text"
+                       
                        formControlName="fullName"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" 
                        fullNameValid/>
                        <mat-error *ngIf="element?.invalid">  
                         <!-- <div>{{element.error | json}}</div> -->
-                        <div *ngIf="element.get('fullName')?.hasError('fullNameValidator')">Въведете две или три имена</div>     
-                        <div *ngIf="element.get('fullName')?.errors?.fullNameValidator">Въведете две или три имена</div>         
-
-                        <div *ngIf="element.get('fullName')?.hasError('required')">Полето е задължително</div>  
-                                     <!-- element.get('fullName')?.errors?.fullNameValidator -->
-
+                        <div *ngIf="element.get('fullName')?.errors?.['fullNameValid']">Въведете две или три имена</div>
                     </mat-error> 
               </mat-form-field>
               <!-- </span> -->
@@ -79,10 +75,17 @@
                 VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
               ">
                 <input matInput
+                      [imask]="{mask: '000 000 00 00'}"  
+                      [unmask]="true"  
+                      (accept)="onAccept" 
+                      (complete)="onComplete"
                        type="text"
                        formControlName="phone"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" />
-                       <mat-error>Полето е задължително</mat-error>
+                       <mat-error *ngIf="element?.invalid">  
+                         <div *ngIf="element.get('phone')?.errors?.pattern || element.get('phone')?.errors?.maxlength || element.get('phone')?.errors?.minlength">Въведете 9 до 10 цифри</div>
+                        <!-- <div *ngIf="element.get('phone')?.hasError('required')">Полето е задължително</div>   -->
+                    </mat-error> 
               </mat-form-field>
               <!-- </span> -->
             </td>
@@ -102,7 +105,8 @@
                        type="text"
                        formControlName="email"
                        [readonly]="VOForm.get('VORows').value[i].isEditable" />
-                       <mat-error *ngIf="emailFormControl?.hasError('email')">
+                       <mat-error *ngIf="element?.invalid">
+                          <div *ngIf="element.get('email')?.errors?.email">Невалиден e-mail</div>
                       </mat-error>
               </mat-form-field>
               <!-- </span> -->
@@ -122,6 +126,9 @@
                             formControlName="departmentId" placeholder="{{departmentId}}">
                   <mat-option *ngFor="let dep of departments; index as i;" [value]="dep.id"> {{dep.name}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="element?.invalid">
+                  <div *ngIf="element.get('departmentId')?.errors?.required">Въведете дирекция</div>
+              </mat-error>
               </mat-form-field>
             </td>
           </ng-container>

@@ -5,6 +5,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog'
@@ -13,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table'
 import { Department } from 'src/app/core/interfaces/Department'
 import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
-import { fullNameValidator } from 'src/app/shared/full-name-validator.validator'
+import { fullNameValidator } from 'src/app/shared/validators'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
 import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
@@ -169,7 +170,7 @@ export class ContactComponent implements OnInit {
     this.snackbar.infoWitHide('Въведете трите имена');
 
     let contact = this.generateContact(element);
-    if(contact === null) return;
+    if (contact === null) return;
 
     let recordType = element.value.action;
 
@@ -242,7 +243,7 @@ export class ContactComponent implements OnInit {
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout((idx) => {
       let from = (paginator.pageSize * paginator.pageIndex) + 1;
-
+      
       let to = (paginator.length < paginator.pageSize * (paginator.pageIndex + 1))
         ? paginator.length
         : paginator.pageSize * (paginator.pageIndex + 1);
@@ -258,15 +259,15 @@ export class ContactComponent implements OnInit {
   }
 
 
-  private initiateVOForm(): FormGroup {
+
+
+  initiateVOForm(): FormGroup {
     return this.fb.group({
       id: new FormControl(),
-      //fullName: new FormControl('', [Validators.required] ),
-      //fullName: new FormControl('', [Validators.required, fullNameValidator]),
       fullName: new FormControl('', [Validators.required, fullNameValidator()]),
-      phone: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required,  Validators.email]),
-      departmentId: new FormControl('',Validators.required),
+      phone: new FormControl('', [ Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(9), Validators.maxLength(10)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      departmentId: new FormControl('', Validators.required),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
