@@ -77,7 +77,7 @@
             {
                 return this.NotFound();
             }
-
+            
             this.mapper.Map(contactUpdateDto, contactItemFromRepo);
             this.contactService.Update(contactItemFromRepo);
             await this.contactService.SaveChangesAsync();

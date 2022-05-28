@@ -47,7 +47,7 @@ export class ContactComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.departmentService.getData<Department>().subscribe(
+    this.departmentService.getAllDepartments().subscribe(
       {
         next: (result) => {
           this.departments = result;
@@ -277,6 +277,11 @@ export class ContactComponent implements OnInit {
 
   private generateContact(element): Contact {
     let names = element.value.fullName.trim().split(/[\s,]+/);
+
+    if (names.length === 2)  {
+      names.push(names[1]);
+      names[1] = '';
+    }
 
     return {
       id: element.value.id,

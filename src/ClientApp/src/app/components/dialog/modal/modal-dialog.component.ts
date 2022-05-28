@@ -74,7 +74,7 @@ export class ModalDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.departmentService.getData().subscribe(
+    this.departmentService.getAllDepartments().subscribe(
       {
         next: (result) => {
           this.departments = result as Department[];

@@ -14,6 +14,7 @@
     public class DepartmentService : IDepartmentService
     {
         private readonly IDeletableEntityRepository<Department> departmentRepo;
+        private const int EXCLUDED_DIRECTION_DEPARTMENT_ID = 1;
 
         public DepartmentService(
             IDeletableEntityRepository<Department> departmentRepo
@@ -29,22 +30,22 @@
             return departmentItem.Id;
         }
 
-        public async Task<IEnumerable<T>> GetAllWithIsoServicesAsync<T>()
-        {
-            IQueryable<Department> query =
-                this
-                    .departmentRepo
-                    .All()
-                    .OrderByDescending(x => x.Id)
-                    .Take(3)
-                    .Include(i => i.IsoServices)
-                        .ThenInclude(f => f.IsoFiles)
-                            .ThenInclude(c => c.IsoFileCategory)
-                    .AsSplitQuery()
-                    .AsNoTracking();
+        // public async Task<IEnumerable<T>> GetAllWithIsoServicesAsync<T>()
+        // {
+        //     IQueryable<Department> query =
+        //         this
+        //             .departmentRepo
+        //             .All()
+        //             .OrderByDescending(x => x.Id)
+        //             .Take(3)
+        //             .Include(i => i.IsoServices)
+        //                 .ThenInclude(f => f.IsoFiles)
+        //                     .ThenInclude(c => c.IsoFileCategory)
+        //             .AsSplitQuery()
+        //             .AsNoTracking();
 
-            return await query.To<T>().ToListAsync();
-        }
+        //     return await query.To<T>().ToListAsync();
+        // }
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
@@ -52,6 +53,20 @@
                 this
                     .departmentRepo
                     .All()
+                    .OrderBy(x => x.Id)
+                    .AsSplitQuery()
+                    .AsNoTracking();
+
+            return await query.To<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllWithoutDirectionDepartmentAsync<T>()
+        {
+            IQueryable<Department> query =
+                this
+                    .departmentRepo
+                    .All()
+                    .Where(d => d.Id != EXCLUDED_DIRECTION_DEPARTMENT_ID)
                     .OrderBy(x => x.Id)
                     .AsSplitQuery()
                     .AsNoTracking();

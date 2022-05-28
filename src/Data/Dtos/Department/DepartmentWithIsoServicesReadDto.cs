@@ -8,16 +8,16 @@
 
     public class DepartmentWithIsoServicesReadDto : IMapFrom<Department>, IMapTo<Department>
     {
-        DepartmentWithIsoServicesReadDto(){
-            this.IsoServices = new HashSet<IsoServiceReadDto>();
-        }
+        // DepartmentWithIsoServicesReadDto(){
+        //     this.IsoServices = new HashSet<IsoServiceReadDto>();
+        // }
         
-        public int Id { get; set; }
+        // public int Id { get; set; }
 
-        public string Name { get; set; }
+        // public string Name { get; set; }
 
-        public string Description { get; set; }
+        // public string Description { get; set; }
 
-        public virtual ICollection<IsoServiceReadDto> IsoServices { get; set; }
+        // public virtual ICollection<IsoServiceReadDto> IsoServices { get; set; }
     }
 }

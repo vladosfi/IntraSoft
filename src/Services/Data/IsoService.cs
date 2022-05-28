@@ -20,7 +20,7 @@
         {
             IQueryable<IntraSoft.Data.Models.IsoService> query = this.isoServiceRepo
                 .All()
-                .OrderBy(x => x.Id)
+                .OrderBy(x => x.DepartmentId)
                 .Include(i => i.IsoFiles)
                     .ThenInclude(c => c.IsoFileCategory)                    
                 .AsSplitQuery()

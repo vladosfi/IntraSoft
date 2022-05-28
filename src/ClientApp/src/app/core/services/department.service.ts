@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core'
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Department } from '../interfaces/Department'
 import { map } from 'rxjs/operators';
@@ -12,21 +12,30 @@ export class DepartmentService {
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
-  ) {}
+  ) { }
 
 
-  getAllWithIsoServices(): Observable<Department[]> {
+  // getAllWithIsoServices(): Observable<Department[]> {
+  //   var params = new HttpParams();
+
+  // let data = this.http.get<Department[]>(this.endPoint + '/GetAllWithIsoServices', { params })
+  //     .pipe(map(result => result as Department[]));
+
+  // data = this.departments.map(val =>
+  //   val.isoServices.map(svc =>
+  //     Object.assign({ departmentId: val.id }, svc)))
+  //   .reduce((l, n) => l.concat(n), []);
+  //return data;
+  // }
+
+  getAllDepartments(withoutDirectionDepartment: boolean = false): Observable<Department[]> {
     var params = new HttpParams();
+    //const headers = new HttpHeaders().set('withoutDirectionDepartment', "true");
 
-    return this.http.get<Department[]>(this.endPoint + '/GetAllWithIsoServices', { params })
+    params = params.append('withoutDirectionDepartment', withoutDirectionDepartment);
+
+    return this.http.get<Department[]>(this.endPoint, {params})
       .pipe(map(result => result as Department[]));
-  }
-
-  getData<Department>(): Observable<Department[]> {
-    var params = new HttpParams();
-
-    return this.http.get<Department[]>(this.endPoint, { params })
-    .pipe(map(result => result as Department[]));
   }
 
   deleteDepartmentItem(departmentId: number): any {

@@ -14,10 +14,11 @@ export class IsoService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getIsoServices<IIsoService>(): Observable<IIsoService> {
+  getIsoServices(): Observable<IIsoService[]> {
     var params = new HttpParams();
-    var currentIsoService = this.http.get<IIsoService>(this.endPoint, { params });
-    return currentIsoService;
+
+    return this.http.get<IIsoService[]>(this.endPoint, { params })
+      .pipe(map(result => result as IIsoService[]));
   }
 
   getIsoServiceById<IIsoService>(id: number): Observable<IIsoService> {

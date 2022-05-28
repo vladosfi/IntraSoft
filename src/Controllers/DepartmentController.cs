@@ -1,5 +1,6 @@
 ﻿namespace IntraSoft.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -22,27 +23,37 @@
         }
 
         //// GET: api/<ValuesController>
-        [HttpGet, Route(nameof(GetAllWithIsoServices))]
-        public async Task<IActionResult> GetAllWithIsoServices()
-        {
-            var departmentsWithIsoServicesReadDto = await this.departmentService.GetAllWithIsoServicesAsync<DepartmentWithIsoServicesReadDto>();
-            departmentsWithIsoServicesReadDto = departmentsWithIsoServicesReadDto.OrderBy(x => x.Id);
-            
-            if (departmentsWithIsoServicesReadDto == null)
-            {
-                return this.NoContent();
-            }
+        // [HttpGet, Route(nameof(GetAllWithIsoServices))]
+        // public async Task<IActionResult> GetAllWithIsoServices()
+        // {
+        //     var departmentsWithIsoServicesReadDto = await this.departmentService.GetAllWithIsoServicesAsync<DepartmentWithIsoServicesReadDto>();
+        //     departmentsWithIsoServicesReadDto = departmentsWithIsoServicesReadDto.OrderBy(x => x.Id);
 
-            return this.Ok(departmentsWithIsoServicesReadDto);
-        }
+        //     if (departmentsWithIsoServicesReadDto == null)
+        //     {
+        //         return this.NoContent();
+        //     }
+
+        //     return this.Ok(departmentsWithIsoServicesReadDto);
+        // }
 
 
         //// GET: api/<ValuesController>
+        //[HttpGet("/{withoutDirectionDepartment:bool?}", Name = nameof(GetAll))]
+        //[HttpGet("GetAll/{withoutDirectionDepartment:bool?}")]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery]bool? withoutDirectionDepartment = false)
         {
-            var departmentsReadDto = await this.departmentService.GetAllAsync<DepartmentReadDto>();
+            IEnumerable<DepartmentReadDto> departmentsReadDto;
 
+            if (withoutDirectionDepartment == true)
+            {
+                departmentsReadDto = await this.departmentService.GetAllWithoutDirectionDepartmentAsync<DepartmentReadDto>();
+            }
+            else{
+                departmentsReadDto = await this.departmentService.GetAllAsync<DepartmentReadDto>();
+            }            
+            
             if (departmentsReadDto == null)
             {
                 return this.NoContent();

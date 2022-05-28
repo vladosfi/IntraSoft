@@ -33,6 +33,7 @@ export class IsoListComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
   filterField = new FormControl('');
   departments: Department[] = [];
+  allIsoServices: IIsoService[] = [];
 
 
   dataSource = new MatTableDataSource<any>();
@@ -58,24 +59,33 @@ export class IsoListComponent implements OnInit {
       VORows: this.fb.array([]),
     });
 
-    this.departmentService.getAllWithIsoServices().subscribe(
+    this.departmentService.getAllDepartments(true).subscribe(
       {
         next: (result) => {
           this.departments = result;
+        },
+        error: (error) => {
+          this.snackbar.error('Грешка при получаване на данни за дирекцията');
+        }        
+      });
+
+    this.isoService.getIsoServices().subscribe(
+      {
+        next: (result) => {
+          this.allIsoServices = result;
           this.isLoading = false;
           this.prepareDataSource();
-        }
+        },
+        error: (error) => {
+          this.snackbar.error('Грешка при получаване на данни за услугите');
+        }     
       });
   }
 
 
   prepareDataSource(): void {
     let data: IIsoService[] = [];
-
-    data = this.departments.map(val =>
-      val.isoServices.map(svc =>
-        Object.assign({ departmentId: val.id }, svc)))
-      .reduce((l, n) => l.concat(n), []);
+    data = this.allIsoServices;
 
     //console.log(data);
 
@@ -144,7 +154,7 @@ export class IsoListComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
- addNewRow(): void {
+  addNewRow(): void {
     // Do not add new record if last is not added correctly
     for (let i = 0; i < this.dataSource.data.length; i++) {
       if (this.dataSource.data[i].value.action === 'newRecord') {
@@ -158,7 +168,7 @@ export class IsoListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
- editSVO(event, element) {
+  editSVO(event, element) {
     element.get("isEditable").patchValue(false);
     element.get("departmentId").enable(true);
     // this.isEditableNew = true;
@@ -171,7 +181,7 @@ export class IsoListComponent implements OnInit {
     }
     let isoServiceItem = this.generateServiceElement(element);
     let recordType = element.value.action;
-    
+
     if (recordType === 'newRecord') {
       this.isoService.createIsoItem(isoServiceItem).subscribe({
         next: (data) => {
@@ -238,16 +248,17 @@ export class IsoListComponent implements OnInit {
   downloadFile(fileId: string) {
     this.fileService.downloadFile(fileId, this.pathToFile);
   }
-  
+
   addFile(element) {
-    
+
     const dialogRef = this.dialog.open(AddFileComponent, {
       width: '50%',
-      data: { 
-        title: `Добавяне на файл за услуга номер ${element.value.isoServiceNumber}`, 
-        serviceNumber: element.value.isoServiceNumber, 
+      data: {
+        title: `Добавяне на файл за услуга номер ${element.value.isoServiceNumber}`,
+        serviceNumber: element.value.isoServiceNumber,
         serviceName: element.value.isoServiceName,
-        serviceId: element.value.isoServiceId },
+        serviceId: element.value.isoServiceId
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -257,13 +268,13 @@ export class IsoListComponent implements OnInit {
     });
   }
 
-  expandRow(event, element){
-    if(!element.get("isEditable").value){
+  expandRow(event, element) {
+    if (!element.get("isEditable").value) {
       event.stopPropagation();
-    }    
+    }
   }
-  
-  private updateServiceItem(element){
+
+  private updateServiceItem(element) {
     let isoServiceId = element.value.isoServiceId;
     this.isoService.getIsoServiceById<IIsoService>(isoServiceId)
       .subscribe(result => {
