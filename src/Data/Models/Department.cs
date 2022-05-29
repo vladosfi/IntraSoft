@@ -7,7 +7,7 @@
     using IntraSoft.Services.Mapping;
 
     [Table("Departments")]
-    public class Department : BaseDeletableModel<int>, IMapTo<Department>, IMapFrom<Department>
+    public class Department : BaseDeletableModel<int>
     {
         public Department()
         {
