@@ -1,6 +1,7 @@
 .container{
     position: relative;
     overflow:hidden;
+    max-height: 200px;
 }
 
 footer {

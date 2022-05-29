@@ -4,39 +4,38 @@
     using System.IO;
     using System.Threading.Tasks;
     using IntraSoft.Data.Common.Services;
+    using IntraSoft.Data.Dtos.Document;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
-    using src.Data.Dtos.IsoFile;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class IsoFileController : ControllerBase
+    public class DocumentsController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
         private const string directoryDoesNotExist = "Directory does not exist!";
 
-        private readonly IIsoFileService isoFileService;
+        private readonly IDocumentService documentService;
 
-        public IsoFileController(
+        public DocumentsController(
             IWebHostEnvironment hostingEnvironment,
-            IIsoFileService isoFileService
+            IDocumentService documentService
         )
         {
             this.hostingEnvironment = hostingEnvironment;
-            this.isoFileService = isoFileService;
+            this.documentService = documentService;
         }
 
-        [HttpGet("{id}/{open:bool?}", Name = nameof(GetIsoFile))]
-        public async Task<IActionResult> GetIsoFile(int id, bool? open = false)
+        [HttpGet("{id}/{open:bool?}", Name = nameof(GetDocument))]
+        public async Task<IActionResult> GetDocument(int id, bool? open = false)
         {
             //To do check for recor in database
-            var file = await this.isoFileService.GetByIdAsync(id);
-            if (file == null || file.FilePath == null) return this.NotFound();
+            var document = await this.documentService.GetByIdAsync(id);
+            if (document == null || document.FilePath == null) return this.NotFound();
 
-            var fullPath = Path.Combine(hostingEnvironment.WebRootPath, file.FilePath.ToString());
-
+            var fullPath = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
             if (!System.IO.File.Exists(fullPath)) return this.NotFound();
 
             var memory = new MemoryStream();
@@ -45,7 +44,6 @@
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-
             var ext = Path.GetExtension(fullPath).ToLowerInvariant();
 
             // To download or open file 
@@ -60,23 +58,21 @@
             }
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult>
-        AddDocument([FromForm] IsoFileCreateDto fileInput)
+        AddDocument([FromForm] DocumentCreateModelDto fileInput)
         {
             if (fileInput.File == null && fileInput.Path == null)
             {
                 return BadRequest();
             }
 
-            var fullPath = System.IO.Path.GetFullPath(fileInput.Path);
+            var fullPath = Path.GetFullPath(fileInput.Path);
             fileInput.Path = fullPath.Substring(fullPath.Length - fileInput.Path.Length);
 
-            // Save uniqueFileName to file system            
+            // Save uniqueFileName to file system
             var uniqueFileName = StringOperations.GetUniqueFileName(fileInput.File.FileName);
-            var uploads = System.IO.Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
+            var uploads = Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
 
             // Create dir if does not exidt
             if (!Directory.Exists(uploads))
@@ -84,45 +80,44 @@
                 throw new Exception(directoryDoesNotExist);
             }
 
-            var filePathWithFileName = System.IO.Path.Combine(uploads, uniqueFileName);
+            var filePathWithFileName = Path.Combine(uploads, uniqueFileName);
 
             var fs = new FileStream(filePathWithFileName, FileMode.Create);
             await fileInput.File.CopyToAsync(fs);
             await fs.DisposeAsync();
 
             // Save uniqueFileName to db table
-            filePathWithFileName = System.IO.Path.Combine(fileInput.Path, uniqueFileName);
-            var isoFile =
-                new IsoFile
+            filePathWithFileName = Path.Combine(fileInput.Path, uniqueFileName);
+            var document =
+                new Document
                 {
                     FilePath = filePathWithFileName,
-                    Description = fileInput.Description,
-                    IsoCategoryId = fileInput.IsoFileCategoryId,
-                    IsoServicesId = fileInput.IsoServicesId,
+                    Description = null,
+                    UserName = null,
+                    MenuId = fileInput.MenuId,
                 };
 
-            var fileId = await this.isoFileService.CreateAsync(isoFile);
+            var documentId = await this.documentService.CreateAsync(document);
 
-            return this.Ok(fileId);
-
+            return this.Ok(documentId);
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var isoFileFromRepo = await this.isoFileService.GetByIdAsync(id);
+            var documentFromRepo = await this.documentService.GetByIdAsync(id);
 
-            if (isoFileFromRepo == null)
+            if (documentFromRepo == null)
             {
                 return this.NotFound();
             }
 
-            this.isoFileService.HardDelete(isoFileFromRepo);
-            await this.isoFileService.SaveChangesAsync();
+            this.documentService.HardDelete(documentFromRepo);
+            await this.documentService.SaveChangesAsync();
 
             // Delete form filesystem
-            string path = Path.Combine(hostingEnvironment.WebRootPath, isoFileFromRepo.FilePath);
+            string path = Path.Combine(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
 
             FileInfo file = new FileInfo(path);
             if (file.Exists)

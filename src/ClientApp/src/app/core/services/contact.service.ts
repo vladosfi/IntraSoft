@@ -7,7 +7,7 @@ import { Contact } from '../interfaces/Contact'
   providedIn: 'root',
 })
 export class ContactService {
-  endPoint = this.baseUrl + 'api/contact'
+  endPoint = this.baseUrl + 'api/contacts'
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,

@@ -4,7 +4,7 @@
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 
-    public class ContactCreateDto: IMapFrom<Contact>
+    public class ContactCreateDto: IMapTo<Contact>
     {
         [Required]
         [MaxLength(100)]

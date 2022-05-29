@@ -8,7 +8,7 @@ import { Menu } from '../interfaces/Menu';
   providedIn: 'root',
 })
 export class MenuService {
-  endPoint = this.baseUrl + 'api/menu';
+  endPoint = this.baseUrl + 'api/menus';
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {

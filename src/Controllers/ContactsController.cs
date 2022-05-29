@@ -1,26 +1,21 @@
 ﻿namespace IntraSoft.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
-    using IntraSoft.Data.Dtos;
     using IntraSoft.Data.Dtos.Contact;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ContactController : ControllerBase
+    public class ContactsController : ControllerBase
     {
-        private readonly IMapper mapper;
         private readonly IContactService contactService;
 
-        public ContactController(IMapper mapper, IContactService contactService)
+        public ContactsController(IContactService contactService)
         {
             this.contactService = contactService;
-            this.mapper = mapper;
         }
 
         //// GET: api/<ValuesController>
@@ -55,12 +50,13 @@
         [HttpPost]
         public async Task<ActionResult<ContactCreateDto>> Post([FromBody] ContactCreateDto contactItemDto)
         {
-            var newContactItem = this.mapper.Map<Contact>(contactItemDto);
+            var newContactItem = AutoMapperConfig.MapperInstance.Map<Contact>(contactItemDto);
 
             await this.contactService.CreateAsync(newContactItem);
 
             await this.contactService.SaveChangesAsync();
-            var contactReadDto = this.mapper.Map<ContactReadDto>(newContactItem);
+            var contactReadDto = AutoMapperConfig.MapperInstance.Map<ContactReadDto>(newContactItem);
+
 
             return this.CreatedAtRoute(
                 nameof(this.GetContactById),
@@ -77,8 +73,9 @@
             {
                 return this.NotFound();
             }
-            
-            this.mapper.Map(contactUpdateDto, contactItemFromRepo);
+
+            AutoMapperConfig.MapperInstance.Map<ContactUpdateDto, Contact>(contactUpdateDto,contactItemFromRepo);
+
             this.contactService.Update(contactItemFromRepo);
             await this.contactService.SaveChangesAsync();
 

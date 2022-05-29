@@ -6,7 +6,7 @@
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 
-    public class MenuReadDto: IMapTo<Menu>, IMapFrom<Menu>
+    public class MenuReadDto: IMapFrom<Menu>
     {
         public int Id { get; set; }
 

@@ -1,32 +1,27 @@
 ﻿namespace IntraSoft.Controllers
 {
     using System.Threading.Tasks;
-    using AutoMapper;
-    using IntraSoft.Data.Dtos.IsoCategory;
     using IntraSoft.Data.Dtos.IsoService;
     using IntraSoft.Services.Data;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class IsoFileCategoryController : ControllerBase
+    public class IsoServicesController : ControllerBase
     {
-        private readonly IMapper mapper;
         private readonly IIsoService isoService;
-        private readonly IIsoFileCategoryService isoFileCategoryService;
 
-        public IsoFileCategoryController(IMapper mapper, IIsoService isoService,IIsoFileCategoryService isoFileCategoryService)
+        public IsoServicesController(IIsoService isoService)
         {
             this.isoService = isoService;
-            this.isoFileCategoryService = isoFileCategoryService;
-            this.mapper = mapper;
         }
 
         //// GET: api/<ValuesController>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var isoServiceReadDto = await this.isoFileCategoryService.GetAllAsync<IsoFileCategoryReadDto>();
+            var isoServiceReadDto = await this.isoService.GetAllAsync<IsoServiceReadDto>();
 
             if (isoServiceReadDto == null)
             {
@@ -37,8 +32,8 @@
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}", Name = nameof(GetIsoFileCategoryById))]
-        public async Task<ActionResult<IsoServiceReadDto>> GetIsoFileCategoryById(int id)
+        [HttpGet("{id}", Name = nameof(GetIsoServiceById))]
+        public async Task<ActionResult<IsoServiceReadDto>> GetIsoServiceById(int id)
         {
             var isoServiceItems = await this.isoService.GetByIdAsync<IsoServiceReadDto>(id);
 
@@ -54,14 +49,15 @@
         [HttpPost]
         public async Task<ActionResult<IsoServiceCreateDto>> Post([FromBody] IsoServiceCreateDto isoServiceDto)
         {
-            var newIsoService = this.mapper.Map<Data.Models.IsoService>(isoServiceDto);
+            var newIsoService = AutoMapperConfig.MapperInstance.Map<Data.Models.IsoService>(isoServiceDto);
 
             await this.isoService.CreateAsync(newIsoService);
 
-            var isoServiceReadDto = this.mapper.Map<IsoServiceReadDto>(newIsoService);
+            var isoServiceReadDto = AutoMapperConfig.MapperInstance.Map<IsoServiceReadDto>(newIsoService);
+
 
             return this.CreatedAtRoute(
-                nameof(this.GetIsoFileCategoryById),
+                nameof(this.GetIsoServiceById),
                 new { Id = isoServiceReadDto.Id },
                 isoServiceReadDto);
         }
@@ -76,7 +72,8 @@
                 return this.NotFound();
             }
 
-            this.mapper.Map(isoServiceUpdateDto, isoServiceFromRepo);
+            AutoMapperConfig.MapperInstance.Map<IsoServiceUpdateDto, Data.Models.IsoService>(isoServiceUpdateDto, isoServiceFromRepo);
+
             this.isoService.Update(isoServiceFromRepo);
             await this.isoService.SaveChangesAsync();
 

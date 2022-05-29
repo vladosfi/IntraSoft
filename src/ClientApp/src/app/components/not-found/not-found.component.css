@@ -15,7 +15,7 @@ body {
 }
 
 #error-page {
-  position: absolute;
+  /* position: absolute; */
   top: 10%;
   left: 15%;
   right: 15%;
@@ -30,6 +30,7 @@ body {
   #error-page .content {
     max-width: 600px;
     text-align: center;
+    min-height: 80vh;
   }
 
 .content h2.header {

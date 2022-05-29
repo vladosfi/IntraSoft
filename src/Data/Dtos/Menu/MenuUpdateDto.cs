@@ -1,8 +1,10 @@
 ﻿namespace IntraSoft.Data.Dtos.Menu
 {
     using System.ComponentModel.DataAnnotations;
+    using IntraSoft.Data.Models;
+    using IntraSoft.Services.Mapping;
 
-    public class MenuUpdateDto
+    public class MenuUpdateDto: IMapTo<Menu>
     {
         public int? ParentId { get; set; }
 

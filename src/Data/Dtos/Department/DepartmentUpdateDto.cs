@@ -1,8 +1,10 @@
 ﻿namespace IntraSoft.Data.Dtos.Department
 {
     using System.ComponentModel.DataAnnotations;
+    using IntraSoft.Data.Models;
+    using IntraSoft.Services.Mapping;
 
-    public class DepartmentUpdateDto
+    public class DepartmentUpdateDto: IMapTo<Department>
     {
         [Required]
         [MaxLength(100)]

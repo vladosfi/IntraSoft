@@ -5,7 +5,7 @@
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
     
-    public class MenuCreateDto: IMapFrom<Menu>, IMapTo<Menu>
+    public class MenuCreateDto: IMapTo<Menu>
     {
         public int? ParentId { get; set; }
 

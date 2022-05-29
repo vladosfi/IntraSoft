@@ -39,8 +39,8 @@ export class IsoListComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   title = 'Услуги';
   isLoading = true;
-  pathToFile = 'api/isofile';
-  endPointPath = 'api/isoservice';
+  pathToFile = 'api/isofiles';
+  endPointPath = 'api/isoservices';
   pageNumber: number = 1;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

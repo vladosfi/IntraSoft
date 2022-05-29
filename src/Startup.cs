@@ -51,7 +51,6 @@ namespace IntraSoft
             object p = services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
-            services.AddAutoMapper(typeof(ApplicationDbContext).Assembly);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

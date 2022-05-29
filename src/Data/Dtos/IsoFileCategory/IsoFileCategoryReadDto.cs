@@ -4,7 +4,7 @@
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
 
-    public class IsoFileCategoryReadDto : IMapFrom<IsoFileCategory>, IMapTo<IsoFileCategory>
+    public class IsoFileCategoryReadDto : IMapFrom<IsoFileCategory>
     {
         public int Id { get; set; }
         

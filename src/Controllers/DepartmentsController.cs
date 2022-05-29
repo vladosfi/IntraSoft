@@ -1,25 +1,22 @@
 ﻿namespace IntraSoft.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using AutoMapper;
     using IntraSoft.Data.Dtos.Department;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Data;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class DepartmentsController : ControllerBase
     {
-        private readonly IMapper mapper;
         private readonly IDepartmentService departmentService;
 
-        public DepartmentController(IMapper mapper, IDepartmentService departmentService)
+        public DepartmentsController(IDepartmentService departmentService)
         {
             this.departmentService = departmentService;
-            this.mapper = mapper;
         }
 
         //// GET: api/<ValuesController>
@@ -39,8 +36,6 @@
 
 
         //// GET: api/<ValuesController>
-        //[HttpGet("/{withoutDirectionDepartment:bool?}", Name = nameof(GetAll))]
-        //[HttpGet("GetAll/{withoutDirectionDepartment:bool?}")]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery]bool? withoutDirectionDepartment = false)
         {
@@ -80,11 +75,13 @@
         [HttpPost]
         public async Task<ActionResult<DepartmentCreateDto>> Post([FromBody] DepartmentCreateDto departmentItemDto)
         {
-            var newDepartmentItem = this.mapper.Map<Department>(departmentItemDto);
+            //var newDepartmentItem = this.mapper.Map<Department>(departmentItemDto);
+            var newDepartmentItem = AutoMapperConfig.MapperInstance.Map<Department>(departmentItemDto);
 
             await this.departmentService.AddAsync(newDepartmentItem);
 
-            var departmentReadDto = this.mapper.Map<DepartmentReadDto>(newDepartmentItem);
+            //var departmentReadDto = this.mapper.Map<DepartmentReadDto>(newDepartmentItem);
+            var departmentReadDto = AutoMapperConfig.MapperInstance.Map<DepartmentReadDto>(newDepartmentItem);
 
             return this.CreatedAtRoute(
                 nameof(this.GetDepartmentById),
@@ -102,7 +99,9 @@
                 return this.NotFound();
             }
 
-            this.mapper.Map(departmentUpdateDto, departmentItemFromRepo);
+            //this.mapper.Map(departmentUpdateDto, departmentItemFromRepo);
+            AutoMapperConfig.MapperInstance.Map<DepartmentUpdateDto, Department>(departmentUpdateDto,departmentItemFromRepo);
+
             this.departmentService.Update(departmentItemFromRepo);
             await this.departmentService.SaveChangesAsync();
 

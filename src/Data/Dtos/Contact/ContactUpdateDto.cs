@@ -1,8 +1,10 @@
 ﻿namespace IntraSoft.Data.Dtos.Contact
 {
     using System.ComponentModel.DataAnnotations;
+    using IntraSoft.Services.Mapping;
+    using IntraSoft.Data.Models;
 
-    public class ContactUpdateDto
+    public class ContactUpdateDto: IMapTo<Contact>
     {
         [Required]
         [MaxLength(100)]

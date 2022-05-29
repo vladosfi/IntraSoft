@@ -4,7 +4,7 @@
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 
-    public class DepartmentCreateDto: IMapFrom<Department>, IMapTo<Department>
+    public class DepartmentCreateDto: IMapTo<Department>
     {
         [Required]
         [MaxLength(100)]

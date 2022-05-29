@@ -3,11 +3,10 @@
 
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
-    using System.Collections.Generic;
-    using IntraSoft.Data.Dtos.Department;
 
-    public class ContactReadDto : IMapFrom<Contact>, IMapTo<Contact>
+    public class ContactReadDto : IMapFrom<Contact>
     {
+
         public int Id { get; set; }
 
         public string FirstName { get; set; }

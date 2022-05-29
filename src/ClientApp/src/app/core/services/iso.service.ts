@@ -8,7 +8,7 @@ import { IIsoService } from '../interfaces/IsoService';
   providedIn: 'root',
 })
 export class IsoService {
-  endPoint = this.baseUrl + 'api/isoservice';
+  endPoint = this.baseUrl + 'api/isoservices';
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {
@@ -27,7 +27,7 @@ export class IsoService {
   }
 
   getIsoFileCategoryServices<IsoFileCategory>(): Observable<IsoFileCategory> {
-    var currentIsoFileCategory = this.http.get<IsoFileCategory>(this.baseUrl + 'api/isofilecategory');
+    var currentIsoFileCategory = this.http.get<IsoFileCategory>(this.baseUrl + 'api/isofilecategories');
     return currentIsoFileCategory;
   }
 

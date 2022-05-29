@@ -6,7 +6,7 @@
     using src.Data.Dtos.IsoFile;
     using System.Collections.Generic;
 
-    public class IsoServiceReadDto : IMapFrom<IsoService>, IMapTo<IsoService>
+    public class IsoServiceReadDto : IMapFrom<IsoService>
     {
         public IsoServiceReadDto(){
             this.IsoFiles = new HashSet<IsoFileReadDto>();

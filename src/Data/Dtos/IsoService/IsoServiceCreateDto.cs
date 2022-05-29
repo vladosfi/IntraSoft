@@ -5,7 +5,7 @@
     using IntraSoft.Data.Models;
     using System.ComponentModel.DataAnnotations;
 
-    public class IsoServiceCreateDto : IMapFrom<IsoService>, IMapTo<IsoService>
+    public class IsoServiceCreateDto : IMapTo<IsoService>
     {
         [Required]
         [MinLength(5)]

@@ -23,7 +23,7 @@ export class FileService {
     const link = this.renderer.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', `${pathToFile}/${id}/true`);
-    //link.setAttribute('href',  `api/document/${id}`);
+    //link.setAttribute('href',  `api/documents/${id}`);
     link.click();
     link.remove();
   }

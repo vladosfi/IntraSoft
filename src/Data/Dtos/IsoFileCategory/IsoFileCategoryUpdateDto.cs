@@ -5,7 +5,7 @@
     using IntraSoft.Data.Models;
     using System.ComponentModel.DataAnnotations;
 
-    public class IsoFileCategoryUpdateDto : IMapFrom<IsoFileCategory>, IMapTo<IsoFileCategory>
+    public class IsoFileCategoryUpdateDto : IMapTo<IsoFileCategory>
     {
         [Required]
         [MinLength(5)]

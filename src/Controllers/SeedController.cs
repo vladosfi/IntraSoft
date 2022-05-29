@@ -5,14 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Security;
-using IntraSoft.Data;
-using AutoMapper;
 using IntraSoft.Data.Models;
 using IntraSoft.Services.Data;
-using IntraSoft.Data.Dtos.Department;
 
 namespace IntraSoft.Controllers
 {
@@ -21,7 +17,6 @@ namespace IntraSoft.Controllers
     public class SeedController : ControllerBase
     {
         private readonly IWebHostEnvironment env;
-        private readonly IMapper mapper;
         private readonly IMenuService menuService;
         private readonly IDepartmentService departmentService;
         private readonly IContactService contactService;
@@ -34,7 +29,6 @@ namespace IntraSoft.Controllers
             IContactService contactService,
             IIsoService isoService,
             IIsoFileCategoryService isoFileCategoryService,
-            IMapper mapper, 
             IWebHostEnvironment env)
         {
             this.menuService = menuService;
@@ -42,7 +36,6 @@ namespace IntraSoft.Controllers
             this.contactService = contactService;
             this.isoService = isoService;
             this.isoFileCategoryService = isoFileCategoryService;
-            this.mapper = mapper;
             this.env = env;
         }
 

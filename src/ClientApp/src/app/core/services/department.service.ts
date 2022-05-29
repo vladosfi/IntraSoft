@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class DepartmentService {
-  endPoint = this.baseUrl + 'api/department'
+  endPoint = this.baseUrl + 'api/departments'
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,

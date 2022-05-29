@@ -5,7 +5,7 @@
     using IntraSoft.Data.Models;
     using System.ComponentModel.DataAnnotations;
 
-    public class IsoServiceUpdateDto : IMapFrom<IsoService>, IMapTo<IsoService>
+    public class IsoServiceUpdateDto : IMapTo<IsoService>
     {
         [Required]
         [MinLength(5)]

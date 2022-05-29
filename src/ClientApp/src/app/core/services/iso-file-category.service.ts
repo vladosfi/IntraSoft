@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class IsoFileCategoryService {
-  endPoint = this.baseUrl + 'api/isofilecategory';
+  endPoint = this.baseUrl + 'api/isofilecategories';
   constructor(
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string) {

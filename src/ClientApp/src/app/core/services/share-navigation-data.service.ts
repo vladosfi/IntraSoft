@@ -28,7 +28,7 @@ export class ShareNavigationDataService {
 
 
   getAllData(): void {
-    var url = this.baseUrl + 'api/menu';
+    var url = this.baseUrl + 'api/menus';
     this.menuListSubject.next(null);
 
     this.http.get<any>(url).subscribe({
@@ -39,7 +39,7 @@ export class ShareNavigationDataService {
   }
 
   getSingleItem(id: any): void {
-    var url = this.baseUrl + 'api/menu/' + id;
+    var url = this.baseUrl + 'api/menus/' + id;
     this.menuSingleItemSubject.next(null);
 
     this.http.get<any>(url).subscribe({

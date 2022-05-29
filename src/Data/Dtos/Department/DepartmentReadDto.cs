@@ -4,7 +4,7 @@
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
 
-    public class DepartmentReadDto : IMapFrom<Department>, IMapTo<Department>
+    public class DepartmentReadDto : IMapFrom<Department>
     {
         public int Id { get; set; }
 
