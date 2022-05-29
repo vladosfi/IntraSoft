@@ -22,13 +22,16 @@
       <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
         <!-- Number Column -->
         <ng-container matColumnDef="isoServiceNumber">
-          <th mat-header-cell *matHeaderCellDef>Име</th>
-          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex" [formGroup]="element">
-            <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+          <th mat-header-cell *matHeaderCellDef>Номер</th>
+          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex"
+            [formGroup]="element">
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'
               ">
               <input matInput type="text" formControlName="isoServiceNumber"
-                [readonly]="VOForm.get('VORows').value[i].isEditable" />
+                [readonly]="element.get('isEditable').value" />
+                <mat-error *ngIf="element?.invalid"> 
+                  <div *ngIf="element.get('isoServiceNumber')?.errors?.numberExist">Услуга с този номер съществува</div>
+              </mat-error> 
             </mat-form-field>
             <!-- {{element.value | json}} -->
           </td>
@@ -37,12 +40,12 @@
         <!-- Name Column -->
         <ng-container matColumnDef="isoServiceName">
           <th mat-header-cell *matHeaderCellDef>Име</th>
-          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex" [formGroup]="element">
-            <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex"
+            [formGroup]="element">
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'
               ">
               <input matInput type="text" formControlName="isoServiceName"
-                [readonly]="VOForm.get('VORows').value[i].isEditable" />
+                [readonly]="element.get('isEditable').value" />
             </mat-form-field>
           </td>
         </ng-container>
@@ -51,11 +54,12 @@
 
         <ng-container matColumnDef="departments">
           <th mat-header-cell *matHeaderCellDef>Дирекция</th>
-          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex" [formGroup]="element">
+          <td (click)="expandRow($event, element)" mat-cell *matCellDef="let element; let i = dataIndex"
+            [formGroup]="element">
             <mat-form-field [appearance]="
-                VOForm.get('VORows').value[i].isEditable ? 'none' : 'legacy'
+                element.get('isEditable').value ? 'none' : 'legacy'
               ">
-              <mat-select [readonly]="VOForm.get('VORows').value[i].isEditable" formControlName="departmentId"
+              <mat-select [readonly]="element.get('isEditable').value" formControlName="departmentId"
                 placeholder="{{ departmentId }}">
                 <mat-option *ngFor="let dep of departments; index as i" [value]="dep.id">
                   {{ dep.name }}
@@ -70,23 +74,22 @@
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td (click)="$event.stopPropagation()" mat-cell *matCellDef="let element; let i = dataIndex">
             <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
-              (click)="saveVO(element)" *ngIf="!VOForm.get('VORows').value[i].isEditable"
-              color="primary">
+              (click)="saveVO(element)" *ngIf="!element.get('isEditable').value" color="primary">
               <mat-icon>check_circle</mat-icon>
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Edit"
-              color="primary" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="editSVO($event, element)">
+              color="primary" *ngIf="element.get('isEditable').value" (click)="editSVO(element)">
               <mat-icon>edit</mat-icon>
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
-              color="warn" (click)="cancelSVO(element)" *ngIf="!VOForm.get('VORows').value[i].isEditable">
+              color="warn" (click)="cancelSVO(element)" *ngIf="!element.get('isEditable').value">
               <mat-icon>cancel</mat-icon>
             </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu delete-button" matTooltip="Delete"
-              color="warn" *ngIf="VOForm.get('VORows').value[i].isEditable" (click)="deleteService(element)">
+              color="warn" *ngIf="element.get('isEditable').value" (click)="deleteService(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -131,7 +134,7 @@
                     </table>
                   </div>
                 </div>
-                
+
                 <div class="row element-description flex-container align-bottom">
                   <div class="col-6 element-description-attribut">
                     Налични файлове: {{ element.value.isoFiles?.length }}

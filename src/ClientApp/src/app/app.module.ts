@@ -28,8 +28,8 @@ import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.com
 import { FooterComponent } from './components/footer/footer.component';
 import { AddFileComponent } from './components/dialog/add-file/add-file.component';
 import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
-import { fullNameValidatorDirective } from './shared/full-name-validator.directive';
 import {IMaskModule} from 'angular-imask';
+import { fullNameValidatorDirective } from './components/validators/full-name-validator.directive';
 
 
 

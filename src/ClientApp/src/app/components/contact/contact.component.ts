@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table'
 import { Department } from 'src/app/core/interfaces/Department'
 import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
-import { fullNameValidator } from 'src/app/shared/validators'
+import { fullNameValidator } from 'src/app/components/validators/validators'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
 import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
@@ -51,23 +51,27 @@ export class ContactComponent implements OnInit {
       {
         next: (result) => {
           this.departments = result;
-          this.getContacts();
+        },
+        error: (error) => {
+          this.snackbar.error('Грешка при получаване на данни за дирекцията');
+        }
+      });
+
+    this.contactService.getData().subscribe(
+      {
+        next: (result) => {
+          this.contacts = result as Contact[];
+          this.contacts.forEach(
+            (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
+          )
+          this.prepareDataSource();
+        },
+        error: (error) => {
+          this.snackbar.error('Грешка при получаване на данни за контактите');
         }
       });
   }
 
-
-
-  getContacts() {
-    this.contactService.getData().subscribe((result) => {
-      this.contacts = result as Contact[];
-      this.contacts.forEach(
-        (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
-      )
-      this.initiateForm();
-    });
-
-  }
 
   loadFilter() {
     const filterPredicate = this.dataSource.filterPredicate;
@@ -81,7 +85,7 @@ export class ContactComponent implements OnInit {
     //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
   }
 
-  initiateForm() {
+  prepareDataSource(): void {
     this.VOForm = this.fb.group({
       VORows: this.fb.array([]),
     })
@@ -137,7 +141,6 @@ export class ContactComponent implements OnInit {
 
   // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow() {
-
     // Do not add new record if last is not added correctly
     for (let i = 0; i < this.dataSource.data.length; i++) {
       if (this.dataSource.data[i].value.action === 'newRecord') {
@@ -146,20 +149,17 @@ export class ContactComponent implements OnInit {
     }
 
     const control = this.VOForm.get('VORows') as FormArray;
-    control.insert(0, this.initiateVOForm());
+    control.insert(0, this.initiateNewRow());
     this.dataSource = new MatTableDataSource(control.controls);
   }
 
   // this function will enabled the select field for editd
-  EditSVO(VOFormElement, i) {
-    // VOFormElement.get('VORows').at(i).get('name').disabled(false)
-    VOFormElement.get('VORows').at(i).get('isEditable').patchValue(false);
-    VOFormElement.get('VORows').at(i).get('departmentId').enable(true);
+  editSVO(element) {
+    element.get('departmentId').enable(true);
+    element.get('isEditable').patchValue(false);
 
     // this.isEditableNew = true;
   }
-
-
 
 
   saveVO(element) {
@@ -178,9 +178,9 @@ export class ContactComponent implements OnInit {
       this.contactService.addContactItem(contact).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно добавяне на записа');
-          element.get("isEditable").patchValue(true);
-          element.get("action").patchValue('existingRecord');
-          element.get("departmentId").disable(true);
+          element.get('isEditable').patchValue(true);
+          element.get('action').patchValue('existingRecord');
+          element.get('departmentId').disable(true);
         },
         error: (error) => {
           this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
@@ -190,8 +190,8 @@ export class ContactComponent implements OnInit {
       this.contactService.updateContactItem(contact).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно обновяване на записа');
-          element.get("isEditable").patchValue(true);
-          element.get("departmentId").disable(true);
+          element.get('isEditable').patchValue(true);
+          element.get('departmentId').disable(true);
         },
         error: (error) => {
           this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
@@ -233,9 +233,9 @@ export class ContactComponent implements OnInit {
 
   // On click of cancel button in the table (after click on edit) this method will call and reset the previous data
   cancelSVO(element) {
-    this.initiateForm();
-    element.get("departmentId").disable(false);
-    element.get("isEditable").patchValue(true);
+    this.prepareDataSource();
+    element.get('departmentId').disable(false);
+    element.get('isEditable').patchValue(true);
   }
 
   paginatorList: HTMLCollectionOf<Element>;
@@ -243,7 +243,7 @@ export class ContactComponent implements OnInit {
   onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout((idx) => {
       let from = (paginator.pageSize * paginator.pageIndex) + 1;
-      
+
       let to = (paginator.length < paginator.pageSize * (paginator.pageIndex + 1))
         ? paginator.length
         : paginator.pageSize * (paginator.pageIndex + 1);
@@ -259,13 +259,11 @@ export class ContactComponent implements OnInit {
   }
 
 
-
-
-  initiateVOForm(): FormGroup {
+  private initiateNewRow(): FormGroup {
     return this.fb.group({
       id: new FormControl(),
       fullName: new FormControl('', [Validators.required, fullNameValidator()]),
-      phone: new FormControl('', [ Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(9), Validators.maxLength(10)]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(9), Validators.maxLength(10)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       departmentId: new FormControl('', Validators.required),
       action: new FormControl('newRecord'),
@@ -278,7 +276,7 @@ export class ContactComponent implements OnInit {
   private generateContact(element): Contact {
     let names = element.value.fullName.trim().split(/[\s,]+/);
 
-    if (names.length === 2)  {
+    if (names.length === 2) {
       names.push(names[1]);
       names[1] = '';
     }
