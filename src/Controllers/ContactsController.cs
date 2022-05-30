@@ -67,7 +67,7 @@
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, ContactUpdateDto contactUpdateDto)
         {
-            var contactItemFromRepo = await this.contactService.GetByIdAsync(id);
+            var contactItemFromRepo = await this.contactService.GetByIdAsync<Contact>(id);
 
             if (contactItemFromRepo == null)
             {
@@ -86,7 +86,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var contactItemFromRepo = await this.contactService.GetByIdAsync(id);
+            var contactItemFromRepo = await this.contactService.GetByIdAsync<Contact>(id);
 
             if (contactItemFromRepo == null)
             {

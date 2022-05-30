@@ -1,0 +1,9 @@
+.active{
+    text-align: center;
+    background-color: #3498DB;
+    font-weight: bold;
+}
+
+.badge{
+    background-color: #3498DB;
+}

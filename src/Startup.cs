@@ -65,6 +65,7 @@ namespace IntraSoft
             services.AddTransient<IIsoService, IsoService>();
             services.AddTransient<IIsoFileService, IsoFileService>();
             services.AddTransient<IIsoFileCategoryService, IsoFileCategoryService>();
+            services.AddTransient<IHomeService, HomeService>();
 
 
             services.AddControllersWithViews();

@@ -30,6 +30,7 @@ import { AddFileComponent } from './components/dialog/add-file/add-file.componen
 import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
 import {IMaskModule} from 'angular-imask';
 import { fullNameValidatorDirective } from './components/validators/full-name-validator.directive';
+import { LastItemsComponent } from './components/shared/last-items/last-items.component';
 
 
 
@@ -55,6 +56,7 @@ import { fullNameValidatorDirective } from './components/validators/full-name-va
     FooterComponent,
     AddFileComponent,
     fullNameValidatorDirective,
+    LastItemsComponent,
   ],
   entryComponents:[
     DeleteDialogComponent
