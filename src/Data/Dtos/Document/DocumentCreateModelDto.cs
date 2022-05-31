@@ -10,8 +10,6 @@
 
         public string Path { get; set; }
         
-        public string Description { get; set; }
-
         [Required]
         public int MenuId { get; set; }
     }

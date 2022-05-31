@@ -17,7 +17,7 @@ import { MenuItemAMComponent } from './navigation/angular-material-menu/menu-ite
 import { MenuComponent } from './admin/components/menu/menu.component';
 import { SingleMenuItemComponent } from './admin/components/single-menu-item/single-menu-item.component';
 import { ContactComponent } from './components/contact/contact.component';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { DisableControlDirective } from './core/directives/disable-control.directive';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
@@ -28,11 +28,14 @@ import { ModalDialogComponent } from './components/dialog/modal/modal-dialog.com
 import { FooterComponent } from './components/footer/footer.component';
 import { AddFileComponent } from './components/dialog/add-file/add-file.component';
 import { DeleteDialogComponent } from './components/dialog/delete/delete-dialog.component';
-import {IMaskModule} from 'angular-imask';
+import { IMaskModule } from 'angular-imask';
 import { fullNameValidatorDirective } from './components/validators/full-name-validator.directive';
 import { LastItemsComponent } from './components/shared/last-items/last-items.component';
-
-
+import { LOCALE_ID } from '@angular/core';
+import bg from '@angular/common/locales/bg';
+import { registerLocaleData } from '@angular/common';
+import { OrdersComponent } from './components/orders/orders.component';
+registerLocaleData(bg);
 
 @NgModule({
   declarations: [
@@ -57,8 +60,9 @@ import { LastItemsComponent } from './components/shared/last-items/last-items.co
     AddFileComponent,
     fullNameValidatorDirective,
     LastItemsComponent,
+    OrdersComponent,
   ],
-  entryComponents:[
+  entryComponents: [
     DeleteDialogComponent
   ],
   imports: [
@@ -72,7 +76,12 @@ import { LastItemsComponent } from './components/shared/last-items/last-items.co
     IMaskModule,
   ],
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' }
+    },
+    {
+      provide: LOCALE_ID, useValue: 'bg-BG'
+    }
   ],
   bootstrap: [AppComponent]
 })

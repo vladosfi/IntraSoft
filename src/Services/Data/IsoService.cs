@@ -67,7 +67,7 @@
             this.isoServiceRepo.Delete(serviceItem);
         }
 
-        public void Update(IntraSoft.Data.Models.IsoService menuItem)
+        public void Update(IntraSoft.Data.Models.IsoService serviceItem)
         {
             // We don't need to do anything here
         }

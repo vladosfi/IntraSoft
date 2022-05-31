@@ -10,6 +10,6 @@ namespace src.Data.Dtos.IsoFile
 
         public int Id { get; set; }
 
-        public IsoFileCategoryReadDto IsoFileCategory { get; set; }
+        public virtual IsoFileCategoryReadDto IsoFileCategory { get; set; }
     }
 }

@@ -77,7 +77,7 @@
             return await this.contactRepo.SaveChangesAsync();
         }
 
-        public void Update(Contact menuItem)
+        public void Update(Contact contactItem)
         {
             // We don't need to do anything here
         }

@@ -7,6 +7,7 @@ import { MenuComponent } from '../admin/components/menu/menu.component';
 import { ContactComponent } from '../components/contact/contact.component';
 import { NotFoundComponent } from '../components/not-found/not-found.component';
 import { IsoListComponent } from '../components/iso-list/iso-list.component';
+import { OrdersComponent } from '../components/orders/orders.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'admin/menu', component: MenuComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'iso-list', component: IsoListComponent },
+  { path: 'orders', component: OrdersComponent },
   { path: '**', component: NotFoundComponent },
   //{ path: 'admin/menu/:id', component: SingleMenuItemComponent },
 ];

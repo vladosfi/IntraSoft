@@ -4,6 +4,6 @@
     font-weight: bold;
 }
 
-.badge{
-    background-color: #3498DB;
+.small, small {
+    font-size: .775em;
 }

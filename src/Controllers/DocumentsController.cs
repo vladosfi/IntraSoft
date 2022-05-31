@@ -92,7 +92,6 @@
                 new Document
                 {
                     FilePath = filePathWithFileName,
-                    Description = null,
                     UserName = null,
                     MenuId = fileInput.MenuId,
                 };

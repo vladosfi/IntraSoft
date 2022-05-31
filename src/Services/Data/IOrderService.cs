@@ -4,19 +4,19 @@ namespace IntraSoft.Services.Data
     using System.Threading.Tasks;
     using IntraSoft.Data.Models;
 
-    public interface IContactService
+    public interface IOrderService
     {
-        Task<int> CreateAsync(Contact item);
+        Task<int> CreateAsync(Order item);
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<T> GetByIdAsync<T>(int id);
 
-        Task<Contact> GetByIdAsync(int id);
+        Task<Order> GetByIdAsync(int id);
 
-        void Delete(Contact item);
+        void Delete(Order item);
 
-        void Update(Contact contactItem);
+        void Update(Order menuItem);
 
         Task<int> SaveChangesAsync();
     }

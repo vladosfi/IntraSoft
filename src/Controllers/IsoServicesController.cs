@@ -49,6 +49,7 @@
         [HttpPost]
         public async Task<ActionResult<IsoServiceCreateDto>> Post([FromBody] IsoServiceCreateDto isoServiceDto)
         {
+            // TO DO -  Reject if service with same name exist 
             var newIsoService = AutoMapperConfig.MapperInstance.Map<Data.Models.IsoService>(isoServiceDto);
 
             await this.isoService.CreateAsync(newIsoService);
@@ -65,6 +66,7 @@
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, IsoServiceUpdateDto isoServiceUpdateDto)
         {
+            // TO DO -  Reject if service with same name exist 
             var isoServiceFromRepo = await this.isoService.GetByIdAsync(id);
 
             if (isoServiceFromRepo == null)

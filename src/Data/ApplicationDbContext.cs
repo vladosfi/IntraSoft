@@ -18,8 +18,9 @@
                     .GetMethod(nameof(SetIsDeletedQueryFilter),
                     BindingFlags.NonPublic | BindingFlags.Static);
 
-        
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options
+        ) :
             base(options)
         {
         }
@@ -38,6 +39,7 @@
 
         public DbSet<IsoFileCategory> IsoFileCategories { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -72,25 +74,36 @@
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Document>()
+            builder
+                .Entity<Document>()
                 .HasOne(m => m.Menu)
                 .WithOne(d => d.Document)
                 .HasForeignKey<Document>(e => e.MenuId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Department>()
+            builder
+                .Entity<Department>()
                 .HasMany(d => d.IsoServices)
                 .WithOne(c => c.Department)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<IsoService>()
+            builder
+                .Entity<IsoService>()
                 .HasMany(d => d.IsoFiles)
                 .WithOne(c => c.IsoService)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<IsoFileCategory>()
+            builder
+                .Entity<IsoFileCategory>()
                 .HasMany(f => f.IsoFiles)
                 .WithOne(c => c.IsoFileCategory)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Order>()
+                .HasOne(o => o.Category)
+                .WithOne(c => c.Order)
+                .HasForeignKey<OrderCategory>(c => c.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             var entityTypes = builder.Model.GetEntityTypes().ToList();

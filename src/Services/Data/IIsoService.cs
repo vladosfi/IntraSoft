@@ -16,7 +16,7 @@ namespace IntraSoft.Services.Data
 
         void Delete(IntraSoft.Data.Models.IsoService item);
 
-        void Update(IntraSoft.Data.Models.IsoService menuItem);
+        void Update(IntraSoft.Data.Models.IsoService serviceItem);
 
         Task<int> SaveChangesAsync();
     }
