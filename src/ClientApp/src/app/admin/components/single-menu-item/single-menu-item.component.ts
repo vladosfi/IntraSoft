@@ -59,7 +59,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   saveMenuItem() {
     var updatedMenu = Object.assign({}, this.form.value);
 
-    this.menuService.updateMenuItem(updatedMenu)
+    this.menuService.updateItem(updatedMenu)
       .subscribe({
         next: () => {
           this.currentMenu = updatedMenu;
@@ -76,7 +76,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
 
   createMenu() {
     var newMenu = Object.assign({}, this.form.value);
-    this.menuService.createMenuItem(newMenu)
+    this.menuService.createItem(newMenu)
       .subscribe({
         next: () => {
           this.currentMenu = newMenu;
@@ -95,7 +95,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
     let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Are you sure you want to delete menu ' + this.currentMenu.text + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
-        var res = this.menuService.deleteMenuItem(this.currentMenu.id)
+        var res = this.menuService.deleteItem(this.currentMenu.id)
           .subscribe({
             next: () => {
               this.reloadMenu.emit();

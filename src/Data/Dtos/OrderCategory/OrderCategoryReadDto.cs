@@ -1,6 +1,5 @@
 ﻿namespace IntraSoft.Data.Dtos.OrderCategory
 {
-    using System;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 

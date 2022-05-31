@@ -60,7 +60,7 @@ export class IsoListComponent implements OnInit {
       VORows: this.fb.array([]),
     });
 
-    this.departmentService.getAllDepartments(true).subscribe(
+    this.departmentService.getAll(true).subscribe(
       {
         next: (result) => {
           this.departments = result;
@@ -183,7 +183,7 @@ export class IsoListComponent implements OnInit {
     let recordType = element.value.action;
 
     if (recordType === 'newRecord') {
-      this.isoService.createIsoItem(isoServiceItem).subscribe({
+      this.isoService.createItem(isoServiceItem).subscribe({
         next: (data) => {
           isoServiceItem = Object.assign(isoServiceItem, data);
           this.snackbar.success('Успешно добавяне на записа');
@@ -196,7 +196,7 @@ export class IsoListComponent implements OnInit {
         },
       });
     } else {
-      this.isoService.updateIsoItem(isoServiceItem).subscribe({
+      this.isoService.updateItem(isoServiceItem).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно обновяване на записа');
           element.get('isEditable').patchValue(true);
@@ -284,7 +284,7 @@ export class IsoListComponent implements OnInit {
 
   private updateServiceItem(element) {
     let isoServiceId = element.value.isoServiceId;
-    this.isoService.getIsoServiceById<IIsoService>(isoServiceId)
+    this.isoService.getItemById<IIsoService>(isoServiceId)
       .subscribe(result => {
         element.get('isoFiles').patchValue(result.isoFiles);
       });

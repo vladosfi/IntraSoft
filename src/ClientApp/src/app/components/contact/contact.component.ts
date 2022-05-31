@@ -47,7 +47,7 @@ export class ContactComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.departmentService.getAllDepartments().subscribe(
+    this.departmentService.getAll().subscribe(
       {
         next: (result) => {
           this.departments = result;
@@ -167,7 +167,6 @@ export class ContactComponent implements OnInit {
       this.snackbar.error('Невалидни данни!');
       return;
     }
-    this.snackbar.infoWitHide('Въведете трите имена');
 
     let contact = this.generateContact(element);
     if (contact === null) return;
@@ -175,7 +174,7 @@ export class ContactComponent implements OnInit {
     let recordType = element.value.action;
 
     if (recordType === 'newRecord') {
-      this.contactService.addContactItem(contact).subscribe({
+      this.contactService.createItem(contact).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно добавяне на записа');
           element.get('isEditable').patchValue(true);
@@ -187,7 +186,7 @@ export class ContactComponent implements OnInit {
         },
       });
     } else {
-      this.contactService.updateContactItem(contact).subscribe({
+      this.contactService.updateItem(contact).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно обновяване на записа');
           element.get('isEditable').patchValue(true);
@@ -215,7 +214,7 @@ export class ContactComponent implements OnInit {
     let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете контакт: ' + fullName + '?' } });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'true') {
-        this.contactService.deleteContactItem(id)
+        this.contactService.deleteItem(id)
           .subscribe({
             next: () => {
               this.dataSource.data = this.dataSource.data.filter(item => item != element);

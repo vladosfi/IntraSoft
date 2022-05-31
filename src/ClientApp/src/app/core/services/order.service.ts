@@ -1,0 +1,33 @@
+import { Injectable, Inject } from '@angular/core'
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Observable } from 'rxjs'
+import { Order } from '../interfaces/Order';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class OrderService {
+  endPoint = this.baseUrl + 'api/orders'
+  constructor(
+    private http: HttpClient,
+    @Inject('BASE_URL') private baseUrl: string,
+  ) {}
+
+  getData<Order>(): Observable<Order> {
+    var params = new HttpParams();
+    return this.http.get<Order>(this.endPoint, { params });
+  }
+
+  deleteItem(orderId: number): any {
+    return this.http.delete(this.endPoint + `/${orderId}`);
+  }
+
+  updateItem(orderId: Order): Observable<Order> {
+    return this.http
+      .put<Order>(this.endPoint + `/${orderId.id}`, orderId);
+  }
+
+  createItem(orderId: Order): Observable<Order> {
+    return this.http.post<Order>(this.endPoint, orderId);
+  }
+}

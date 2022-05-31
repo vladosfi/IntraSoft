@@ -20,15 +20,15 @@ export class MenuService {
     return currentMenu;
   }
 
-  deleteMenuItem(menuId: number): any {
+  deleteItem(menuId: number): any {
     return this.http.delete(this.endPoint + `/${menuId}`);
   }
 
-  updateMenuItem(menuItem: Menu): any {
+  updateItem(menuItem: Menu): any {
     return this.http.put(this.endPoint + `/${menuItem.id}`, menuItem);
   }
 
-  createMenuItem(menuItem: Menu): any {    
+  createItem(menuItem: Menu): any {    
     return this.http.post(this.endPoint, menuItem);
   }
 }

@@ -41,6 +41,8 @@
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderCategory> OrderCategories { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

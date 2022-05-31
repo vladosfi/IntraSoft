@@ -13,7 +13,7 @@ export class IsoFileCategoryService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getCategory<IsoFileCategory>(): Observable<IsoFileCategory> {
+  getItem<IsoFileCategory>(): Observable<IsoFileCategory> {
     var currentIsoFileCategory = this.http.get<IsoFileCategory>(this.endPoint);
     return currentIsoFileCategory;
   }

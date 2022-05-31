@@ -21,7 +21,7 @@ export class IsoService {
       .pipe(map(result => result as IIsoService[]));
   }
 
-  getIsoServiceById<IIsoService>(id: number): Observable<IIsoService> {
+  getItemById<IIsoService>(id: number): Observable<IIsoService> {
     var params = new HttpParams();
     return this.http.get<IIsoService>(this.endPoint + '/' + id, { params }).pipe(map(result => result as IIsoService));
   }
@@ -31,15 +31,15 @@ export class IsoService {
     return currentIsoFileCategory;
   }
 
-  deleteIsoServiceItem(isoServiceId: number): any {
+  deleteItem(isoServiceId: number): any {
     return this.http.delete(this.endPoint + `/${isoServiceId}`);
   }
 
-  updateIsoItem(isoServiceItem: IIsoService): any {
+  updateItem(isoServiceItem: IIsoService): any {
     return this.http.put(this.endPoint + `/${isoServiceItem.id}`, isoServiceItem);
   }
 
-  createIsoItem(isoItem: IIsoService): any {
+  createItem(isoItem: IIsoService): any {
     return this.http.post(this.endPoint, isoItem);
   }
 }

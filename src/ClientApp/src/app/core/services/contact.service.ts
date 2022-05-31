@@ -18,16 +18,16 @@ export class ContactService {
     return this.http.get<Contact>(this.endPoint, { params });
   }
 
-  deleteContactItem(contactId: number): any {
+  deleteItem(contactId: number): any {
     return this.http.delete(this.endPoint + `/${contactId}`);
   }
 
-  updateContactItem(contactItem: Contact): Observable<Contact> {
+  updateItem(contactItem: Contact): Observable<Contact> {
     return this.http
       .put<Contact>(this.endPoint + `/${contactItem.id}`, contactItem);
   }
 
-  addContactItem(contactItem: Contact): Observable<Contact> {
+  createItem(contactItem: Contact): Observable<Contact> {
     return this.http.post<Contact>(this.endPoint, contactItem);
   }
 }

@@ -6,9 +6,9 @@ namespace IntraSoft.Services.Data
 
     public interface IContactService
     {
-        Task<int> CreateAsync(Contact item);
-
         Task<IEnumerable<T>> GetAllAsync<T>();
+
+        Task<int> CreateAsync(Contact item);
 
         Task<T> GetByIdAsync<T>(int id);
 

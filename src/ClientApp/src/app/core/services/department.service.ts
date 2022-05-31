@@ -28,7 +28,7 @@ export class DepartmentService {
   //return data;
   // }
 
-  getAllDepartments(withoutDirectionDepartment: boolean = false): Observable<Department[]> {
+  getAll(withoutDirectionDepartment: boolean = false): Observable<Department[]> {
     var params = new HttpParams();
     //const headers = new HttpHeaders().set('withoutDirectionDepartment', "true");
 
@@ -38,16 +38,16 @@ export class DepartmentService {
       .pipe(map(result => result as Department[]));
   }
 
-  deleteDepartmentItem(departmentId: number): any {
+  deleteItem(departmentId: number): any {
     return this.http.delete(this.endPoint + `/${departmentId}`);
   }
 
-  updateDepartmentItem(departmentItem: Department): Observable<Department> {
+  updateItem(departmentItem: Department): Observable<Department> {
     return this.http
       .put<Department>(this.endPoint + `/${departmentItem.id}`, departmentItem);
   }
 
-  addDepartmentItem(departmentItem: Department): Observable<Department> {
+  createItem(departmentItem: Department): Observable<Department> {
     return this.http.post<Department>(this.endPoint, departmentItem);
   }
 }

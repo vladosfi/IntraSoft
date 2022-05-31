@@ -33,7 +33,7 @@ export class AddFileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isoFileCategoryService.getCategory().subscribe(
+    this.isoFileCategoryService.getItem().subscribe(
       {
         next: (result) => {
           this.isoFileCategories = result as IIsoFileCategory[];

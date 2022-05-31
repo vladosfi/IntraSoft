@@ -74,7 +74,7 @@ export class ModalDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.departmentService.getAllDepartments().subscribe(
+    this.departmentService.getAll().subscribe(
       {
         next: (result) => {
           this.departments = result as Department[];
@@ -82,7 +82,7 @@ export class ModalDialogComponent implements OnInit {
         }
       });
 
-    this.isoFileCategoryService.getCategory().subscribe(
+    this.isoFileCategoryService.getItem().subscribe(
       {
         next: (result) => {
           this.isoFileCategories = result as IIsoFileCategory[];
@@ -116,7 +116,7 @@ export class ModalDialogComponent implements OnInit {
         });
     
 
-    this.isoService.createIsoItem(this.isoServiceItem)
+    this.isoService.createItem(this.isoServiceItem)
       .subscribe({
         next: (result) => {
           this.isoServiceItem = Object.assign(this.isoServiceItem, result);
