@@ -35,7 +35,7 @@
                     Date = o.Date,
                     About = o.About,   
                     FilePath = o.FilePath,                 
-                    Category = o.Category,
+                    OrderCategory = o.OrderCategory,
                 })
                 .OrderBy(x => x.Id)
                 .AsNoTracking()
@@ -51,16 +51,6 @@
                 .All()
                 .Where(x => x.Id == id)
                 .To<T>()
-                .FirstOrDefaultAsync();
-        }
-
-        // No need to map
-        public async Task<Order> GetByIdAsync(int id)
-        {
-            return await this
-                .orderRepo
-                .All()
-                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
 

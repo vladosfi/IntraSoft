@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Observable } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { Order } from '../interfaces/Order';
 
 @Injectable({
@@ -13,9 +13,11 @@ export class OrderService {
     @Inject('BASE_URL') private baseUrl: string,
   ) {}
 
-  getData<Order>(): Observable<Order> {
+  getData<Order>(): Observable<Order[]> {
     var params = new HttpParams();
-    return this.http.get<Order>(this.endPoint, { params });
+
+    return this.http.get<Order[]>(this.endPoint, { params })
+    .pipe(map(result => result as Order[]));
   }
 
   deleteItem(orderId: number): any {

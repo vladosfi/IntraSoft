@@ -6,13 +6,11 @@ namespace IntraSoft.Services.Data
 
     public interface IOrderService
     {
-        Task<int> CreateAsync(Order item);
-
         Task<IEnumerable<T>> GetAllAsync<T>();
 
-        Task<T> GetByIdAsync<T>(int id);
+        Task<int> CreateAsync(Order item);
 
-        Task<Order> GetByIdAsync(int id);
+        Task<T> GetByIdAsync<T>(int id);
 
         void Delete(Order item);
 

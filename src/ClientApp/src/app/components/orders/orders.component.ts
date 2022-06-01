@@ -11,15 +11,12 @@ import {
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
-import { Department } from 'src/app/core/interfaces/Department'
-import { DepartmentService } from 'src/app/core/services/department.service'
 import { SnackbarService } from 'src/app/core/services/snackbar.service'
-import { fullNameValidator } from 'src/app/components/validators/validators'
-import { Contact } from '../../core/interfaces/Contact'
-import { ContactService } from '../../core/services/contact.service'
 import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
-import { Order } from 'src/app/core/interfaces/Order'
+import { Order, OrderCategory } from 'src/app/core/interfaces/Order'
 import { OrderService } from 'src/app/core/services/order.service'
+import { DatePipe } from '@angular/common'
+import { OrderCategoryService } from 'src/app/core/services/orderCategory.service'
 
 
 @Component({
@@ -29,39 +26,51 @@ import { OrderService } from 'src/app/core/services/order.service'
 })
 export class OrdersComponent implements OnInit {
   orders: Order[] = [];
-  departments: Department[] = [];
-  displayedColumns: string[] = ['number', 'about', 'date', 'filePath', 'category', 'action'];
+  orderCategories: OrderCategory[] = [{id: null, name: 'Всички'}];
+  displayedColumns: string[] = ['number', 'about', 'shortDate', 'filePath', 'category', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Заповеди';
   isLoading = true;
 
-  toppings = new FormControl();
-  toppingList: string[] = ['OV', 'Asp', 'arhitekt'];
-
   pageNumber: number = 1;
   VOForm: FormGroup;
+  FormCategory: FormGroup;
   isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    
+  datePipeString : string;
 
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
+    private orderCategoryService: OrderCategoryService,
     private snackbar: SnackbarService,
     private dialog: MatDialog,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
+    this.orderCategoryService.getData().subscribe( result  => {
+      this.orderCategories = result;
+    });
+
     this.orderService.getData().subscribe(
       {
         next: (result) => {
           this.orders = result as Order[];
-          
+          this.orders.map(o => {
+            o.shortDate = this.datePipe.transform(o.date,'dd-MM-yyyy', 'bg-BG');
+          })
           this.prepareDataSource();
         },
         error: (error) => {
           this.snackbar.error('Грешка при получаване на данни за заповедите');
         }
       });
+
+      this.datePipeString = this.datePipe.transform(Date.now(),'dd-MMM-yyyy', 'bg-BG');
+      console.log(this.datePipeString);
   }
 
 
@@ -89,9 +98,9 @@ export class OrdersComponent implements OnInit {
             id: new FormControl(val.id),
             number: new FormControl(val.number),
             about: new FormControl(val.about),
-            date: new FormControl(val.date),
+            shortDate: new FormControl(val.shortDate),
             filePath: new FormControl(val.filePath),
-            category: new FormControl(val.category.name),
+            category: new FormControl(val.orderCategory.name),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
@@ -249,10 +258,9 @@ export class OrdersComponent implements OnInit {
       id: new FormControl(),
       number: new FormControl('', [Validators.required]),
       about: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      shortDate: new FormControl('', [Validators.required]),
       filePath: new FormControl('', [Validators.required]),
-      category: new FormControl('', [Validators.required]),
-      
+      orderCategory: new FormControl('', [Validators.required]),      
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
@@ -265,9 +273,9 @@ export class OrdersComponent implements OnInit {
       id: element.value.id,
       number: element.value.number,
       about: element.value.about,
-      date: element.value.date,
+      date: element.value.shortDate,
       filePath: element.value.filePath,
-      category: element.value.category,
+      orderCategory: element.value.orderCategory,
     } as Order;
   }
 }

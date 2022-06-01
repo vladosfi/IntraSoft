@@ -17,6 +17,6 @@
 
         public string FilePath { get; set; }
 
-        public virtual OrderCategoryReadDto Category { get; set; }
+        public virtual OrderCategoryReadDto OrderCategory { get; set; }
     }
 }

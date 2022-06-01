@@ -22,6 +22,8 @@ namespace IntraSoft.Controllers
         private readonly IContactService contactService;
         private readonly IIsoService isoService;
         private readonly IIsoFileCategoryService isoFileCategoryService;
+        private readonly IOrderCategoryService orderCategoryService;
+        private readonly IOrderService orderService;
 
         public SeedController(
             IMenuService menuService, 
@@ -29,6 +31,8 @@ namespace IntraSoft.Controllers
             IContactService contactService,
             IIsoService isoService,
             IIsoFileCategoryService isoFileCategoryService,
+            IOrderCategoryService orderCategoryService,
+            IOrderService orderService,
             IWebHostEnvironment env)
         {
             this.menuService = menuService;
@@ -36,6 +40,8 @@ namespace IntraSoft.Controllers
             this.contactService = contactService;
             this.isoService = isoService;
             this.isoFileCategoryService = isoFileCategoryService;
+            this.orderCategoryService = orderCategoryService;
+            this.orderService = orderService;
             this.env = env;
         }
 
@@ -53,6 +59,8 @@ namespace IntraSoft.Controllers
             var importedContacts = await this.ImportContacts(excelPackage);
             var importedIsoServices = await this.ImportIsoServices(excelPackage);
             var importedIsoFileCategories = await this.ImportIsoFileCategories(excelPackage);
+            var importedOrderCategories = await this.ImportOrderCategories(excelPackage);
+            var importedOrders = await this.ImportOrders(excelPackage);
 
             return new JsonResult(new
             {
@@ -61,6 +69,8 @@ namespace IntraSoft.Controllers
                 Contacts = importedDepartments,
                 IsoServices = importedIsoServices,
                 IsoFileCategories = importedIsoFileCategories,
+                OrderCategories = importedOrderCategories,
+                Orders = importedOrders,
             });
         }
 
@@ -325,5 +335,102 @@ namespace IntraSoft.Controllers
                 IsoFileCategories = serviceByName
             });
         }
+
+
+        private async Task<IActionResult> ImportOrderCategories(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[5];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberOfItemsAdded = 0;
+
+            // create a lookup dictionary
+            var existingItems = await this.orderCategoryService.GetAllAsync<OrderCategory>();
+            var itemByName = existingItems.ToDictionary(x => x.Name, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var name = row[nRow, 2].GetValue<string>();
+
+                // skip this country if it already exists in the database
+                if (itemByName.ContainsKey(name)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var itemToAdd = new OrderCategory
+                {
+                    Name = name,      
+                };
+
+                // add the new country to the DB context
+                await this.orderCategoryService.CreateAsync(itemToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                itemByName.Add(name, itemToAdd);
+                // increment the counter
+                numberOfItemsAdded++;
+            }
+
+            return new JsonResult(new
+            {
+                OrderCategories = itemByName
+            });
+        }
+
+
+    private async Task<IActionResult> ImportOrders(ExcelPackage excelPackage)
+        {
+            // get the first worksheet
+            var worksheet = excelPackage.Workbook.Worksheets[6];
+            // define how many rows we want to process
+            var nEndRow = worksheet.Dimension.End.Row;
+            // initialize the record menus
+            var numberItemsAdded = 0;
+
+            // create a lookup dictionary
+            var existingItems = await this.orderService.GetAllAsync<Order>();
+            var itemByNumber = existingItems.ToDictionary(x => x.Number, StringComparer.OrdinalIgnoreCase);
+
+            // iterates through all rows, skipping the first one
+            for (int nRow = 2; nRow <= nEndRow; nRow++)
+            {
+                var row = worksheet.Cells[
+                nRow, 2, nRow, worksheet.Dimension.End.Column];
+                var number = row[nRow, 2].GetValue<string>();
+                var date = row[nRow, 3].GetValue<DateTime>();
+                var about = row[nRow, 4].GetValue<string>();
+                var filePath = row[nRow, 5].GetValue<string>();
+                var orderCategoryId = row[nRow, 6].GetValue<int>();
+
+                // skip this country if it already exists in the database
+                if (itemByNumber.ContainsKey(number)) continue;
+
+                // create the Country entity and fill it with xlsx data
+                var itemToAdd = new Order
+                {
+                    Number = number,
+                    Date = date,
+                    About = about,
+                    FilePath = filePath,
+                    OrderCategoryId = orderCategoryId,
+                };
+
+                // add the new country to the DB context
+                await this.orderService.CreateAsync(itemToAdd);
+                // store the country in our lookup to retrieve its Id later on
+                itemByNumber.Add(number, itemToAdd);
+                // increment the counter
+                numberItemsAdded++;
+            }
+
+            return new JsonResult(new
+            {
+                Orders = itemByNumber
+            });
+        }
+        
     }
 }

@@ -22,6 +22,7 @@
         [MaxLength(200)]
         public string FilePath { get; set; }
 
-         public string Category { get; set; }
+        [Required]
+         public int CategoryId { get; set; }
     }
 }

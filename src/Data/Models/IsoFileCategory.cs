@@ -7,7 +7,7 @@
     using IntraSoft.Services.Mapping;
 
     [Table("IsoFileCategories")]
-    public class IsoFileCategory : BaseDeletableModel<int>
+    public class IsoFileCategory : BaseDeletableModel<int>, IMapFrom<IsoFileCategory>
     {
         public IsoFileCategory(){
             this.IsoFiles = new HashSet<IsoFile>();

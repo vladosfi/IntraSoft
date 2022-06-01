@@ -6,7 +6,7 @@
     using IntraSoft.Services.Mapping;
 
     [Table("Contacts")]
-    public class Contact : BaseDeletableModel<int>
+    public class Contact : BaseDeletableModel<int>, IMapFrom<Contact>
     {
         [Required]
         [MaxLength(100)]

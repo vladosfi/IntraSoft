@@ -4,10 +4,12 @@ export interface Order {
   date: string;
   about: string;
   filePath: string;
-  category: OrderCategory;
+  shortDate: string;
+  orderCategory: OrderCategory;
 }
 
 
 export interface OrderCategory {
+  id: number
   name: string;
 }

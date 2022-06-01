@@ -102,10 +102,9 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<Order>()
-                .HasOne(o => o.Category)
-                .WithOne(c => c.Order)
-                .HasForeignKey<OrderCategory>(c => c.OrderId)
+                .Entity<OrderCategory>()
+                .HasMany(o => o.Orders)
+                .WithOne(c => c.OrderCategory)
                 .OnDelete(DeleteBehavior.Restrict);
 
             var entityTypes = builder.Model.GetEntityTypes().ToList();

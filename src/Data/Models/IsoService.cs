@@ -7,7 +7,7 @@
     using IntraSoft.Services.Mapping;
 
     [Table("IsoServices")]
-    public class IsoService: BaseDeletableModel<int>
+    public class IsoService: BaseDeletableModel<int>, IMapFrom<IsoService>
     {
         public IsoService()
         {
