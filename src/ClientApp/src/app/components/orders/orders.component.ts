@@ -36,13 +36,49 @@ export class OrdersComponent implements OnInit {
   VOForm: FormGroup;
   isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  datePipeString: string;
 
   FormCategory: FormGroup;
   selectedState = ['1'];
-  selectedCategory: string;
+
+  statusFilter = new FormControl('');
+  sourceFilter = new FormControl('');
+  filterValues: any = {
+    status: '',
+    source: ''
+  }
+  private fieldListener() {
+    this.statusFilter.valueChanges
+      .subscribe(
+        status => {
+          this.filterValues.status = status;
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+    this.sourceFilter.valueChanges
+      .subscribe(
+        source => {
+          this.filterValues.source = source;
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+  }
+  private createFilter(): (contact: Order, filter: string) => boolean {
+    let filterFunction = function (contact, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+
+      return contact.status.indexOf(searchTerms.status) !== -1
+        && contact.source.indexOf(searchTerms.source) !== -1;
+    }
+
+    return filterFunction;
+  }
+  clearFilter() {
+    this.sourceFilter.setValue('');
+    this.statusFilter.setValue('');
+  }
 
 
-  datePipeString: string;
 
   constructor(
     private fb: FormBuilder,
