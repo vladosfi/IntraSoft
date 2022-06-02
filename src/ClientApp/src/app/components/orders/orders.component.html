@@ -1,18 +1,16 @@
 <h1>{{ title }}</h1>
 <div>
     <mat-button-toggle-group
-      name="ingredients"
-      aria-label="Ingredients"
+      name="caregories"
+      aria-label="Caregories"
       multiple
+      [value]="selectedState"
+      (change)="onChangeCategory($event)"
     >
-      <mat-button-toggle class="col-sm" value="Всички">
-        Всички
-      </mat-button-toggle>
-      <mat-button-toggle *ngFor="let oc of orderCategories;" class="col-sm">
+      <mat-button-toggle *ngFor="let oc of orderCategories;" class="col-sm" value ="{{oc.id}}">
         {{oc.name}}
       </mat-button-toggle>
     </mat-button-toggle-group>
-  
 </div>
 <div class="mat-elevation-z8">
   <button title="Добави ред">

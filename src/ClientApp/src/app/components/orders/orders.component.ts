@@ -26,7 +26,7 @@ import { OrderCategoryService } from 'src/app/core/services/orderCategory.servic
 })
 export class OrdersComponent implements OnInit {
   orders: Order[] = [];
-  orderCategories: OrderCategory[] = [{id: null, name: 'Всички'}];
+  orderCategories: OrderCategory[] = [{ id: null, name: 'Всички' }];
   displayedColumns: string[] = ['number', 'about', 'shortDate', 'filePath', 'category', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Заповеди';
@@ -34,12 +34,15 @@ export class OrdersComponent implements OnInit {
 
   pageNumber: number = 1;
   VOForm: FormGroup;
-  FormCategory: FormGroup;
   isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    
-  datePipeString : string;
+  FormCategory: FormGroup;
+  selectedState = ['1'];
+  selectedCategory: string;
+
+
+  datePipeString: string;
 
   constructor(
     private fb: FormBuilder,
@@ -51,16 +54,19 @@ export class OrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.orderCategoryService.getData().subscribe( result  => {
-      this.orderCategories = result;
-    });
+    this.orderCategoryService.getData().subscribe(
+      {
+        next: (result) => {
+          this.orderCategories = result;
+        }
+      });
 
     this.orderService.getData().subscribe(
       {
         next: (result) => {
           this.orders = result as Order[];
           this.orders.map(o => {
-            o.shortDate = this.datePipe.transform(o.date,'dd-MM-yyyy', 'bg-BG');
+            o.shortDate = this.datePipe.transform(o.date, 'dd-MM-yyyy', 'bg-BG');
           })
           this.prepareDataSource();
         },
@@ -69,21 +75,47 @@ export class OrdersComponent implements OnInit {
         }
       });
 
-      this.datePipeString = this.datePipe.transform(Date.now(),'dd-MMM-yyyy', 'bg-BG');
-      console.log(this.datePipeString);
+    this.datePipeString = this.datePipe.transform(Date.now(), 'dd-MMM-yyyy', 'bg-BG');
+    //console.log(this.datePipeString);
+  }
+
+  onChangeCategory(event) {
+    let toggle = event.source;
+
+    if (toggle?.value != 1) {
+      //this.selectedState = ['1'];
+      this.selectedState = event.value.filter(b => b !== '1');
+    } else {
+      this.selectedState = event.value.filter(b => b === '1');
+    }
+
+    console.log(toggle);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 
   loadFilter() {
-    const filterPredicate = this.dataSource.filterPredicate;
-    this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
-      return filterPredicate.call(this.dataSource, data.value, filter);
-    }
+    this.dataSource.filterPredicate = ((data, filter) => {
+      const b = !data.value.category || data.value.category.toLowerCase().includes(filter);
+      //const a = !filter.position || data.position === filter.position;
+      //const c = !filter.symbol || data.symbol === filter.symbol;
+      //return a && b && c;
+      return b;
+    }) as (Order, string) => boolean;
+
+    // const filterPredicate = this.dataSource.filterPredicate;
+    // this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
+    //   return filterPredicate.call(this.dataSource, data.value, filter);
+    // }
 
 
-    //Custom filter according to name column
-    // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
-    //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
+    // //Custom filter according to name column
+    // // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
+    // //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
   }
 
   prepareDataSource(): void {
@@ -135,11 +167,6 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow() {
     // Do not add new record if last is not added correctly
@@ -165,7 +192,7 @@ export class OrdersComponent implements OnInit {
     if (element.status !== 'VALID') {
       this.snackbar.error('Невалидни данни!');
       return;
-    }    
+    }
 
     let newOrder = this.generateOrder(element);
     if (newOrder === null) return;
@@ -260,7 +287,7 @@ export class OrdersComponent implements OnInit {
       about: new FormControl('', [Validators.required]),
       shortDate: new FormControl('', [Validators.required]),
       filePath: new FormControl('', [Validators.required]),
-      orderCategory: new FormControl('', [Validators.required]),      
+      orderCategory: new FormControl('', [Validators.required]),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
