@@ -41,42 +41,26 @@ export class OrdersComponent implements OnInit {
   FormCategory: FormGroup;
   selectedState = ['1'];
 
-  statusFilter = new FormControl('');
-  sourceFilter = new FormControl('');
-  filterValues: any = {
-    status: '',
-    source: ''
-  }
-  private fieldListener() {
-    this.statusFilter.valueChanges
-      .subscribe(
-        status => {
-          this.filterValues.status = status;
-          this.dataSource.filter = JSON.stringify(this.filterValues);
-        }
-      )
-    this.sourceFilter.valueChanges
-      .subscribe(
-        source => {
-          this.filterValues.source = source;
-          this.dataSource.filter = JSON.stringify(this.filterValues);
-        }
-      )
-  }
-  private createFilter(): (contact: Order, filter: string) => boolean {
-    let filterFunction = function (contact, filter): boolean {
-      let searchTerms = JSON.parse(filter);
 
-      return contact.status.indexOf(searchTerms.status) !== -1
-        && contact.source.indexOf(searchTerms.source) !== -1;
-    }
+  
+  
+  // statusFilter = new FormControl('');
+  // sourceFilter = new FormControl('');
+  // filterValues: any = {
+  //   status: '',
+  //   source: ''
+  // }
+ 
+  // private createFilter(): (order: Order, filter: string) => boolean {
+  //   let filterFunction = function (order, filter): boolean {
+  //     let searchTerms = JSON.parse(filter);
 
-    return filterFunction;
-  }
-  clearFilter() {
-    this.sourceFilter.setValue('');
-    this.statusFilter.setValue('');
-  }
+  //     return order.category.indexOf(searchTerms.status) !== -1;
+  //       && order.about.indexOf(searchTerms.source) !== -1;
+  //   }
+
+  //   return filterFunction;
+  // }
 
 
 
@@ -121,11 +105,13 @@ export class OrdersComponent implements OnInit {
     if (toggle?.value != 1) {
       //this.selectedState = ['1'];
       this.selectedState = event.value.filter(b => b !== '1');
+      this.dataSource.filter = JSON.stringify(this.selectedState);
     } else {
       this.selectedState = event.value.filter(b => b === '1');
+      this.dataSource.filter = '';
     }
-
-    console.log(toggle);
+    
+    //console.log(toggle);
   }
 
   applyFilter(event: Event) {
@@ -135,15 +121,17 @@ export class OrdersComponent implements OnInit {
 
 
   loadFilter() {
-    this.dataSource.filterPredicate = ((data, filter) => {
-      const b = !data.value.category || data.value.category.toLowerCase().includes(filter);
+    this.dataSource.filterPredicate = ((order, filter) => {
+      const a =  JSON.parse(filter).find(element => element == order.value.categoryId);
+      //const b = filterPredicate.call(this.dataSource, order.value, filter)
       //const a = !filter.position || data.position === filter.position;
+      //const b = !order.value.category || order.value.category.toLowerCase().includes(filter);
       //const c = !filter.symbol || data.symbol === filter.symbol;
       //return a && b && c;
-      return b;
+      return a;
     }) as (Order, string) => boolean;
 
-    // const filterPredicate = this.dataSource.filterPredicate;
+    //const filterPredicate = this.dataSource.filterPredicate;
     // this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
     //   return filterPredicate.call(this.dataSource, data.value, filter);
     // }
@@ -169,6 +157,7 @@ export class OrdersComponent implements OnInit {
             shortDate: new FormControl(val.shortDate),
             filePath: new FormControl(val.filePath),
             category: new FormControl(val.orderCategory.name),
+            categoryId: new FormControl(val.orderCategory.id),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),

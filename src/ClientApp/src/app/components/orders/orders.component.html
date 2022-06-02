@@ -153,6 +153,7 @@
                 type="text"
                 formControlName="category"
                 [readonly]="element.get('isEditable').value"
+                [value]="element.get('categoryId').value"
               />
               <mat-error *ngIf="element?.invalid">
                 <div *ngIf="element.get('category')?.errors?.required">

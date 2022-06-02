@@ -10,6 +10,6 @@ export interface Order {
 
 
 export interface OrderCategory {
-  id: number
+  id: number;
   name: string;
 }
