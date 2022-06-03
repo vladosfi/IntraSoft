@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import {
   AbstractControl,
   FormArray,
@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common'
 import { OrderCategoryService } from 'src/app/core/services/orderCategory.service'
 
 
+
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
@@ -36,21 +37,23 @@ export class OrdersComponent implements OnInit {
   VOForm: FormGroup;
   isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  //@ViewChild('searchField') searchField: ElementRef;
   datePipeString: string;
 
   FormCategory: FormGroup;
   selectedState = ['1'];
 
 
-  
-  
+
+
+
   // statusFilter = new FormControl('');
   // sourceFilter = new FormControl('');
   // filterValues: any = {
   //   status: '',
   //   source: ''
   // }
- 
+
   // private createFilter(): (order: Order, filter: string) => boolean {
   //   let filterFunction = function (order, filter): boolean {
   //     let searchTerms = JSON.parse(filter);
@@ -105,31 +108,70 @@ export class OrdersComponent implements OnInit {
     if (toggle?.value != 1) {
       //this.selectedState = ['1'];
       this.selectedState = event.value.filter(b => b !== '1');
-      this.dataSource.filter = JSON.stringify(this.selectedState);
+      //this.dataSource.filter = JSON.stringify(this.selectedState);
+      this.applyFilter(event);
     } else {
       this.selectedState = event.value.filter(b => b === '1');
-      this.dataSource.filter = '';
+      //this.dataSource.filter = '';
+      // this.dataSource.filter = {
+      //   category: '',
+      // } as unknown as string;
+      this.applyFilter(event);
     }
-    
+
     //console.log(toggle);
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement)?.value;
+    //this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filteredString = filterValue?.trim().toLowerCase();
+    this.dataSource.filter = {
+      about: filteredString,
+      number: filteredString,
+      category: this.selectedState,
+    } as unknown as string;
   }
 
 
   loadFilter() {
-    this.dataSource.filterPredicate = ((order, filter) => {
-      const a =  JSON.parse(filter).find(element => element == order.value.categoryId);
-      //const b = filterPredicate.call(this.dataSource, order.value, filter)
-      //const a = !filter.position || data.position === filter.position;
-      //const b = !order.value.category || order.value.category.toLowerCase().includes(filter);
-      //const c = !filter.symbol || data.symbol === filter.symbol;
-      //return a && b && c;
-      return a;
+    this.dataSource.filterPredicate = ((data, filter) => {
+      // console.log(!!filter.about);
+      // console.log(!!filter.number);
+      // console.log(!!filter.category);
+      const a = !filter.about || data?.value.about.toLowerCase().includes(filter.about);
+      const b = !filter.number || data?.value.number.toLowerCase().includes(filter.number);
+      let c = false;
+      try {
+        c = !!JSON.parse(filter).find(element => element == data.value.categoryId);
+      }
+      catch {
+        c = false;
+      }
+      console.log(a || b || c);
+      return a || b || c;
+      //return (a || b) || c;
     }) as (Order, string) => boolean;
+
+
+    // this.dataSource.filterPredicate = ((order, filter) => {
+    //   console.log(filter);
+    //   let a = false;
+    //   try{
+    //     a =  !!JSON.parse(filter).find(element => element == order.value.categoryId);
+    //   }
+    //   catch{
+    //     a = false;
+    //   }
+
+    //   const b = !!this.dataSource.data.find( element => order.value.about.indexOf(element));
+    //   const c = !!this.dataSource.data.find( element => order.value.number.indexOf(filter));
+    //   //const a = !filter.position || data.position === filter.position;
+    //   //const b = !order.value.category || order.value.category.toLowerCase().includes(filter);
+    //   //const c = !filter.symbol || data.symbol === filter.symbol;
+    //   //return a && b && c;
+    //   return a && b && c;
+    // }) as (Order, string) => boolean;
 
     //const filterPredicate = this.dataSource.filterPredicate;
     // this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
@@ -137,9 +179,12 @@ export class OrdersComponent implements OnInit {
     // }
 
 
-    // //Custom filter according to name column
-    // // this.dataSource.filterPredicate = (data: {name: string}, filterValue: string) =>
-    // //   data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
+    // // //Custom filter according to about column
+    // this.dataSource.filterPredicate = (data: FormGroup, filterValue: string) => {
+    //   //console.log(data.value.about);
+    //   //console.log(data.value.categoryId);
+    //   return data.value.about.trim().toLowerCase().indexOf(filterValue) !== -1;
+    // }
   }
 
   prepareDataSource(): void {
