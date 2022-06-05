@@ -44,6 +44,7 @@
             return await query.To<T>().ToListAsync();
         }
 
+        // But entity is not tracked
         public async Task<T> GetByIdAsync<T>(int id)
         {
             return await this
@@ -51,6 +52,16 @@
                 .All()
                 .Where(x => x.Id == id)
                 .To<T>()
+                .FirstOrDefaultAsync();
+        }
+
+        // No need to map but entity is tracked
+        public async Task<Order> GetByIdAsync(int id)
+        {
+            return await this
+                .orderRepo
+                .All()
+                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
         }
 

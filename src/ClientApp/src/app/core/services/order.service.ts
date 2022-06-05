@@ -24,9 +24,9 @@ export class OrderService {
     return this.http.delete(this.endPoint + `/${orderId}`);
   }
 
-  updateItem(orderId: Order): Observable<Order> {
+  updateItem(item: Order): Observable<Order> {
     return this.http
-      .put<Order>(this.endPoint + `/${orderId.id}`, orderId);
+      .put<Order>(this.endPoint + `/${item.id}`, item);
   }
 
   createItem(orderId: Order): Observable<Order> {

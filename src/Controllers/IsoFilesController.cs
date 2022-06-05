@@ -111,7 +111,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var isoFileFromRepo = await this.isoFileService.GetByIdAsync(id);
+            var isoFileFromRepo = await this.isoFileService.GetByIdAsync<IsoFile>(id);
 
             if (isoFileFromRepo == null)
             {

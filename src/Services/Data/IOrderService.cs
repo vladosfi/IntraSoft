@@ -12,6 +12,8 @@ namespace IntraSoft.Services.Data
 
         Task<T> GetByIdAsync<T>(int id);
 
+        Task<Order> GetByIdAsync(int id);
+
         void Delete(Order item);
 
         void Update(Order menuItem);

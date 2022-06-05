@@ -1,16 +1,14 @@
 <h1>{{ title }}</h1>
 <div>
-    <mat-button-toggle-group
-      name="caregories"
-      aria-label="Caregories"
-      multiple
-      [value]="selectedState"
-      (change)="onChangeCategory($event)"
-    >
-      <mat-button-toggle *ngFor="let oc of orderCategories;" class="col-sm" value ="{{oc.id}}">
-        {{oc.name}}
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+  <mat-button-toggle-group name="caregories" aria-label="Caregories" multiple [value]="selectedState"
+    (change)="onChangeCategory($event)">
+    <mat-button-toggle class="col-sm" value="0">
+      Всички
+    </mat-button-toggle>
+    <mat-button-toggle *ngFor="let oc of orderCategories;" class="col-sm" value="{{oc.id}}">
+      {{oc.name}}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
 <div class="mat-elevation-z8">
   <button title="Добави ред">
@@ -23,55 +21,32 @@
       <div style="width: 40%;">
         <mat-form-field>
           <mat-label>Филтриране</mat-label>
-          <input
-            matInput
-            (keyup)="applyFilter($event)"
-            placeholder="Въведете текст за търсене"
-            #searchField
-          />
+          <input matInput (keyup)="applyFilter($event)" placeholder="Въведете текст за търсене" #searchField />
+          <button *ngIf="searchField.value != ''" mat-button mat-icon-button matSuffix (click)="clearSearchField()">
+            <mat-icon>close</mat-icon>
+        </button>
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field>
           <mat-label>Отиди на страница</mat-label>
-          <input
-            matInput
-            type="number"
-            placeholder="Enter page number"
-            [(ngModel)]="pageNumber"
-            (ngModelChange)="goToPage()"
-          />
+          <input matInput type="number" placeholder="Enter page number" [(ngModel)]="pageNumber"
+            (ngModelChange)="goToPage()" />
         </mat-form-field>
       </div>
     </div>
   </div>
   <form [formGroup]="VOForm" autocomplete="off" *ngIf="VOForm">
     <ng-container formArrayName="VORows">
-      <table
-        #table
-        mat-table
-        [dataSource]="dataSource"
-        class="mat-elevation-z8"
-      >
+      <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Number Column -->
         <ng-container matColumnDef="number">
           <th mat-header-cell *matHeaderCellDef>Номер</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
             <!-- <span [hidden]="element.get('isEditable').value"> -->
-            <mat-form-field
-              [appearance]="element.get('isEditable').value ? 'none' : 'legacy'"
-            >
-              <input
-                matInput
-                type="text"
-                formControlName="number"
-                [readonly]="element.get('isEditable').value"
-              />
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
+              <input matInput type="text" formControlName="number" [readonly]="element.get('isEditable').value" />
               <mat-error *ngIf="element?.invalid">
                 <!-- <div>{{element.error | json}}</div> -->
                 <div *ngIf="element.get('number')?.errors?.['required']">
@@ -86,20 +61,9 @@
         <!-- About Column -->
         <ng-container matColumnDef="about">
           <th mat-header-cell *matHeaderCellDef>Относно</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
-            <mat-form-field
-              [appearance]="element.get('isEditable').value ? 'none' : 'legacy'"
-            >
-              <input
-                matInput
-                type="text"
-                formControlName="about"
-                [readonly]="element.get('isEditable').value"
-              />
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
+              <input matInput type="text" formControlName="about" [readonly]="element.get('isEditable').value" />
               <mat-error *ngIf="element?.invalid">
                 <div *ngIf="element.get('about')?.errors?.required">
                   Полето е задължително
@@ -110,25 +74,33 @@
         </ng-container>
 
         <!-- ShortDate Column -->
-        <ng-container matColumnDef="shortDate">
+        <!-- <ng-container matColumnDef="shortDate">
           <th mat-header-cell *matHeaderCellDef>Дата</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element"> -->
             <!-- <span [hidden]="element.get('isEditable').value"> -->
-            <mat-form-field
-              [appearance]="element.get('isEditable').value ? 'none' : 'legacy'"
-            >
-              <input
-                matInput
-                type="text"
-                formControlName="shortDate"
-                [readonly]="element.get('isEditable').value"
-              />
+            <!-- <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
+              <input matInput type="text" formControlName="shortDate" [readonly]="element.get('isEditable').value" />
               <mat-error *ngIf="element?.invalid">
                 <div *ngIf="element.get('shortDate')?.errors?.required">
+                  Полето е задължително
+                </div>
+              </mat-error>
+            </mat-form-field> -->
+            <!-- </span> -->
+          <!-- </td>
+        </ng-container> -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Дата</th>
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <!-- <span [hidden]="element.get('isEditable').value"> -->
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
+              <mat-label [hidden]="element.get('isEditable').value">Изберете дата</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="date" [readonly]="element.get('isEditable').value" />
+              <mat-hint [hidden]="element.get('isEditable').value">MM.DD.YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="element?.invalid">
+                <div *ngIf="element.get('date')?.errors?.required">
                   Полето е задължително
                 </div>
               </mat-error>
@@ -137,51 +109,37 @@
           </td>
         </ng-container>
 
+
         <!-- OrderCategory Column -->
-        <ng-container matColumnDef="category">
+        <ng-container matColumnDef="categories">
           <th mat-header-cell *matHeaderCellDef>Категория</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
-            <mat-form-field
-              [appearance]="element.get('isEditable').value ? 'none' : 'legacy'"
-            >
-              <input
-                matInput
-                type="text"
-                formControlName="category"
-                [readonly]="element.get('isEditable').value"
-                [value]="element.get('categoryId').value"
-              />
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <mat-form-field [appearance]="
+              element.get('isEditable').value ? 'none' : 'legacy'
+              ">
+              <mat-select [readonly]="element.get('isEditable').value" formControlName="categoryId"
+                placeholder="{{categoryId}}" [title]="element.get('categoryName').value">
+                <mat-option *ngFor="let cat of orderCategories; index as i;" [value]="cat.id" [title]="cat.name"> {{cat.name}}</mat-option>
+              </mat-select>
               <mat-error *ngIf="element?.invalid">
-                <div *ngIf="element.get('category')?.errors?.required">
-                  Полето е задължително
-                </div>
+                <div *ngIf="element.get('categoryId')?.errors?.required">Въведете категория</div>
               </mat-error>
             </mat-form-field>
           </td>
         </ng-container>
 
+
+
         <!-- filePath Column -->
         <ng-container matColumnDef="filePath">
           <th mat-header-cell *matHeaderCellDef>Файл</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
             <!-- <span [hidden]="element.get('isEditable').value"> -->
-            <mat-form-field
-              [appearance]="element.get('isEditable').value ? 'none' : 'legacy'"
-            >
-              <input
-                matInput
-                type="text"
-                formControlName="filePath"
-                [readonly]="element.get('isEditable').value"
-              />
+            <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
+              <input hidden matInput type="text" formControlName="filePath" [readonly]="true" />
+              <span class="button-txt" *ngIf="element.get('isEditable').value">Изтегли Файл</span>
+              <span class="button-txt" *ngIf="!element.get('isEditable').value">Качи Файл</span>
+                <!-- <button title="" mat-button color="primary"(click)="editSVO()">Изтегли</button> -->
               <mat-error *ngIf="element?.invalid">
                 <div *ngIf="element.get('filePath')?.errors?.required">
                   Полето е задължително
@@ -194,84 +152,49 @@
 
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Action</th>
-          <td
-            mat-cell
-            *matCellDef="let element; let i = index"
-            [formGroup]="element"
-          >
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu save-button"
-              matTooltip="Save Changes"
-              (click)="saveVO(element)"
-              *ngIf="!element.get('isEditable').value"
-              color="primary"
-            >
+          <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+            <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
+              (click)="saveVO(element)" *ngIf="!element.get('isEditable').value" color="primary">
               <mat-icon>check_circle</mat-icon>
             </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu cancel-button"
-              matTooltip="Cancel Changes"
-              color="warn"
-              (click)="cancelSVO(element)"
-              *ngIf="!element.get('isEditable').value"
-            >
+            <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
+              color="warn" (click)="cancelSVO(element)" *ngIf="!element.get('isEditable').value">
               <mat-icon>cancel</mat-icon>
             </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu save-button"
-              *ngIf="element.get('isEditable').value"
-              matTooltip="Edit"
-              color="primary"
-              (click)="editSVO(element)"
-            >
+            <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+              *ngIf="element.get('isEditable').value" matTooltip="Edit" color="primary" (click)="editSVO(element)">
               <mat-icon>edit</mat-icon>
             </button>
 
-            <button
-              mat-icon-button
-              class="material-icons app-toolbar-menu delete-button"
-              *ngIf="element.get('isEditable').value"
-              matTooltip="Delete"
-              color="warn"
-              (click)="deleteSVO(element)"
-            >
+            <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
+              *ngIf="element.get('isEditable').value" matTooltip="Delete" color="warn" (click)="deleteSVO(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"> </tr>
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="6">
-            Няма данни по търсените критерии "{{ input.value }}"
+            Няма данни по търсените критерии "{{ input?.value }}"
           </td>
         </tr>
+
       </table>
     </ng-container>
   </form>
-  <mat-card
-    *ngIf="isLoading"
-    style="display: flex; justify-content: center; align-items: center;"
-  >
-    <mat-progress-spinner
-      color="primary"
-      mode="indeterminate"
-    ></mat-progress-spinner>
+  <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center;">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
   </mat-card>
 
-  <mat-paginator
-    [pageSizeOptions]="[
+
+
+  <mat-paginator [pageSizeOptions]="[
       10,
       dataSource.data.length > 20 ? dataSource.data.length : '30'
-    ]"
-    showFirstLastButtons
-  ></mat-paginator>
+    ]" showFirstLastButtons></mat-paginator>
 </div>

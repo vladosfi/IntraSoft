@@ -2,11 +2,15 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using IntraSoft.Data.Dtos.OrderCategory;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
 
     public class OrderUpdateDto : IMapTo<Order>
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string Number { get; set; }
@@ -23,6 +27,6 @@
         public string FilePath { get; set; }
 
         [Required]
-         public int CategoryId { get; set; }
+         public int OrderCategoryId { get; set; }
     }
 }

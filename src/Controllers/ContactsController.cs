@@ -67,14 +67,14 @@
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, ContactUpdateDto contactUpdateDto)
         {
-            var contactItemFromRepo = await this.contactService.GetByIdAsync<Contact>(id);
+            var contactItemFromRepo = await this.contactService.GetByIdAsync(id);
 
             if (contactItemFromRepo == null)
             {
                 return this.NotFound();
             }
 
-            AutoMapperConfig.MapperInstance.Map<ContactUpdateDto, Contact>(contactUpdateDto,contactItemFromRepo);
+            AutoMapperConfig.MapperInstance.Map<ContactUpdateDto, Contact>(contactUpdateDto, contactItemFromRepo);
 
             this.contactService.Update(contactItemFromRepo);
             await this.contactService.SaveChangesAsync();

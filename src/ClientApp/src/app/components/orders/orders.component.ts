@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import {
   AbstractControl,
   FormArray,
@@ -28,7 +28,7 @@ import { OrderCategoryService } from 'src/app/core/services/orderCategory.servic
 export class OrdersComponent implements OnInit {
   orders: Order[] = [];
   orderCategories: OrderCategory[] = [{ id: null, name: 'Всички' }];
-  displayedColumns: string[] = ['number', 'about', 'shortDate', 'filePath', 'category', 'action'];
+  displayedColumns: string[] = ['number', 'about', 'date', 'categories', 'filePath' ,  'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Заповеди';
   isLoading = true;
@@ -37,33 +37,11 @@ export class OrdersComponent implements OnInit {
   VOForm: FormGroup;
   isEditableNew: boolean = true;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  //@ViewChild('searchField') searchField: ElementRef;
+  @ViewChild('searchField') searchField: ElementRef;
   datePipeString: string;
 
   FormCategory: FormGroup;
-  selectedState = ['1'];
-
-
-
-
-
-  // statusFilter = new FormControl('');
-  // sourceFilter = new FormControl('');
-  // filterValues: any = {
-  //   status: '',
-  //   source: ''
-  // }
-
-  // private createFilter(): (order: Order, filter: string) => boolean {
-  //   let filterFunction = function (order, filter): boolean {
-  //     let searchTerms = JSON.parse(filter);
-
-  //     return order.category.indexOf(searchTerms.status) !== -1;
-  //       && order.about.indexOf(searchTerms.source) !== -1;
-  //   }
-
-  //   return filterFunction;
-  // }
+  selectedState = ['0'];
 
 
 
@@ -74,6 +52,7 @@ export class OrdersComponent implements OnInit {
     private snackbar: SnackbarService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
+    private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -88,9 +67,9 @@ export class OrdersComponent implements OnInit {
       {
         next: (result) => {
           this.orders = result as Order[];
-          this.orders.map(o => {
-            o.shortDate = this.datePipe.transform(o.date, 'dd-MM-yyyy', 'bg-BG');
-          })
+          // this.orders.map(o => {
+          //   o.shortDate = this.datePipe.transform(o.date, 'dd-MM-yyyy', 'bg-BG');
+          // })
           this.prepareDataSource();
         },
         error: (error) => {
@@ -102,29 +81,32 @@ export class OrdersComponent implements OnInit {
     //console.log(this.datePipeString);
   }
 
+  ngAfterContentChecked() {
+    this.ref.detectChanges();
+  }
+
   onChangeCategory(event) {
     let toggle = event.source;
 
-    if (toggle?.value != 1) {
-      //this.selectedState = ['1'];
-      this.selectedState = event.value.filter(b => b !== '1');
-      //this.dataSource.filter = JSON.stringify(this.selectedState);
+    if (toggle?.value != '0') {
+      this.selectedState = event.value.filter(b => b !== '0');
       this.applyFilter(event);
     } else {
-      this.selectedState = event.value.filter(b => b === '1');
-      //this.dataSource.filter = '';
-      // this.dataSource.filter = {
-      //   category: '',
-      // } as unknown as string;
+      this.selectedState = event.value.filter(b => b === '0');
       this.applyFilter(event);
     }
+  }
 
-    //console.log(toggle);
+  clearSearchField() {
+    this.searchField.nativeElement.value = '';
+    this.dataSource.filter = '';
+    this.selectedState = ['0'];
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement)?.value;
+    //const filterValue = (event.target as HTMLInputElement)?.value;
     //this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = this.searchField.nativeElement.value;
     const filteredString = filterValue?.trim().toLowerCase();
     this.dataSource.filter = {
       about: filteredString,
@@ -136,55 +118,15 @@ export class OrdersComponent implements OnInit {
 
   loadFilter() {
     this.dataSource.filterPredicate = ((data, filter) => {
-      // console.log(!!filter.about);
-      // console.log(!!filter.number);
-      // console.log(!!filter.category);
       const a = !filter.about || data?.value.about.toLowerCase().includes(filter.about);
       const b = !filter.number || data?.value.number.toLowerCase().includes(filter.number);
-      let c = false;
-      try {
-        c = !!JSON.parse(filter).find(element => element == data.value.categoryId);
-      }
-      catch {
-        c = false;
-      }
-      console.log(a || b || c);
-      return a || b || c;
-      //return (a || b) || c;
+      const c = !filter.category || filter.category.find(element => {
+        if (element == 0) return true;
+        return element == data.value?.id;
+      });
+
+      return (a || b) && c;
     }) as (Order, string) => boolean;
-
-
-    // this.dataSource.filterPredicate = ((order, filter) => {
-    //   console.log(filter);
-    //   let a = false;
-    //   try{
-    //     a =  !!JSON.parse(filter).find(element => element == order.value.categoryId);
-    //   }
-    //   catch{
-    //     a = false;
-    //   }
-
-    //   const b = !!this.dataSource.data.find( element => order.value.about.indexOf(element));
-    //   const c = !!this.dataSource.data.find( element => order.value.number.indexOf(filter));
-    //   //const a = !filter.position || data.position === filter.position;
-    //   //const b = !order.value.category || order.value.category.toLowerCase().includes(filter);
-    //   //const c = !filter.symbol || data.symbol === filter.symbol;
-    //   //return a && b && c;
-    //   return a && b && c;
-    // }) as (Order, string) => boolean;
-
-    //const filterPredicate = this.dataSource.filterPredicate;
-    // this.dataSource.filterPredicate = (data: AbstractControl, filter) => {
-    //   return filterPredicate.call(this.dataSource, data.value, filter);
-    // }
-
-
-    // // //Custom filter according to about column
-    // this.dataSource.filterPredicate = (data: FormGroup, filterValue: string) => {
-    //   //console.log(data.value.about);
-    //   //console.log(data.value.categoryId);
-    //   return data.value.about.trim().toLowerCase().indexOf(filterValue) !== -1;
-    // }
   }
 
   prepareDataSource(): void {
@@ -199,10 +141,11 @@ export class OrdersComponent implements OnInit {
             id: new FormControl(val.id),
             number: new FormControl(val.number),
             about: new FormControl(val.about),
-            shortDate: new FormControl(val.shortDate),
+            date: new FormControl({ value: val.date, disabled: true }),
             filePath: new FormControl(val.filePath),
-            category: new FormControl(val.orderCategory.name),
-            categoryId: new FormControl(val.orderCategory.id),
+            categoryId: new FormControl({ value: val.orderCategory.id, disabled: true }),
+            categoryName: new FormControl({ value: val.orderCategory.name, disabled: true }),
+            categories: new FormControl(this.orderCategories),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
             isNewRow: new FormControl(false),
@@ -237,7 +180,6 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow() {
     // Do not add new record if last is not added correctly
     for (let i = 0; i < this.dataSource.data.length; i++) {
@@ -254,6 +196,8 @@ export class OrdersComponent implements OnInit {
   // this function will enabled the select field for editd
   editSVO(element) {
     element.get('isEditable').patchValue(false);
+    element.get('date').enable(true);
+    element.get('categoryId').enable(true);
     // this.isEditableNew = true;
   }
 
@@ -274,6 +218,8 @@ export class OrdersComponent implements OnInit {
         next: (data) => {
           this.snackbar.success('Успешно добавяне на записа');
           element.get('isEditable').patchValue(true);
+          element.get('date').disable(false);
+          element.get('categoryId').disable(false);
           element.get('action').patchValue('existingRecord');
         },
         error: (error) => {
@@ -284,6 +230,8 @@ export class OrdersComponent implements OnInit {
       this.orderService.updateItem(newOrder).subscribe({
         next: (data) => {
           this.snackbar.success('Успешно обновяване на записа');
+          element.get('date').disable(false);
+          element.get('categoryId').disable(false);
           element.get('isEditable').patchValue(true);
         },
         error: (error) => {
@@ -327,6 +275,8 @@ export class OrdersComponent implements OnInit {
   cancelSVO(element) {
     this.prepareDataSource();
     element.get('isEditable').patchValue(true);
+    element.get('date').disable(false);
+    element.get('categoryId').disable(false);
   }
 
   paginatorList: HTMLCollectionOf<Element>;
@@ -355,9 +305,10 @@ export class OrdersComponent implements OnInit {
       id: new FormControl(),
       number: new FormControl('', [Validators.required]),
       about: new FormControl('', [Validators.required]),
-      shortDate: new FormControl('', [Validators.required]),
+      date: new FormControl('', [Validators.required]),
       filePath: new FormControl('', [Validators.required]),
-      orderCategory: new FormControl('', [Validators.required]),
+      categoryId: new FormControl('', [Validators.required]),
+      categoryName: new FormControl(''),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
       isNewRow: new FormControl(true),
@@ -370,9 +321,9 @@ export class OrdersComponent implements OnInit {
       id: element.value.id,
       number: element.value.number,
       about: element.value.about,
-      date: element.value.shortDate,
+      date: element.value.date,
       filePath: element.value.filePath,
-      orderCategory: element.value.orderCategory,
+      orderCategoryId : element.value.categoryId,
     } as Order;
   }
 }

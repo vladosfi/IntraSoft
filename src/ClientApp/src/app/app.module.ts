@@ -36,6 +36,7 @@ import { LOCALE_ID } from '@angular/core';
 import bg from '@angular/common/locales/bg';
 import { registerLocaleData } from '@angular/common';
 import { OrdersComponent } from './components/orders/orders.component';
+import { MatNativeDateModule } from '@angular/material/core';
 registerLocaleData(bg);
 
 @NgModule({
@@ -75,6 +76,7 @@ registerLocaleData(bg);
     ReactiveFormsModule,
     MaterialModule,
     IMaskModule,
+    MatNativeDateModule,
   ],
   providers: [
     {

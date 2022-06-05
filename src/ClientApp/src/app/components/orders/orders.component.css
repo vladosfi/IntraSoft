@@ -39,30 +39,46 @@ h1 {
     padding-left: 15px;
   }
   
-  .mat-column-fullName {
+  .mat-column-number {
     padding-left: 16px;
     text-transform: uppercase;
-    width: 30%;
+    width: 5%;
   }
   
-  .mat-column-phone {
+  .mat-column-about {
     text-transform: uppercase;
-    width: 15%;
+    width: 50%;
+    padding-right: 10px;
   }
   
-  .mat-column-email {
+  .mat-column-date {
+    width: 32px;
+    text-align: left;
+    text-transform: uppercase;
+    width: 5%;
+  }
+
+  .mat-column-filePath {
     width: 32px;
     text-align: left;
     text-transform: uppercase;
     width: 15%;
   }
   
-  .mat-column-departments {
+  .mat-column-category {
     width: 32px;
     text-align: left;
     text-transform: uppercase;
-    width: 18%;
+    width: 15%;
   }
+
+  .mat-column-action {
+    text-align: left;
+    text-transform: uppercase;
+    width: 15%;
+    min-width: 100px;
+  }
+  
   
   
   .mat-select {
@@ -73,13 +89,17 @@ h1 {
     color: rgb(125, 125, 125) !important;
   }
   
-  
-  .mat-column-action {
-    text-align: left;
-    text-transform: uppercase;
-    width: 10%;
+  .button-txt{
+    color: #3498DB;
+    padding: 5px 5px 0px 5px;
+    font-size: 14px;
+    cursor: pointer;
   }
-  
+
+  .button-txt:hover{
+    font-weight: bold;
+  }
+
   
   .add-button {
     color: #3498DB;

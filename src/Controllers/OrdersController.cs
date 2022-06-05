@@ -1,5 +1,6 @@
 ﻿namespace IntraSoft.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Order;
     using IntraSoft.Data.Models;
@@ -67,16 +68,17 @@
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCommand(int id, OrderUpdateDto orderUpdateDto)
         {
-            var orderItemFromRepo = await this.orderService.GetByIdAsync<Order>(id);
+            var orderItemFromRepo = await this.orderService.GetByIdAsync(id);
 
             if (orderItemFromRepo == null)
             {
                 return this.NotFound();
             }
 
-            AutoMapperConfig.MapperInstance.Map<OrderUpdateDto, Order>(orderUpdateDto,orderItemFromRepo);
-
+            AutoMapperConfig.MapperInstance.Map<OrderUpdateDto, Order>(orderUpdateDto, orderItemFromRepo);
+            
             this.orderService.Update(orderItemFromRepo);
+
             await this.orderService.SaveChangesAsync();
 
             return this.NoContent();
