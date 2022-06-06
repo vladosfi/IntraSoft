@@ -16,14 +16,7 @@ import { HomeItem } from 'src/app/core/interfaces/Home';
 export class LastItemsComponent implements OnInit {
   @Input() items: HomeItem[];
   @Input() routerLink: string;
-
-  // items: IItems[] = [
-  //   { name: 'One', createdOn: '2022-05-31 07:43:39.3276319', color: 'lightblue' },
-  //   { name: 'Two', createdOn: '2022-05-29', color: 'lightgreen' },
-  //   { name: 'Three', createdOn: '2022-05-29', color: 'lightpink' },
-  //   { name: 'Four', createdOn: '2022-05-29', color: '#DDBDF1' },
-  //   { name: 'Five', createdOn: '2022-05-29', color: 'lightgreen' },
-  // ];
+  @Input() title: string;
 
   constructor() { }
 

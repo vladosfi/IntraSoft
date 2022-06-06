@@ -11,12 +11,24 @@
     public class HomeService : IHomeService
     {
         private readonly IDeletableEntityRepository<IntraSoft.Data.Models.IsoService> isoServiceRepo;
+        private readonly IDeletableEntityRepository<Order> orderRepo;
 
-        public HomeService(IDeletableEntityRepository<IntraSoft.Data.Models.IsoService> isoServiceRepo)
+        public HomeService(IDeletableEntityRepository<IntraSoft.Data.Models.IsoService> isoServiceRepo, IDeletableEntityRepository<Order> orderRepo)
         {
             this.isoServiceRepo = isoServiceRepo;
+            this.orderRepo = orderRepo;
         }
 
+        public async Task<IEnumerable<T>> GetLastOrders<T>()
+        {
+            IQueryable<Order> query = this.orderRepo
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Take(5)
+                .AsNoTracking();
+
+                return await query.To<T>().ToListAsync();
+        }
 
         public async Task<IEnumerable<T>> GetLastServices<T>()
         {

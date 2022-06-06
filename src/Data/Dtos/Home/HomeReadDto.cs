@@ -1,21 +1,16 @@
 ﻿namespace IntraSoft.Data.Dtos.Home
 {
-
-    using IntraSoft.Services.Mapping;
-    using IntraSoft.Data.Models;
-    using src.Data.Dtos.IsoFile;
     using System.Collections.Generic;
-    using System;
 
-    public class HomeReadDto : IMapFrom<IsoService>
+    public class HomeReadDto
     {
+        public HomeReadDto()
+        {
+            this.Orders = new HashSet<HomeOrdersReadDto>();
+            this.IsoServices = new HashSet<HomeIsoServicesReadDto>();
+        }
 
-        public int Id { get; set; }
-        
-        public string Name { get; set; }
-
-        public string Number { get; set; }
-
-        public DateTime CreatedOn { get; set; }
+        public virtual IEnumerable<HomeOrdersReadDto> Orders { get; set; }
+        public virtual IEnumerable<HomeIsoServicesReadDto> IsoServices { get; set; }
     }
 }

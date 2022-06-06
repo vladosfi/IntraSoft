@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Home;
+    using IntraSoft.Data.Dtos.Order;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,14 +21,20 @@
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var contactsReadDto = await this.homeService.GetLastServices<HomeReadDto>();
+            var lastServicesReadDto = await this.homeService.GetLastServices<HomeIsoServicesReadDto>();
+            var lastOrdersReadDto = await this.homeService.GetLastOrders<HomeOrdersReadDto>();
 
-            if (contactsReadDto == null)
+            if (lastServicesReadDto == null && lastOrdersReadDto == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(contactsReadDto);
+            var homeReadDto = new HomeReadDto{
+                IsoServices = lastServicesReadDto,
+                Orders = lastOrdersReadDto 
+            };
+
+            return this.Ok(homeReadDto);
         }
 
         // GET api/<ValuesController>/5

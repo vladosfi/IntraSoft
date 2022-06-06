@@ -7,5 +7,6 @@ namespace IntraSoft.Services.Data
     public interface IHomeService
     {
         Task<IEnumerable<T>> GetLastServices<T>();
+        Task<IEnumerable<T>> GetLastOrders<T>();
     }
 }

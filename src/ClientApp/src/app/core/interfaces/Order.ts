@@ -4,7 +4,6 @@ export interface Order {
   date: string;
   about: string;
   filePath: string;
-  shortDate: string;
   orderCategoryId: number;
   orderCategory: OrderCategory;
 }
