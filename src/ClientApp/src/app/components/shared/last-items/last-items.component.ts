@@ -14,7 +14,7 @@ import { HomeItem } from 'src/app/core/interfaces/Home';
   styleUrls: ['./last-items.component.css'],
 })
 export class LastItemsComponent implements OnInit {
-  @Input() items: HomeItem[];
+  @Input() items: any;
   @Input() routerLink: string;
   @Input() title: string;
 

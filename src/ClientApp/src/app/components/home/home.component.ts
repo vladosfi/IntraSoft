@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeItem } from 'src/app/core/interfaces/Home';
+import { HomeItem ,HomeListItems } from 'src/app/core/interfaces/Home';
 import { HomeService } from 'src/app/core/services/home.service';
 
 @Component({
@@ -12,21 +12,30 @@ export class HomeComponent implements OnInit {
 
   isoRouterLink: string = 'iso-list';
   lastIsoServices: string = 'Last Iso Services';
-  
-  constructor(private homeService: HomeService) {  }
+  lastOrders: string = 'Last Orders';
+  homeListItemsIsoServices: HomeListItems[] ; 
+  homeListItemsOrders: HomeListItems; 
+
+  constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
     // this.homeItems.orders = [];
     // this.homeItems.isoServices = [];
 
-    this.homeService.getIsoServices().subscribe( i  => {      
-      this.homeItems.orders = i.orders;
-      this.homeItems.isoServices = i.isoServices;
-      // console.log(this.homeItems.orders);
-      // console.log(this.homeItems);
-      //this.homeItems.homeOrders = i;
-    });
-   }
+
+    this.homeService.getIsoServices().subscribe(
+      {
+        next: (result) => {
+          this.homeItems.isoServices = result.isoServices;
+          this.homeItems.orders = result.orders;
+
+          // this.homeListItemsIsoServices = this.homeItems.isoServices.map( i => {
+          //   id = i.id,
+            
+          // }) 
+        }
+      });
+  }
 
 
 

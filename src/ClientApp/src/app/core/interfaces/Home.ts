@@ -5,8 +5,8 @@ export interface HomeItem {
 
 export interface HomeIsoServices {
   id: number;
-  name: string;
   number: string;
+  name: string;
   createdOn: string;
 }
 
@@ -14,6 +14,13 @@ export interface HomeIsoServices {
 export interface HomeOrders {
   id: number;
   number: string;
-  date: string;
   about: string;
+  date: string;
+}
+
+export interface HomeListItems {
+  id: number;
+  title: string;
+  text: string;
+  date: string;
 }
