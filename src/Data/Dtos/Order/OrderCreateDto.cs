@@ -4,7 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
-
+    using Microsoft.AspNetCore.Http;
+    
     public class OrderCreateDto : IMapTo<Order>
     {
         public int Id { get; set; }
@@ -25,6 +26,9 @@
         public string FilePath { get; set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public IFormFile File { get; set; }
+
+        [Required]
+        public int OrderCategoryId { get; set; }
     }
 }

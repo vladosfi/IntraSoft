@@ -6,7 +6,6 @@
 
     public class ContactReadDto : IMapFrom<Contact>
     {
-
         public int Id { get; set; }
 
         public string FirstName { get; set; }

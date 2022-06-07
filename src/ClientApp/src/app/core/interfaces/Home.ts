@@ -1,9 +1,9 @@
 export interface HomeItem {
-  orders: HomeOrders[];
-  isoServices: HomeIsoServices[];
+  orders: HomeOrder[];
+  isoServices: HomeIsoService[];
 }
 
-export interface HomeIsoServices {
+export interface HomeIsoService {
   id: number;
   number: string;
   name: string;
@@ -11,14 +11,14 @@ export interface HomeIsoServices {
 }
 
 
-export interface HomeOrders {
+export interface HomeOrder {
   id: number;
   number: string;
   about: string;
   date: string;
 }
 
-export interface HomeListItems {
+export interface HomeListItem {
   id: number;
   title: string;
   text: string;

@@ -49,15 +49,17 @@
 
         // POST api/<ValuesController>
         [HttpPost]
-        public async Task<ActionResult<OrderCreateDto>> Post([FromBody] OrderCreateDto orderItemDto)
+        //public async Task<ActionResult<OrderCreateDto>> Post([FromBody] OrderCreateDto orderItemDto)
+        public async Task<ActionResult<OrderCreateDto>> Post([FromForm] OrderCreateDto orderItemDto)
         {
             var newOrderItem = AutoMapperConfig.MapperInstance.Map<Order>(orderItemDto);
 
             await this.orderService.CreateAsync(newOrderItem);
 
             await this.orderService.SaveChangesAsync();
-            var orderReadDto = AutoMapperConfig.MapperInstance.Map<OrderCreateDto>(newOrderItem);
+            var orderReadDto = AutoMapperConfig.MapperInstance.Map<OrderReadDto>(newOrderItem);
 
+            
 
             return this.CreatedAtRoute(
                 nameof(this.GetOrderById),

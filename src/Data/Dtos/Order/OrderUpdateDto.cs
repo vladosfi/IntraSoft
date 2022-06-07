@@ -2,9 +2,9 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using IntraSoft.Data.Dtos.OrderCategory;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
+    using Microsoft.AspNetCore.Http;
 
     public class OrderUpdateDto : IMapTo<Order>
     {
@@ -25,6 +25,9 @@
         [Required]
         [MaxLength(200)]
         public string FilePath { get; set; }
+
+        [Required]
+        public IFormFile File { get; set; }
 
         [Required]
          public int OrderCategoryId { get; set; }

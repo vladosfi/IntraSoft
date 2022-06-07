@@ -59,10 +59,10 @@
       class="list-group-item list-group-item-action flex-column align-items-start"
     >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{item.number}}</h5>
-        <small class="text-muted">{{ item.createdOn | date:'dd/MMM/yyyy':'bg-BG'}}</small>
+        <h5 class="mb-1">{{item.title}}</h5>
+        <small class="text-muted">{{ item.date | date:'dd.MMM.yyyy':'bg-BG'}}</small>
       </div>
-      <p class="mb-1">{{ item.name }}</p>
+      <p class="mb-1">{{ item.text }}</p>
       <!-- <small>More small text here.</small> -->
     </a>
   </div>

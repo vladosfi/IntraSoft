@@ -11,7 +11,7 @@ import { ShareNavigationDataService } from '../../core/services/share-navigation
 export class HeaderComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
   menuList$ = this.shareDataService.menuList$;
-  pathToFile = 'api/document';
+  pathToFile = 'api/documents';
 
   constructor(
     public shareDataService: ShareNavigationDataService,

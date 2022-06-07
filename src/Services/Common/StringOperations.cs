@@ -1,4 +1,4 @@
-namespace IntraSoft.Data.Common.Services
+namespace IntraSoft.Services.Common
 {
     using System;
     using System.Collections.Generic;

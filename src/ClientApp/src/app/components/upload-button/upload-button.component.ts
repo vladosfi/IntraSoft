@@ -16,7 +16,7 @@ export class UploadButtonComponent implements OnInit {
   deleteButtonText: string;
   fileId: number;
   defaultLinkPath = 'uploads\\menu';
-  endPointPath = 'api/document';
+  endPointPath = 'api/documents';
   @Input() sourcePath: string = this.defaultLinkPath;
   @Input() MenuId: string = null;
   @Input() document: IFileDocument = null;

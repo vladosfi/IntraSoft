@@ -1,6 +1,7 @@
 ﻿namespace IntraSoft.Data.Dtos.Order
 {
     using System;
+    using System.IO;
     using IntraSoft.Data.Dtos.OrderCategory;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
@@ -16,6 +17,8 @@
         public string About { get; set; }
 
         public string FilePath { get; set; }
+
+        public string FileName => Path.GetFileName(this.FilePath);
 
         public virtual OrderCategoryReadDto OrderCategory { get; set; }
     }

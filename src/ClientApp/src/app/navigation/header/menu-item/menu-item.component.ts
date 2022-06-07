@@ -12,7 +12,7 @@ export class MenuItemComponent implements OnInit {
   @Input() items: Menu[];
   @ViewChild('childMenu', { static: true }) public childMenu: any;
   maxLenghtForTooltip = 30;
-  pathToFile = 'api/document';
+  pathToFile = 'api/documents';
 
 
   constructor(

@@ -11,7 +11,7 @@ export class MenuItemAMComponent implements OnInit {
   @Input("menuitem") menuitem;
   style;
   styleLink;
-  pathToFile = 'api/document';
+  pathToFile = 'api/documents';
 
   constructor(private fileService: FileService,
   ) { }

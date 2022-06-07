@@ -3,9 +3,9 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
-    using IntraSoft.Data.Common.Services;
     using IntraSoft.Data.Dtos.Document;
     using IntraSoft.Data.Models;
+    using IntraSoft.Services.Common;
     using IntraSoft.Services.Data;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,6 @@
     public class DocumentsController : ControllerBase
     {
         private readonly IWebHostEnvironment hostingEnvironment;
-        private const string directoryDoesNotExist = "Directory does not exist!";
 
         private readonly IDocumentService documentService;
 
@@ -67,27 +66,9 @@
                 return BadRequest();
             }
 
-            var fullPath = Path.GetFullPath(fileInput.Path);
-            fileInput.Path = fullPath.Substring(fullPath.Length - fileInput.Path.Length);
-
-            // Save uniqueFileName to file system
-            var uniqueFileName = StringOperations.GetUniqueFileName(fileInput.File.FileName);
-            var uploads = Path.Combine(hostingEnvironment.WebRootPath, fileInput.Path);
-
-            // Create dir if does not exidt
-            if (!Directory.Exists(uploads))
-            {
-                throw new Exception(directoryDoesNotExist);
-            }
-
-            var filePathWithFileName = Path.Combine(uploads, uniqueFileName);
-
-            var fs = new FileStream(filePathWithFileName, FileMode.Create);
-            await fileInput.File.CopyToAsync(fs);
-            await fs.DisposeAsync();
-
+            var filePathWithFileName = await FileService.CreateAsync(fileInput, hostingEnvironment.WebRootPath);
+ 
             // Save uniqueFileName to db table
-            filePathWithFileName = Path.Combine(fileInput.Path, uniqueFileName);
             var document =
                 new Document
                 {
@@ -117,12 +98,7 @@
 
             // Delete form filesystem
             string path = Path.Combine(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
-
-            FileInfo file = new FileInfo(path);
-            if (file.Exists)
-            {
-                file.Delete();
-            }
+            FileService.Delete(path);
 
             return this.NoContent();
         }

@@ -30,7 +30,20 @@
       </section>
     </div>
     <div class="col-md-3">
-      <app-last-items [items]="homeItems.isoServices" [title]="lastIsoServices" [routerLink]="isoRouterLink"></app-last-items>
+      <div class="list-item">
+        <app-last-items
+          [items]="homeListItemsOrders"
+          [title]="listTitle2"
+          [routerLink]="isoRouterLink2"
+        ></app-last-items>
+      </div>
+      <div class="list-item">
+        <app-last-items
+          [items]="homeListItemsIsoServices"
+          [title]="listTitle1"
+          [routerLink]="isoRouterLink1"
+        ></app-last-items>
+      </div>
     </div>
   </div>
 </div>

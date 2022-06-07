@@ -28,7 +28,6 @@
         [MaxLength(50)]
         public string UserName { get; set; }
 
-
         [ForeignKey(nameof(OrderCategory))]
         public int OrderCategoryId { get; set; }
 
