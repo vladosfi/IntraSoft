@@ -242,13 +242,13 @@ export class IsoListComponent implements OnInit {
 
   cancelSVO(element) {
 
-    if(element.get('action').value == 'newRecord') {
+    if (element.get('action').value == 'newRecord') {
       const data = this.dataSource.data;
       data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
       this.dataSource.data = data;
       return;
     }
-    
+
     element.get('departmentId').disable(false);
     element.get('isEditable').patchValue(true);
   }
@@ -256,6 +256,29 @@ export class IsoListComponent implements OnInit {
   downloadFile(fileId: string) {
     this.fileService.downloadFile(fileId, this.pathToFile);
   }
+
+  deleteFile(fileId: string, element: any) {
+    let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете фаила?' } });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        this.fileService.deleteFile(fileId, this.pathToFile)
+          .subscribe({
+            next: () => {
+              this.updateServiceItem(element);
+              this.snackbar.success('Файлът беше изтрит');
+            },
+            error: (error) => {
+              this.snackbar.error('Грешка при изтриване на файл!');
+            }
+          });
+      } else {
+        console.log(`Dialog result is: ${result}`);
+      }
+    });
+  }
+
+
 
   addFile(element) {
 

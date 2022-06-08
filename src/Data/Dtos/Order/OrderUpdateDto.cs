@@ -22,7 +22,6 @@
         [MaxLength(500)]
         public string About { get; set; }
 
-        [Required]
         [MaxLength(200)]
         public string FilePath { get; set; }
 

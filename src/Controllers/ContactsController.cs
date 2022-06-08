@@ -86,7 +86,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var contactItemFromRepo = await this.contactService.GetByIdAsync<Contact>(id);
+            var contactItemFromRepo = await this.contactService.GetByIdAsync(id);
 
             if (contactItemFromRepo == null)
             {

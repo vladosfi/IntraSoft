@@ -10,8 +10,7 @@
 
     public class OrderCategoryService : IOrderCategoryService
     {
-        private readonly IDeletableEntityRepository<OrderCategory>
-            orderCategoryRepo;
+        private readonly IDeletableEntityRepository<OrderCategory> orderCategoryRepo;
 
         public OrderCategoryService(
             IDeletableEntityRepository<OrderCategory> orderCategoryRepo
@@ -38,6 +37,16 @@
             await this.orderCategoryRepo.AddAsync(item);
             await this.orderCategoryRepo.SaveChangesAsync();
             return item.Id;
+        }
+
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            return await this
+                .orderCategoryRepo
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
         }
     }
 }

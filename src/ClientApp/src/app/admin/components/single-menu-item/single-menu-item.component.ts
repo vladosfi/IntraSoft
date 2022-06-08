@@ -23,6 +23,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   flatedMenu: Menu[];
   @Output() reloadMenu = new EventEmitter();
   disabledRouterLink: boolean = true;
+  
   constructor(
     private shareDataService: ShareNavigationDataService,
     private snackbar: SnackbarService,

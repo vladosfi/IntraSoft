@@ -4,29 +4,26 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IFileDocument } from 'src/app/core/interfaces/FileDocument';
 import { FileService } from 'src/app/core/services/file.service';
 import { SnackbarService } from 'src/app/core/services/snackbar.service';
-import { IIsoFileCategory } from 'src/app/core/interfaces/IsoFileCategory';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'upload-category',
-  templateUrl: './upload-file-with-category.component.html',
-  styleUrls: ['./upload-file-with-category.component.css']
+  selector: 'upload-button',
+  templateUrl: './upload-button.component.html',
+  styleUrls: ['./upload-button.component.css']
 })
-export class UploadFileWithCategoryComponent implements OnInit {
+export class UploadButtonComponent implements OnInit {
   fileInfoMessage = '';
   deleteButtonText: string;
-  fileId: number;
-  defaultLinkPath = 'uploads\\isofile';
-  endPointPath = 'api/isofile';
-  file: IFileDocument = null;
-  isoFileCategoryId: string = null;
-
-  @Input() isoServiceId: string = null;
-  @Input() isoFileCategories: IIsoFileCategory[];
+  fileId: string;
+  endPointPath = 'api/documents';
+  @Input() sourcePath: string = null;
+  @Input() MenuId: string = null;
+  @Input() document: IFileDocument = null;
+  @Output() changeRouterLinkEvent = new EventEmitter<string>();
 
   form = new FormGroup({
     file: new FormControl(''),
-    fileSource: new FormControl(''),
-    isoCategory: new FormControl(''),
+    fileSource: new FormControl('')
   });
 
   constructor(
@@ -34,8 +31,8 @@ export class UploadFileWithCategoryComponent implements OnInit {
     private snackbar: SnackbarService) { }
 
   ngOnInit(): void {
-    this.deleteButtonText = this.file?.fileName;
-    this.fileId = this.file?.id;
+    this.deleteButtonText = this.document?.fileName;
+    this.fileId = this.document?.id;
   }
 
   // At the file input element
@@ -53,7 +50,7 @@ export class UploadFileWithCategoryComponent implements OnInit {
   deleteFile() {
     if (this.fileId === null) return;
 
-    this.fileService.deleteFile(this.fileId, this.endPointPath)
+    this.fileService.deleteFile(this.fileId,  this.endPointPath)
       .subscribe({
         next: () => {
           this.snackbar.success('File has been deleted');
@@ -67,10 +64,6 @@ export class UploadFileWithCategoryComponent implements OnInit {
       });
   }
 
-  onCategoryChange() {
-    this.isoFileCategoryId = this.form.controls['isoCategory'].value?.id;
- } 
-
   uploadFile(file: any) {
 
     if (file == undefined) {
@@ -78,28 +71,16 @@ export class UploadFileWithCategoryComponent implements OnInit {
       return;
     }
 
-    if (this.isoFileCategoryId == null) {
+    if (this.MenuId == null) {
       console.log("No item ID!");
-      return;
-    }
-
-    if (this.isoServiceId == null) {
-      console.log("No item ID!");
-      return;
-    }
-
-    if (this.defaultLinkPath == null) {
-      console.log("No source path!");
       return;
     }
 
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('path', this.defaultLinkPath);
-    formData.append('description', null);
-    formData.append('isoFileCategoryId', this.isoFileCategoryId);
-    formData.append('isoServicesId', this.isoServiceId);
-    
+    formData.append('MenuId', this.MenuId);
+    formData.append('path', this.sourcePath);
+
     this.fileService.uploadFile(formData, this.endPointPath)
       .subscribe(
         {
@@ -113,6 +94,7 @@ export class UploadFileWithCategoryComponent implements OnInit {
               this.fileInfoMessage = event.body;
               this.deleteButtonText = file.name;
               this.fileId = event.body;
+              this.changeRouterLinkEvent.emit(`document/${this.fileId}`);
             }
           },
           error: (error) => {

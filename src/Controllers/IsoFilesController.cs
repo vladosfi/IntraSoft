@@ -35,18 +35,12 @@
             var file = await this.isoFileService.GetByIdAsync(id);
             if (file == null || file.FilePath == null) return this.NotFound();
 
-            var fullPath = Path.Combine(hostingEnvironment.WebRootPath, file.FilePath.ToString());
+            var fullPath = FileService.PathCombine(hostingEnvironment.WebRootPath, file.FilePath.ToString());            
+            if (!FileService.FileExists(fullPath)) return this.NotFound();
 
-            if (!System.IO.File.Exists(fullPath)) return this.NotFound();
-
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(fullPath, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-
-            var ext = Path.GetExtension(fullPath).ToLowerInvariant();
+            var readedFile = await FileService.ReadFileAsync(fullPath);
+            var fileName = FileService.GetFileName(fullPath);
+            var ext = FileService.GetFileExtension(fullPath);
 
             // To download or open file 
             if (open == true)
@@ -56,7 +50,7 @@
             }
             else
             {
-                return File(memory, StringOperations.GetMimeTypes()[ext], Path.GetFileName(fullPath));
+                return File(readedFile, StringOperations.GetMimeTypes()[ext], fileName);
             }
         }
 
@@ -111,7 +105,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var isoFileFromRepo = await this.isoFileService.GetByIdAsync<IsoFile>(id);
+            var isoFileFromRepo = await this.isoFileService.GetByIdAsync(id);
 
             if (isoFileFromRepo == null)
             {
@@ -122,13 +116,7 @@
             await this.isoFileService.SaveChangesAsync();
 
             // Delete form filesystem
-            string path = Path.Combine(hostingEnvironment.WebRootPath, isoFileFromRepo.FilePath);
-
-            FileInfo file = new FileInfo(path);
-            if (file.Exists)
-            {
-                file.Delete();
-            }
+            FileService.Delete(hostingEnvironment.WebRootPath, isoFileFromRepo.FilePath);
 
             return this.NoContent();
         }

@@ -128,6 +128,8 @@
                           <td>
                             <button title="{{f.isoFileCategory.name}}" mat-button color="primary"
                               (click)="downloadFile(f.id)">Изтегли</button>
+                            <button title="{{f.isoFileCategory.name}}" mat-button color="warn"
+                              (click)="deleteFile(f.id, element)">Изтрий</button>
                           </td>
                         </tr>
                       </tbody>

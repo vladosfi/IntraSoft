@@ -3,9 +3,10 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using IntraSoft.Data.Common.Models;
+    using IntraSoft.Services.Mapping;
 
     [Table("IsoFiles")]
-    public class IsoFile : BaseDeletableModel<int>
+    public class IsoFile : BaseDeletableModel<int>, IMapFrom<IsoFile>
     {
         [Required]
         [MaxLength(250)]

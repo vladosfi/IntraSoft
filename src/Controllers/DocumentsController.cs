@@ -1,6 +1,5 @@
 ﻿namespace IntraSoft.Controllers
 {
-    using System;
     using System.IO;
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Document;
@@ -18,6 +17,8 @@
 
         private readonly IDocumentService documentService;
 
+        private const string MAIN_MENU_DIRECTORY = "uploads\\menu";
+
         public DocumentsController(
             IWebHostEnvironment hostingEnvironment,
             IDocumentService documentService
@@ -30,20 +31,16 @@
         [HttpGet("{id}/{open:bool?}", Name = nameof(GetDocument))]
         public async Task<IActionResult> GetDocument(int id, bool? open = false)
         {
-            //To do check for recor in database
+            //To do check for record in database
             var document = await this.documentService.GetByIdAsync(id);
-            if (document == null || document.FilePath == null) return this.NotFound();
+            if (document == null) return this.NotFound();
 
-            var fullPath = Path.Combine(hostingEnvironment.WebRootPath, document.FilePath.ToString());
-            if (!System.IO.File.Exists(fullPath)) return this.NotFound();
+            var fullPath = FileService.PathCombine(hostingEnvironment.WebRootPath, document.FilePath.ToString());            
+            if (!FileService.FileExists(fullPath)) return this.NotFound();
 
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(fullPath, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-            var ext = Path.GetExtension(fullPath).ToLowerInvariant();
+            var readedFile = await FileService.ReadFileAsync(fullPath);
+            var fileName = FileService.GetFileName(fullPath);
+            var ext = FileService.GetFileExtension(fullPath);
 
             // To download or open file 
             if (open == true)
@@ -53,7 +50,7 @@
             }
             else
             {
-                return File(memory, StringOperations.GetMimeTypes()[ext], Path.GetFileName(fullPath));
+                return File(readedFile, StringOperations.GetMimeTypes()[ext], fileName);
             }
         }
 
@@ -61,12 +58,13 @@
         public async Task<IActionResult>
         AddDocument([FromForm] DocumentCreateModelDto fileInput)
         {
-            if (fileInput.File == null && fileInput.Path == null)
+            if (fileInput.File == null)
             {
                 return BadRequest();
             }
 
-            var filePathWithFileName = await FileService.CreateAsync(fileInput, hostingEnvironment.WebRootPath);
+            fileInput.Path = MAIN_MENU_DIRECTORY;
+            var filePathWithFileName = await FileService.CreateAsync(fileInput.Path, fileInput.File, hostingEnvironment.WebRootPath);
  
             // Save uniqueFileName to db table
             var document =
@@ -97,8 +95,7 @@
             await this.documentService.SaveChangesAsync();
 
             // Delete form filesystem
-            string path = Path.Combine(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
-            FileService.Delete(path);
+            FileService.Delete(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
 
             return this.NoContent();
         }

@@ -1,5 +1,5 @@
 export interface IFileDocument {
-  id: number;
+  id: string;
   filePath: string;  
   fileName:string;
 }

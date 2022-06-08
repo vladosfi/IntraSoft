@@ -10,5 +10,7 @@ namespace IntraSoft.Services.Data
 
         Task<int> CreateAsync(OrderCategory item);
 
+        Task<T> GetByIdAsync<T>(int id);
+
     }
 }

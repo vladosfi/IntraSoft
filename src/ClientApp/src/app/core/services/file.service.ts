@@ -41,7 +41,7 @@ export class FileService {
     return this.http.request(req);
   }
 
-  deleteFile(fileId: number, endPointPath: string) {
+  deleteFile(fileId: string, endPointPath: string) {
     return this.http.delete(this.endPoint + endPointPath + `/${fileId}`);
   }
 }

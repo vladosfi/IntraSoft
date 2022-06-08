@@ -1,11 +1,13 @@
 ﻿namespace IntraSoft.Controllers
 {
-    using System;
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Order;
+    using IntraSoft.Data.Dtos.OrderCategory;
     using IntraSoft.Data.Models;
+    using IntraSoft.Services.Common;
     using IntraSoft.Services.Data;
     using IntraSoft.Services.Mapping;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -13,10 +15,20 @@
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService orderService;
+        private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly IOrderCategoryService orderCategoryService;
 
-        public OrdersController(IOrderService orderService)
+        private const string MAIN_ORDER_DIRECTORY = "uploads\\заповеди";
+
+        public OrdersController(
+            IOrderService orderService,
+            IWebHostEnvironment hostingEnvironment,
+            IOrderCategoryService orderCategoryService
+            )
         {
             this.orderService = orderService;
+            this.orderCategoryService = orderCategoryService;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         //// GET: api/<ValuesController>
@@ -49,17 +61,21 @@
 
         // POST api/<ValuesController>
         [HttpPost]
-        //public async Task<ActionResult<OrderCreateDto>> Post([FromBody] OrderCreateDto orderItemDto)
-        public async Task<ActionResult<OrderCreateDto>> Post([FromForm] OrderCreateDto orderItemDto)
+        public async Task<ActionResult<OrderCreateDto>> Post([FromForm] OrderCreateDto itemDto)
         {
-            var newOrderItem = AutoMapperConfig.MapperInstance.Map<Order>(orderItemDto);
+            var newOrderItem = AutoMapperConfig.MapperInstance.Map<Order>(itemDto);
+            
+            var orderCategory = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
+
+            itemDto.FilePath = MAIN_ORDER_DIRECTORY + "\\" + orderCategory.Name;
+
+            var filePathWithFileName = await FileService.CreateAsync(itemDto.FilePath, itemDto.File, hostingEnvironment.WebRootPath, newOrderItem.Number);
+            newOrderItem.FilePath = filePathWithFileName;            
 
             await this.orderService.CreateAsync(newOrderItem);
-
             await this.orderService.SaveChangesAsync();
-            var orderReadDto = AutoMapperConfig.MapperInstance.Map<OrderReadDto>(newOrderItem);
 
-            
+            var orderReadDto = AutoMapperConfig.MapperInstance.Map<OrderReadDto>(newOrderItem);
 
             return this.CreatedAtRoute(
                 nameof(this.GetOrderById),
@@ -90,7 +106,7 @@
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var orderItemFromRepo = await this.orderService.GetByIdAsync<Order>(id);
+            var orderItemFromRepo = await this.orderService.GetByIdAsync(id);
 
             if (orderItemFromRepo == null)
             {
@@ -99,6 +115,11 @@
 
             this.orderService.Delete(orderItemFromRepo);
             await this.orderService.SaveChangesAsync();
+
+            
+            // Delete form filesystem
+            //string path = Path.Combine(hostingEnvironment.WebRootPath, orderItemFromRepo.FilePath);
+            FileService.Delete(hostingEnvironment.WebRootPath, orderItemFromRepo.FilePath);
 
             return this.NoContent();
         }
