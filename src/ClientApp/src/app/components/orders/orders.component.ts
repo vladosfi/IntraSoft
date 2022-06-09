@@ -17,6 +17,8 @@ import { Order, OrderCategory } from 'src/app/core/interfaces/Order'
 import { OrderService } from 'src/app/core/services/order.service'
 import { DatePipe } from '@angular/common'
 import { OrderCategoryService } from 'src/app/core/services/orderCategory.service'
+import { FileService } from 'src/app/core/services/file.service'
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 
 
@@ -28,10 +30,13 @@ import { OrderCategoryService } from 'src/app/core/services/orderCategory.servic
 export class OrdersComponent implements OnInit {
   orders: Order[] = [];
   orderCategories: OrderCategory[] = [{ id: null, name: 'Всички' }];
-  displayedColumns: string[] = ['number', 'about', 'date', 'categories', 'filePath' ,  'action'];
+  displayedColumns: string[] = ['number', 'about', 'date', 'categories', 'filePath', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Заповеди';
+  endPointPath = 'api/orders';
   isLoading = true;
+  uploadFile: any;
+  fileInfoMessage = '';
 
   pageNumber: number = 1;
   VOForm: FormGroup;
@@ -53,6 +58,7 @@ export class OrdersComponent implements OnInit {
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private ref: ChangeDetectorRef,
+    private fileService: FileService,
   ) { }
 
   ngOnInit(): void {
@@ -193,12 +199,26 @@ export class OrdersComponent implements OnInit {
     this.dataSource = new MatTableDataSource(control.controls);
   }
 
+
+  downloadFile(element) {
+    this.fileService.downloadFile(element.get('id').value, this.endPointPath);
+  }
+
+
   // this function will enabled the select field for editd
   editSVO(element) {
     element.get('isEditable').patchValue(false);
     element.get('date').enable(true);
     element.get('categoryId').enable(true);
     // this.isEditableNew = true;
+  }
+
+  // At the file input element
+  onFileChange(event: any, element) {
+    if (event.target.files.length > 0) {
+      this.uploadFile = event.target.files[0];
+      element.get('filePath').patchValue(this.uploadFile.name);
+    }
   }
 
 
@@ -210,35 +230,85 @@ export class OrdersComponent implements OnInit {
 
     let newOrder = this.generateOrder(element);
     if (newOrder === null) return;
+    if (this.uploadFile == undefined) {
+      console.log("No file selected!");
+      return;
+    }
+
+    if (newOrder.orderCategoryId == null) {
+      console.log("No item ID!");
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append('file', this.uploadFile);
+    formData.append('id', newOrder.id.toString());
+    formData.append('number', newOrder.number);
+    formData.append('date', newOrder.date);
+    formData.append('about', newOrder.about);
+    formData.append('filePath', newOrder.filePath);
+    formData.append('orderCategoryId', newOrder.orderCategoryId.toString());
+
+    
+
 
     let recordType = element.value.action;
 
     if (recordType === 'newRecord') {
-      this.orderService.createItem(newOrder).subscribe({
-        next: (data) => {
-          this.snackbar.success('Успешно добавяне на записа');
-          element.get('isEditable').patchValue(true);
-          element.get('date').disable(false);
-          element.get('categoryId').disable(false);
-          element.get('action').patchValue('existingRecord');
-        },
-        error: (error) => {
-          this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
-        },
-      });
+      this.upload(formData);
+
+      // this.orderService.createItem(newOrder).subscribe({
+      //   next: (data) => {
+      //     this.snackbar.success('Успешно добавяне на записа');
+      //     element.get('isEditable').patchValue(true);
+      //     element.get('date').disable(false);
+      //     element.get('categoryId').disable(false);
+      //     element.get('action').patchValue('existingRecord');
+      //   },
+      //   error: (error) => {
+      //     this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
+      //   },
+      // });
     } else {
-      this.orderService.updateItem(newOrder).subscribe({
-        next: (data) => {
-          this.snackbar.success('Успешно обновяване на записа');
-          element.get('date').disable(false);
-          element.get('categoryId').disable(false);
-          element.get('isEditable').patchValue(true);
+      this.upload(formData);
+      // this.orderService.updateItem(newOrder).subscribe({
+      //   next: (data) => {
+      //     this.snackbar.success('Успешно обновяване на записа');
+      //     element.get('date').disable(false);
+      //     element.get('categoryId').disable(false);
+      //     element.get('isEditable').patchValue(true);
+      //   },
+      //   error: (error) => {
+      //     this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
+      //   },
+      // });
+    }
+  }
+
+  upload(formData){
+    this.fileService.uploadFile(formData, this.endPointPath)
+    .subscribe(
+      {
+        next: (event) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            const percentDone = Math.round(100 * event.loaded / event.total);
+            this.fileInfoMessage = `File is ${percentDone}% uploaded.`;
+
+          } else if (event instanceof HttpResponse) {
+            this.fileInfoMessage = 'File is completely uploaded!';
+            this.fileInfoMessage = event.body;
+            // this.deleteButtonText = file.name;
+            // this.fileId = event.body;
+          }
         },
         error: (error) => {
-          this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
-        },
+          this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
+        }
+        ,
+        complete: () => {
+          this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
+        }
       });
-    }
   }
 
   deleteSVO(element) {
@@ -250,7 +320,7 @@ export class OrdersComponent implements OnInit {
       data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
       this.dataSource.data = data;
       return;
-    }
+    }    
 
     let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете записа за: ' + orderNumber + '?' } });
     dialogRef.afterClosed().subscribe(result => {
@@ -320,10 +390,10 @@ export class OrdersComponent implements OnInit {
     return {
       id: element.value.id,
       number: element.value.number,
-      about: element.value.about,
       date: element.value.date,
+      about: element.value.about,
       filePath: element.value.filePath,
-      orderCategoryId : element.value.categoryId,
+      orderCategoryId: element.value.categoryId,
     } as Order;
   }
 }

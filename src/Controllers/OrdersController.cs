@@ -46,8 +46,8 @@
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}", Name = nameof(GetOrderById))]
-        public async Task<ActionResult<OrderReadDto>> GetOrderById(int id)
+        [HttpGet("{id}/{open:bool?}", Name = nameof(GetOrderById))]
+        public async Task<ActionResult<OrderReadDto>> GetOrderById(int id, bool? open = false)
         {
             var orderItems = await this.orderService.GetByIdAsync<OrderReadDto>(id);
 
@@ -56,7 +56,23 @@
                 return this.NotFound();
             }
 
-            return this.Ok(orderItems);
+            var fullPath = FileService.PathCombine(hostingEnvironment.WebRootPath, orderItems.FilePath.ToString());            
+            if (!FileService.FileExists(fullPath)) return this.NotFound();
+
+            var readedFile = await FileService.ReadFileAsync(fullPath);
+            var fileName = FileService.GetFileName(fullPath);
+            var ext = FileService.GetFileExtension(fullPath);
+
+            // To download or open file 
+            if (open == true)
+            {
+                Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
+                return new PhysicalFileResult(fullPath, StringOperations.GetMimeTypes()[ext]);
+            }
+            else
+            {
+                return File(readedFile, StringOperations.GetMimeTypes()[ext], fileName);
+            }
         }
 
         // POST api/<ValuesController>

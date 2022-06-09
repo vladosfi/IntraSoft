@@ -51,6 +51,11 @@ namespace IntraSoft
             object p = services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
+            services.Configure<FormOptions>(options =>
+            {
+                // Set the limit size to 20 MB
+                options.MultipartBodyLengthLimit = 20*1024*1024;
+            });
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

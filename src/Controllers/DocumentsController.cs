@@ -45,7 +45,7 @@
             // To download or open file 
             if (open == true)
             {
-                Response.Headers.Add("Content-Disposition", "inline; filename=" + Path.GetFileName(fullPath));
+                Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
                 return new PhysicalFileResult(fullPath, StringOperations.GetMimeTypes()[ext]);
             }
             else
