@@ -9,9 +9,6 @@
     public class OrderUpdateDto : IMapTo<Order>
     {
         [Required]
-        public int Id { get; set; }
-
-        [Required]
         [MaxLength(50)]
         public string Number { get; set; }
 

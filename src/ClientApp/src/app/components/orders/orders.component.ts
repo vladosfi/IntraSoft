@@ -112,11 +112,12 @@ export class OrdersComponent implements OnInit {
   applyFilter(event: Event) {
     //const filterValue = (event.target as HTMLInputElement)?.value;
     //this.dataSource.filter = filterValue.trim().toLowerCase();
-    const filterValue = this.searchField.nativeElement.value;
-    const filteredString = filterValue?.trim().toLowerCase();
+    const filterValue = this.searchField.nativeElement.value ? this.searchField.nativeElement.value.trim().toLowerCase()  : '';
+
+    
     this.dataSource.filter = {
-      about: filteredString,
-      number: filteredString,
+      about: filterValue,
+      number: filterValue,
       category: this.selectedState,
     } as unknown as string;
   }
@@ -128,7 +129,8 @@ export class OrdersComponent implements OnInit {
       const b = !filter.number || data?.value.number.toLowerCase().includes(filter.number);
       const c = !filter.category || filter.category.find(element => {
         if (element == 0) return true;
-        return element == data.value?.id;
+        console.log(data);
+        return element == data?.controls?.categoryId?.value;
       });
 
       return (a || b) && c;
@@ -240,65 +242,43 @@ export class OrdersComponent implements OnInit {
       return;
     }
 
-    let formData = new FormData();
-    formData.append('file', this.uploadFile);
-    formData.append('id', newOrder.id.toString());
-    formData.append('number', newOrder.number);
-    formData.append('date', newOrder.date);
-    formData.append('about', newOrder.about);
-    formData.append('filePath', newOrder.filePath);
-    formData.append('orderCategoryId', newOrder.orderCategoryId.toString());
-
-    
-
-
     let recordType = element.value.action;
 
     if (recordType === 'newRecord') {
-      this.upload(formData);
-
-      // this.orderService.createItem(newOrder).subscribe({
-      //   next: (data) => {
-      //     this.snackbar.success('Успешно добавяне на записа');
-      //     element.get('isEditable').patchValue(true);
-      //     element.get('date').disable(false);
-      //     element.get('categoryId').disable(false);
-      //     element.get('action').patchValue('existingRecord');
-      //   },
-      //   error: (error) => {
-      //     this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
-      //   },
-      // });
+      this.upload(element, newOrder, true);
     } else {
-      this.upload(formData);
-      // this.orderService.updateItem(newOrder).subscribe({
-      //   next: (data) => {
-      //     this.snackbar.success('Успешно обновяване на записа');
-      //     element.get('date').disable(false);
-      //     element.get('categoryId').disable(false);
-      //     element.get('isEditable').patchValue(true);
-      //   },
-      //   error: (error) => {
-      //     this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
-      //   },
-      // });
+      this.upload(element, newOrder, false);
     }
   }
 
-  upload(formData){
-    this.fileService.uploadFile(formData, this.endPointPath)
+  upload(element, order, newRecord){
+
+    let formData = new FormData();
+    formData.append('file', this.uploadFile);
+    formData.append('id', order.id?.toString());
+    formData.append('number', order.number);
+    formData.append('date', new Date(order.date).toISOString());
+    formData.append('about', order.about);
+    formData.append('filePath', order.filePath);
+    formData.append('orderCategoryId', order.orderCategoryId.toString());
+
+    this.fileService.uploadFile(formData, this.endPointPath, newRecord)
     .subscribe(
       {
         next: (event) => {
           if (event.type == HttpEventType.UploadProgress) {
             const percentDone = Math.round(100 * event.loaded / event.total);
-            this.fileInfoMessage = `File is ${percentDone}% uploaded.`;
+            this.fileInfoMessage = `Файлът е ${percentDone}% качен.`;
 
           } else if (event instanceof HttpResponse) {
-            this.fileInfoMessage = 'File is completely uploaded!';
+            this.fileInfoMessage = 'Файлът е качен!';
             this.fileInfoMessage = event.body;
-            // this.deleteButtonText = file.name;
-            // this.fileId = event.body;
+            element.get('isEditable').patchValue(true);
+            element.get('action').patchValue('existingRecord');
+            element.get('filePath').disable(false);
+            element.get('date').disable(false);
+            element.get('categoryId').disable(false);
+            this.prepareDataSource();
           }
         },
         error: (error) => {
@@ -306,7 +286,8 @@ export class OrdersComponent implements OnInit {
         }
         ,
         complete: () => {
-          this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
+          //this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
+          this.snackbar.infoWitHide('Заповедта беше записана');
         }
       });
   }

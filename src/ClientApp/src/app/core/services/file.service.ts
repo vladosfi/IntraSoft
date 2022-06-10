@@ -28,7 +28,7 @@ export class FileService {
     link.remove();
   }
 
-  uploadFile(formData: FormData, endPointPath: string): Observable<HttpEvent<any>> {
+  uploadFile(formData: FormData, endPointPath: string, newItem: boolean = false): Observable<HttpEvent<any>> {
     //var path = formData.get('path') as string;
     //let params = new HttpParams().set('path', path);
 
@@ -37,8 +37,14 @@ export class FileService {
       reportProgress: true,
     };
 
-    const req = new HttpRequest('POST', this.endPoint + endPointPath, formData, options);
-    return this.http.request(req);
+    if (newItem) {
+      const req = new HttpRequest('POST', this.endPoint + endPointPath, formData, options);
+      return this.http.request(req);
+    } else {
+      const req = new HttpRequest('PUT', this.endPoint + endPointPath, formData, options);
+      return this.http.request(req);
+    }
+
   }
 
   deleteFile(fileId: string, endPointPath: string) {

@@ -8,8 +8,6 @@
     
     public class OrderCreateDto : IMapTo<Order>
     {
-        public int Id { get; set; }
-        
         [Required]
         [MaxLength(50)]
         public string Number { get; set; }

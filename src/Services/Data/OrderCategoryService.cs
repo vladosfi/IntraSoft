@@ -48,5 +48,15 @@
                 .To<T>()
                 .FirstOrDefaultAsync();
         }
+
+        // No need to map but entity is tracked
+        public async Task<OrderCategory> GetByIdAsync(int id)
+        {
+            return await this
+                .orderCategoryRepo
+                .All()
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+        }
     }
 }
