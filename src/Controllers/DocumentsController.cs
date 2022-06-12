@@ -18,6 +18,7 @@
         private readonly IDocumentService documentService;
 
         private const string MAIN_MENU_DIRECTORY = "uploads\\menu";
+        private readonly string webRootPath;
 
         public DocumentsController(
             IWebHostEnvironment hostingEnvironment,
@@ -26,6 +27,7 @@
         {
             this.hostingEnvironment = hostingEnvironment;
             this.documentService = documentService;
+            webRootPath = hostingEnvironment.WebRootPath;
         }
 
         [HttpGet("{id}/{open:bool?}", Name = nameof(GetDocument))]
@@ -35,7 +37,7 @@
             var document = await this.documentService.GetByIdAsync(id);
             if (document == null) return this.NotFound();
 
-            var fullPath = FileService.PathCombine(hostingEnvironment.WebRootPath, document.FilePath.ToString());            
+            var fullPath = FileService.PathCombine(webRootPath, document.FilePath.ToString());            
             if (!FileService.FileExists(fullPath)) return this.NotFound();
 
             var readedFile = await FileService.ReadFileAsync(fullPath);
@@ -63,16 +65,17 @@
                 return BadRequest();
             }
 
-            fileInput.Path = MAIN_MENU_DIRECTORY;
-            var filePathWithFileName = await FileService.CreateAsync(fileInput.Path, fileInput.File, hostingEnvironment.WebRootPath);
- 
+            fileInput.Path = FileService.PathCombine(webRootPath, MAIN_MENU_DIRECTORY);
+            var filePathWithFileName = await FileService.CreateAsync(fileInput.File, fileInput.Path);
+            var filePath = FileService.PathCombine(MAIN_MENU_DIRECTORY, FileService.GetFileName(filePathWithFileName));
+
             // Save uniqueFileName to db table
             var document =
                 new Document
                 {
-                    FilePath = filePathWithFileName,
+                    FilePath = filePath,
                     UserName = null,
-                    MenuId = fileInput.MenuId,
+                    MenuId = fileInput.Id,
                 };
 
             var documentId = await this.documentService.CreateAsync(document);
@@ -95,7 +98,7 @@
             await this.documentService.SaveChangesAsync();
 
             // Delete form filesystem
-            FileService.Delete(hostingEnvironment.WebRootPath, documentFromRepo.FilePath);
+            FileService.Delete(webRootPath, documentFromRepo.FilePath);
 
             return this.NoContent();
         }

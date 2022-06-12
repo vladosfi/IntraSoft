@@ -24,7 +24,7 @@
             IQueryable<Order> query = this.orderRepo
                 .All()
                 .OrderByDescending(x => x.CreatedOn)
-                .Take(5)
+                .Take(3)
                 .AsNoTracking();
 
                 return await query.To<T>().ToListAsync();
@@ -35,7 +35,7 @@
             IQueryable<IntraSoft.Data.Models.IsoService> query = this.isoServiceRepo
                 .All()
                 .OrderByDescending(x => x.CreatedOn)              
-                .Take(5)
+                .Take(3)
                 .AsNoTracking();
 
             return await query.To<T>().ToListAsync();

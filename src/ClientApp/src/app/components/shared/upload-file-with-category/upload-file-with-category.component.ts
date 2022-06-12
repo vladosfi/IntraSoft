@@ -100,7 +100,7 @@ export class UploadFileWithCategoryComponent implements OnInit {
     formData.append('isoFileCategoryId', this.isoFileCategoryId);
     formData.append('isoServicesId', this.isoServiceId);
     
-    this.fileService.uploadFile(formData, this.endPointPath)
+    this.fileService.uploadFile(formData, this.endPointPath, true)
       .subscribe(
         {
           next: (event) => {
@@ -116,7 +116,7 @@ export class UploadFileWithCategoryComponent implements OnInit {
             }
           },
           error: (error) => {
-            this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
+            this.snackbar.error(`Upload Error: ${JSON.stringify(error.message)}`);
           }
           ,
           complete: () => {

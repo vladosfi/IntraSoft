@@ -112,9 +112,9 @@ export class OrdersComponent implements OnInit {
   applyFilter(event: Event) {
     //const filterValue = (event.target as HTMLInputElement)?.value;
     //this.dataSource.filter = filterValue.trim().toLowerCase();
-    const filterValue = this.searchField.nativeElement.value ? this.searchField.nativeElement.value.trim().toLowerCase()  : '';
+    const filterValue = this.searchField.nativeElement.value ? this.searchField.nativeElement.value.trim().toLowerCase() : '';
 
-    
+
     this.dataSource.filter = {
       about: filterValue,
       number: filterValue,
@@ -232,7 +232,8 @@ export class OrdersComponent implements OnInit {
 
     let newOrder = this.generateOrder(element);
     if (newOrder === null) return;
-    if (this.uploadFile == undefined) {
+    
+    if (this.uploadFile == undefined && element.value.filePath == '') {
       console.log("No file selected!");
       return;
     }
@@ -241,56 +242,50 @@ export class OrdersComponent implements OnInit {
       console.log("No item ID!");
       return;
     }
-
+    
+    
     let recordType = element.value.action;
-
-    if (recordType === 'newRecord') {
-      this.upload(element, newOrder, true);
-    } else {
-      this.upload(element, newOrder, false);
-    }
-  }
-
-  upload(element, order, newRecord){
+    const newRecord = recordType === 'newRecord' ? true : false;
 
     let formData = new FormData();
     formData.append('file', this.uploadFile);
-    formData.append('id', order.id?.toString());
-    formData.append('number', order.number);
-    formData.append('date', new Date(order.date).toISOString());
-    formData.append('about', order.about);
-    formData.append('filePath', order.filePath);
-    formData.append('orderCategoryId', order.orderCategoryId.toString());
+    formData.append('id', newOrder.id?.toString());
+    formData.append('number', newOrder.number);
+    formData.append('date', new Date(newOrder.date).toISOString());
+    formData.append('about', newOrder.about);
+    formData.append('filePath', newOrder.filePath);
+    formData.append('orderCategoryId', newOrder.orderCategoryId.toString());
 
     this.fileService.uploadFile(formData, this.endPointPath, newRecord)
-    .subscribe(
-      {
-        next: (event) => {
-          if (event.type == HttpEventType.UploadProgress) {
-            const percentDone = Math.round(100 * event.loaded / event.total);
-            this.fileInfoMessage = `Файлът е ${percentDone}% качен.`;
+      .subscribe(
+        {
+          next: (event) => {
+            if (event.type == HttpEventType.UploadProgress) {
+              const percentDone = Math.round(100 * event.loaded / event.total);
+              this.fileInfoMessage = `Файлът е ${percentDone}% качен.`;
 
-          } else if (event instanceof HttpResponse) {
-            this.fileInfoMessage = 'Файлът е качен!';
-            this.fileInfoMessage = event.body;
-            element.get('isEditable').patchValue(true);
-            element.get('action').patchValue('existingRecord');
-            element.get('filePath').disable(false);
-            element.get('date').disable(false);
-            element.get('categoryId').disable(false);
-            this.prepareDataSource();
+            } else if (event instanceof HttpResponse) {
+              this.fileInfoMessage = 'Файлът е качен!';
+              this.fileInfoMessage = event.body;
+              element.get('isEditable').patchValue(true);
+              element.get('action').patchValue('existingRecord');
+              element.get('filePath').disable(false);
+              element.get('date').disable(false);
+              element.get('categoryId').disable(false);
+              this.prepareDataSource();
+            }
+          },
+          error: (error) => {
+            this.snackbar.error(`Upload Error: ${JSON.stringify(error.message)}`);
           }
-        },
-        error: (error) => {
-          this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
-        }
-        ,
-        complete: () => {
-          //this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
-          this.snackbar.infoWitHide('Заповедта беше записана');
-        }
-      });
+          ,
+          complete: () => {
+            //this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
+            this.snackbar.infoWitHide('Заповедта беше записана');
+          }
+        });
   }
+
 
   deleteSVO(element) {
     let id = element.value.id;
@@ -301,7 +296,7 @@ export class OrdersComponent implements OnInit {
       data.splice((this.paginator.pageIndex * this.paginator.pageSize), 1);
       this.dataSource.data = data;
       return;
-    }    
+    }
 
     let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете записа за: ' + orderNumber + '?' } });
     dialogRef.afterClosed().subscribe(result => {

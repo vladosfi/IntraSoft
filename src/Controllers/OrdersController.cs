@@ -22,6 +22,9 @@
 
         private const string MAIN_ORDER_DIRECTORY = "uploads\\заповеди";
 
+        private readonly string webRootPath;
+
+
         public OrdersController(
             IOrderService orderService,
             IWebHostEnvironment hostingEnvironment,
@@ -31,6 +34,8 @@
             this.orderService = orderService;
             this.orderCategoryService = orderCategoryService;
             this.hostingEnvironment = hostingEnvironment;
+            webRootPath = hostingEnvironment.WebRootPath;
+
         }
 
         //// GET: api/<ValuesController>
@@ -61,10 +66,7 @@
                 return this.NotFound();
             }
 
-            var fullPath =
-                FileService
-                    .PathCombine(hostingEnvironment.WebRootPath,
-                    orderItems.FilePath.ToString());
+            var fullPath = FileService.PathCombine(webRootPath, orderItems.FilePath.ToString());
             if (!FileService.FileExists(fullPath)) return this.NotFound();
 
             var readedFile = await FileService.ReadFileAsync(fullPath);
@@ -94,24 +96,15 @@
         public async Task<ActionResult<OrderCreateDto>>
         Post([FromForm] OrderCreateDto itemDto)
         {
-            var newOrderItem =
-                AutoMapperConfig.MapperInstance.Map<Order>(itemDto);
+            var newOrderItem = AutoMapperConfig.MapperInstance.Map<Order>(itemDto);
 
-            var orderCategory =
-                await this
-                    .orderCategoryService
-                    .GetByIdAsync<OrderCategoryReadDto>(itemDto
-                        .OrderCategoryId);
+            var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
 
-            itemDto.FilePath = MAIN_ORDER_DIRECTORY + "\\" + orderCategory.Name;
+            itemDto.FilePath = FileService.PathCombine(webRootPath, MAIN_ORDER_DIRECTORY);
+            itemDto.FilePath = FileService.PathCombine(itemDto.FilePath, categoryFromRepo.Name);
 
-            var filePathWithFileName =
-                await FileService
-                    .CreateAsync(itemDto.FilePath,
-                    itemDto.File,
-                    hostingEnvironment.WebRootPath,
-                    newOrderItem.Number);
-            newOrderItem.FilePath = filePathWithFileName;
+            var filePathWithFileName = await FileService.CreateAsync(itemDto.File, itemDto.FilePath, itemDto.Number);
+            newOrderItem.FilePath = FileService.PathCombine(MAIN_ORDER_DIRECTORY, FileService.GetFileName(filePathWithFileName));
 
             await this.orderService.CreateAsync(newOrderItem);
             await this.orderService.SaveChangesAsync();
@@ -127,39 +120,50 @@
 
         [HttpPut("{id}")]
         public async Task<ActionResult>
-        UpdateCommand(int id, [FromForm] OrderUpdateDto orderUpdateDto)
+        UpdateCommand(int id, [FromForm] OrderUpdateDto itemDto)
         {
-            var orderItemFromRepo = await this.orderService.GetByIdAsync(id);
+            var itemFromRepo = await this.orderService.GetByIdAsync(id);
 
-            if (orderItemFromRepo == null)
+            if (itemFromRepo == null)
             {
                 return this.NotFound();
             }
 
-            FileService.Delete(hostingEnvironment.WebRootPath, orderItemFromRepo.FilePath);
+            var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemFromRepo.OrderCategoryId);
+            var orderCategoryFromQuery = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
 
-            AutoMapperConfig.MapperInstance.Map<OrderUpdateDto, Order> (
-                orderUpdateDto,
-                orderItemFromRepo
-            );
+            if (itemDto.File != null)
+            {
+                FileService.Delete(webRootPath, itemFromRepo.FilePath);
+                //itemFromRepo.FilePath = MAIN_ORDER_DIRECTORY + "\\" + categoryFromRepo.Name;
+                // var filePathWithFileName = await FileService.CreateAsync(
+                //     itemDto.File,
+                //     orderCategoryFromQuery.Name,
+                //     webRootPath,
+                //     itemDto.Number);
 
-            var orderCategory =
-                await this
-                    .orderCategoryService
-                    .GetByIdAsync<OrderCategoryReadDto>(orderItemFromRepo
-                        .OrderCategoryId);
-            orderItemFromRepo.FilePath =
-                MAIN_ORDER_DIRECTORY + "\\" + orderCategory.Name;
+                //itemFromRepo.FilePath = filePathWithFileName;
+            }
+            else
+            {
+                if (itemFromRepo.OrderCategoryId != itemDto.OrderCategoryId)
+                {
+                    var fileName = FileService.GetFileName(itemFromRepo.FilePath);
 
-            var filePathWithFileName =
-                await FileService
-                    .CreateAsync(orderUpdateDto.FilePath,
-                    orderUpdateDto.File,
-                    hostingEnvironment.WebRootPath,
-                    orderUpdateDto.Number);
-            orderItemFromRepo.FilePath = filePathWithFileName;
+                    var srcFile = MAIN_ORDER_DIRECTORY + "\\" + categoryFromRepo.Name + "\\" + fileName;
+                    var destFile = MAIN_ORDER_DIRECTORY + "\\" + orderCategoryFromQuery.Name + "\\" + fileName;
 
-            this.orderService.Update(orderItemFromRepo);
+                    itemFromRepo.FilePath = destFile;
+                    FileService.MoveFile(webRootPath + "\\" + srcFile, webRootPath + "\\" + destFile);
+                }
+            }
+
+            itemFromRepo.About = itemDto.About;
+            itemFromRepo.Date = itemDto.Date;
+            itemFromRepo.Number = itemDto.Number;
+            itemFromRepo.OrderCategoryId = itemDto.OrderCategoryId;
+
+            this.orderService.Update(itemFromRepo);
 
             await this.orderService.SaveChangesAsync();
 
@@ -181,10 +185,8 @@
             await this.orderService.SaveChangesAsync();
 
             // Delete form filesystem
-            //string path = Path.Combine(hostingEnvironment.WebRootPath, orderItemFromRepo.FilePath);
-            FileService
-                .Delete(hostingEnvironment.WebRootPath,
-                orderItemFromRepo.FilePath);
+            //string path = Path.Combine(webRootPath, orderItemFromRepo.FilePath);
+            FileService.Delete(webRootPath, orderItemFromRepo.FilePath);
 
             return this.NoContent();
         }

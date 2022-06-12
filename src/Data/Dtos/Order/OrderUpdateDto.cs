@@ -22,7 +22,6 @@
         [MaxLength(200)]
         public string FilePath { get; set; }
 
-        [Required]
         public IFormFile File { get; set; }
 
         [Required]

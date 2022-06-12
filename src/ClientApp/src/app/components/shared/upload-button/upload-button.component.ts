@@ -50,7 +50,7 @@ export class UploadButtonComponent implements OnInit {
   deleteFile() {
     if (this.fileId === null) return;
 
-    this.fileService.deleteFile(this.fileId,  this.endPointPath)
+    this.fileService.deleteFile(this.fileId, this.endPointPath)
       .subscribe({
         next: () => {
           this.snackbar.success('File has been deleted');
@@ -78,10 +78,10 @@ export class UploadButtonComponent implements OnInit {
 
     let formData = new FormData();
     formData.append('file', file);
-    formData.append('MenuId', this.MenuId);
+    formData.append('id', this.MenuId);
     formData.append('path', this.sourcePath);
 
-    this.fileService.uploadFile(formData, this.endPointPath)
+    this.fileService.uploadFile(formData, this.endPointPath, true)
       .subscribe(
         {
           next: (event) => {
@@ -98,7 +98,7 @@ export class UploadButtonComponent implements OnInit {
             }
           },
           error: (error) => {
-            this.snackbar.error(`Upload Error: ${JSON.stringify(error.error)}`);
+            this.snackbar.error(`Upload Error: ${JSON.stringify(error.message)}`);
           }
           ,
           complete: () => {

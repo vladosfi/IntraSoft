@@ -10,8 +10,7 @@ namespace IntraSoft.Services.Common
         private const string
             DIRECTORY_DOES_NOT_EXIST = "Directory does not exist!";
 
-        private const string
-            FILE_NAME_EXIST = "File with the same name and path already exist!";
+        private const string FILE_NAME_EXIST = "File with the same name and path already exist!";
 
         // Delete form filesystem
         public static void Delete(string webRootPath, string filePath)
@@ -29,31 +28,31 @@ namespace IntraSoft.Services.Common
         //Create file
         public static async Task<string>
         CreateAsync(
-            string filePath,
             IFormFile file,
-            string webRootPath,
+            string filePath,
             string fileName = null
         )
         {
             var fullPath = Path.GetFullPath(filePath);
             filePath = fullPath.Substring(fullPath.Length - filePath.Length);
 
-            if (fileName != null){
+            if (fileName != null)
+            {
                 fileName = fileName + Path.GetExtension(file.FileName);
-            } else{
+            }
+            else
+            {
                 // Generate unique file name if uniqueFileName is empty
                 fileName = StringOperations.GetUniqueFileName(file.FileName);
             }
-            
-            var uploads = Path.Combine(webRootPath, filePath);
 
             // Throw error if directory does not exist
-            if (!Directory.Exists(uploads))
+            if (!Directory.Exists(filePath))
             {
                 throw new Exception(DIRECTORY_DOES_NOT_EXIST);
             }
 
-            var filePathWithFileName = Path.Combine(uploads, fileName);
+            var filePathWithFileName = Path.Combine(filePath, fileName);
 
             // Throw error if file exist
             if (File.Exists(filePathWithFileName))
@@ -65,7 +64,7 @@ namespace IntraSoft.Services.Common
             await file.CopyToAsync(fs);
             await fs.DisposeAsync();
 
-            return Path.Combine(filePath, fileName);
+            return filePathWithFileName;
         }
 
         //Get file extension
@@ -86,7 +85,7 @@ namespace IntraSoft.Services.Common
             return File.Exists(fullPath);
         }
 
-        //Read file
+        // Read file
         public static async Task<MemoryStream> ReadFileAsync(string path)
         {
             var memory = new MemoryStream();
@@ -99,10 +98,16 @@ namespace IntraSoft.Services.Common
             return memory;
         }
 
-        //Get file extension
+        // Get file extension
         public static string GetFileName(string path)
         {
             return Path.GetFileName(path);
+        }
+
+        // Move the file.
+        public static void MoveFile(string srcPath, string destPath)
+        {            
+            File.Move(srcPath, destPath);
         }
     }
 }

@@ -8,10 +8,10 @@
         [Required]
         public IFormFile File { get; set; }
 
-        public string Path { get; set; }
-        
         [Required]
-        public int MenuId { get; set; }
+        public int Id { get; set; }
+        
+        public string Path { get; set; }
     }
 }
 
