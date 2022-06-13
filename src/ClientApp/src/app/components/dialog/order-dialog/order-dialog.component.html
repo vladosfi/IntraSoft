@@ -1,0 +1,91 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<form [formGroup]="orderForm" autocomplete="off"  *ngIf="orderForm">
+  <div class="form-group">
+    <mat-dialog-content>
+
+      <label for="number">Номер на заповед</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете номер</mat-label>
+        <input
+          [disableControl]="false"
+          matInput
+          formControlName="number"
+        />
+        <mat-error *ngIf="orderForm.get('number').hasError('required')">
+            Моля въведете номер
+          </mat-error>
+      </mat-form-field>
+
+      <label for="about">Въведете описание</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете описание на заповед</mat-label>
+        <textarea
+          [disableControl]="false"
+          matInput
+          formControlName="about"
+        ></textarea>
+        <mat-error *ngIf="orderForm.get('about').hasError('required')">
+            Въведете описание
+          </mat-error>
+      </mat-form-field>
+
+
+      <label for="about">Въведете дата</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете дата за заповед</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-hint [hidden]="orderForm.get('about').hasError('required')">DD.MM.YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="orderForm.get('about').hasError('required')">
+            Въведете дата
+          </mat-error>
+      </mat-form-field>
+
+      
+      <label for="categories">Въведете категория</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете категория за заповед</mat-label>        
+        <mat-select formControlName="categoryId" placeholder="{{categoryId}}" [title]="orderForm.get('categoryName').value">
+            <mat-option *ngFor="let cat of orderCategories; index as i;" [value]="cat.id" [title]="cat.name"> {{cat.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="orderForm?.invalid">
+            <div *ngIf="orderForm.get('categoryId')?.errors?.required">Въведете категория</div>
+          </mat-error>
+      </mat-form-field>
+
+      <!-- <label for="about">Добави файл</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Добави файл</mat-label>        
+      <input type="file" #UploadFileInput id="fileUpload" (change)="fileChangeEvent($event)" name="fileUpload"/>
+        <mat-error *ngIf="orderForm.get('about').hasError('required')">
+            Добави файл
+          </mat-error>
+      </mat-form-field> -->
+
+
+      <label>Моля изберете файл</label>
+      <mat-form-field class="full-width" appearance="fill" (click)="f_input.click()">
+      <button mat-icon-button matPrefix (click)="f_input.click()">
+        <mat-icon>attach_file</mat-icon>
+      </button>
+      <input type="text" formControlName="filePath" [readonly]="true" matInput />
+      <input type="file" hidden [readonly]="true" #f_input (change)="onFileChange($event)"/>
+      <small  class="form-text text-muted">{{fileInfoMessage}}</small >
+      <mat-error *ngIf="orderForm?.invalid">
+        <div *ngIf="orderForm.get('filePath')?.errors?.required">
+          Полето е задължително
+        </div>
+      </mat-error>
+    </mat-form-field>
+    
+{{orderForm.valid | json}}
+    </mat-dialog-content>
+  </div>
+</form>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Затвори</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Запис</button>
+</mat-dialog-actions>

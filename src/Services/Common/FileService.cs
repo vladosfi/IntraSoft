@@ -74,9 +74,9 @@ namespace IntraSoft.Services.Common
         }
 
         // Combine file path
-        public static string PathCombine(string webRootPath, string path)
+        public static string PathCombine(string pathOne, string pathTwo)
         {
-            return Path.Combine(webRootPath, path);
+            return Path.Combine(pathOne, pathTwo);
         }
 
         // Check if file exist

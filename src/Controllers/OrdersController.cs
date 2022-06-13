@@ -100,11 +100,12 @@
 
             var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
 
-            itemDto.FilePath = FileService.PathCombine(webRootPath, MAIN_ORDER_DIRECTORY);
-            itemDto.FilePath = FileService.PathCombine(itemDto.FilePath, categoryFromRepo.Name);
+            var destPath = FileService.PathCombine(MAIN_ORDER_DIRECTORY,categoryFromRepo.Name);
+            itemDto.FilePath = FileService.PathCombine(webRootPath, destPath);
 
             var filePathWithFileName = await FileService.CreateAsync(itemDto.File, itemDto.FilePath, itemDto.Number);
-            newOrderItem.FilePath = FileService.PathCombine(MAIN_ORDER_DIRECTORY, FileService.GetFileName(filePathWithFileName));
+            
+            newOrderItem.FilePath = FileService.PathCombine(destPath, FileService.GetFileName(filePathWithFileName));            
 
             await this.orderService.CreateAsync(newOrderItem);
             await this.orderService.SaveChangesAsync();
@@ -130,19 +131,22 @@
             }
 
             var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemFromRepo.OrderCategoryId);
-            var orderCategoryFromQuery = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
+            var categoryFromQuery = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
+            var destPath = FileService.PathCombine(MAIN_ORDER_DIRECTORY,categoryFromQuery.Name);
+
+            itemFromRepo.About = itemDto.About;
+            itemFromRepo.Date = itemDto.Date;
+            itemFromRepo.Number = itemDto.Number;
+            
+
 
             if (itemDto.File != null)
             {
                 FileService.Delete(webRootPath, itemFromRepo.FilePath);
-                //itemFromRepo.FilePath = MAIN_ORDER_DIRECTORY + "\\" + categoryFromRepo.Name;
-                // var filePathWithFileName = await FileService.CreateAsync(
-                //     itemDto.File,
-                //     orderCategoryFromQuery.Name,
-                //     webRootPath,
-                //     itemDto.Number);
 
-                //itemFromRepo.FilePath = filePathWithFileName;
+                itemFromRepo.FilePath = FileService.PathCombine(webRootPath,destPath);
+                var filePathWithFileName = await FileService.CreateAsync(itemDto.File, itemFromRepo.FilePath, itemFromRepo.Number);
+                itemFromRepo.FilePath = FileService.PathCombine(destPath, FileService.GetFileName(filePathWithFileName));
             }
             else
             {
@@ -150,21 +154,22 @@
                 {
                     var fileName = FileService.GetFileName(itemFromRepo.FilePath);
 
-                    var srcFile = MAIN_ORDER_DIRECTORY + "\\" + categoryFromRepo.Name + "\\" + fileName;
-                    var destFile = MAIN_ORDER_DIRECTORY + "\\" + orderCategoryFromQuery.Name + "\\" + fileName;
+                    var srcFile =  FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromRepo.Name);
+                    srcFile =  FileService.PathCombine(srcFile,fileName);
+
+                    var destFile = FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromQuery.Name);
+                    destFile = FileService.PathCombine(destFile,fileName);
 
                     itemFromRepo.FilePath = destFile;
-                    FileService.MoveFile(webRootPath + "\\" + srcFile, webRootPath + "\\" + destFile);
+
+                    srcFile = FileService.PathCombine(webRootPath, srcFile);
+                    destFile = FileService.PathCombine(webRootPath, destFile);
+                    FileService.MoveFile(srcFile , destFile);
                 }
             }
-
-            itemFromRepo.About = itemDto.About;
-            itemFromRepo.Date = itemDto.Date;
-            itemFromRepo.Number = itemDto.Number;
+            
             itemFromRepo.OrderCategoryId = itemDto.OrderCategoryId;
-
             this.orderService.Update(itemFromRepo);
-
             await this.orderService.SaveChangesAsync();
 
             return this.NoContent();

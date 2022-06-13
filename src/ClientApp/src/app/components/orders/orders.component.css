@@ -16,9 +16,6 @@ table th {
   font-weight: bold;
 }
 
-table tr, textarea {
-  height: 40px;
-}
 
 .mat-form-field {
   font-size: 14px;

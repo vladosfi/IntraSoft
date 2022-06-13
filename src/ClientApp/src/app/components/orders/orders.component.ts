@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common'
 import { OrderCategoryService } from 'src/app/core/services/orderCategory.service'
 import { FileService } from 'src/app/core/services/file.service'
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { OrderDialogComponent } from '../dialog/order-dialog/order-dialog.component'
 
 
 
@@ -185,6 +186,14 @@ export class OrdersComponent implements OnInit {
 
     this.paginator.page.subscribe(() => { // this is page change event
       this.onPaginateChange(this.paginator, this.paginatorList);
+    });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(OrderDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете записа за: '} });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 
