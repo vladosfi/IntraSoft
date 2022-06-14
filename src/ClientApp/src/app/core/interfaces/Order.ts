@@ -5,6 +5,7 @@ export interface Order {
   about: string;
   filePath: string;
   orderCategoryId: number;
+  orderCategoryName: string;
   orderCategory: OrderCategory;
 }
 

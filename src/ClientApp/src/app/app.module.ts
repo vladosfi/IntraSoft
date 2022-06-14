@@ -37,7 +37,8 @@ import bg from '@angular/common/locales/bg';
 import { registerLocaleData } from '@angular/common';
 import { OrdersComponent } from './components/orders/orders.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { OrderDialogComponent } from './components/dialog/order-dialog/order-dialog.component';
+import { OrderDialogComponent } from './components/orders/order-dialog/order-dialog.component';
+
 registerLocaleData(bg);
 
 @NgModule({

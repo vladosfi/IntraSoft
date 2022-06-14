@@ -14,6 +14,7 @@ table {
 
 table th {
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 
@@ -41,38 +42,38 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 
 .mat-column-number {
   padding-left: 16px;
-  text-transform: uppercase;
+  
   /* width: 5%; */
 }
 
 .mat-column-about {
-  text-transform: uppercase;
+  
   width: 50%;
   padding-right: 5px;
 }
 
 .mat-column-date {
   text-align: left;
-  text-transform: uppercase;
+  
   /* width: 5%; */
 }
 
 .mat-column-filePath {
   text-align: left;
-  text-transform: uppercase;
+  
   /* width: 10%; */
 }
 
 .mat-column-categories {
   /* width: 32px; */
   text-align: left;
-  text-transform: uppercase;
+  
   /* width: 15%; */
 }
 
 .mat-column-action {
   text-align: left;
-  text-transform: uppercase;
+  
   /* width: 15%; */
   /* min-width: 100px; */
   max-width: 700px;
@@ -101,7 +102,7 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
 }
 
 #categories {
-  max-width: 110px;
+  max-width: 180px;
 }
 
 #filepath {

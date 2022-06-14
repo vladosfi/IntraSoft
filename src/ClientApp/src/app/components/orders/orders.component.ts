@@ -19,7 +19,8 @@ import { DatePipe } from '@angular/common'
 import { OrderCategoryService } from 'src/app/core/services/orderCategory.service'
 import { FileService } from 'src/app/core/services/file.service'
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { OrderDialogComponent } from '../dialog/order-dialog/order-dialog.component'
+import { OrderDialogComponent } from './order-dialog/order-dialog.component'
+
 
 
 
@@ -150,10 +151,10 @@ export class OrdersComponent implements OnInit {
             id: new FormControl(val.id),
             number: new FormControl(val.number),
             about: new FormControl(val.about),
-            date: new FormControl({ value: val.date, disabled: true }),
+            date: new FormControl(val.date),
             filePath: new FormControl(val.filePath),
-            categoryId: new FormControl({ value: val.orderCategory.id, disabled: true }),
-            categoryName: new FormControl({ value: val.orderCategory.name, disabled: true }),
+            categoryId: new FormControl(val.orderCategory.id),
+            categoryName: new FormControl(val.orderCategory.name),
             categories: new FormControl(this.orderCategories),
             action: new FormControl('existingRecord'),
             isEditable: new FormControl(true),
@@ -190,24 +191,29 @@ export class OrdersComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(OrderDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете записа за: '} });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 
   AddNewRow() {
-    // Do not add new record if last is not added correctly
-    for (let i = 0; i < this.dataSource.data.length; i++) {
-      if (this.dataSource.data[i].value.action === 'newRecord') {
-        return;
-      }
-    }
+    const dialogRef = this.dialog.open(OrderDialogComponent,
+      {
+        data: {
+          number: 121212,
+          about: 'asdasd',
+          orderCategoryId: 1,
+          date: new Date(),
+          newRecord: true
+        },
+        width: '50%'
+      });
 
-    const control = this.VOForm.get('VORows') as FormArray;
-    control.insert(0, this.initiateNewRow());
-    this.dataSource = new MatTableDataSource(control.controls);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const control = this.VOForm.get('VORows') as FormArray;
+        control.insert(0, this.initiateNewRow(result));
+        this.dataSource = new MatTableDataSource(control.controls);
+      }
+    });
   }
 
 
@@ -218,10 +224,29 @@ export class OrdersComponent implements OnInit {
 
   // this function will enabled the select field for editd
   editSVO(element) {
-    element.get('isEditable').patchValue(false);
-    element.get('date').enable(true);
-    element.get('categoryId').enable(true);
-    // this.isEditableNew = true;
+    const order = this.generateOrder(element);
+
+    const dialogRef = this.dialog.open(OrderDialogComponent,
+      {
+        data: {
+          id: order.id,
+          number: order.number,
+          about: order.about,
+          orderCategoryId: order.orderCategoryId ,
+          date: order.date,
+          filePath: order.filePath.split('\\').pop().split('/').pop(),
+          newRecord: true
+        },
+        width: '50%'
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        element.get('isEditable').patchValue(true);
+        element.get('action').patchValue('existingRecord');
+        this.prepareDataSource();
+      }
+    });
   }
 
   // At the file input element
@@ -234,6 +259,7 @@ export class OrdersComponent implements OnInit {
 
 
   saveVO(element) {
+
     if (element.status !== 'VALID') {
       this.snackbar.error('Невалидни данни!');
       return;
@@ -241,7 +267,7 @@ export class OrdersComponent implements OnInit {
 
     let newOrder = this.generateOrder(element);
     if (newOrder === null) return;
-    
+
     if (this.uploadFile == undefined && element.value.filePath == '') {
       console.log("No file selected!");
       return;
@@ -251,8 +277,8 @@ export class OrdersComponent implements OnInit {
       console.log("No item ID!");
       return;
     }
-    
-    
+
+
     let recordType = element.value.action;
     const newRecord = recordType === 'newRecord' ? true : false;
 
@@ -336,7 +362,7 @@ export class OrdersComponent implements OnInit {
 
   paginatorList: HTMLCollectionOf<Element>;
   idx: number;
-  onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
+  private onPaginateChange(paginator: MatPaginator, list: HTMLCollectionOf<Element>) {
     setTimeout((idx) => {
       let from = (paginator.pageSize * paginator.pageIndex) + 1;
 
@@ -355,21 +381,21 @@ export class OrdersComponent implements OnInit {
   }
 
 
-  private initiateNewRow(): FormGroup {
+
+  private initiateNewRow(order: Order): FormGroup {
     return this.fb.group({
-      id: new FormControl(),
-      number: new FormControl('', [Validators.required]),
-      about: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
-      filePath: new FormControl('', [Validators.required]),
-      categoryId: new FormControl('', [Validators.required]),
-      categoryName: new FormControl(''),
-      action: new FormControl('newRecord'),
-      isEditable: new FormControl(false),
-      isNewRow: new FormControl(true),
+      id: new FormControl(order.id || ''),
+      number: new FormControl(order.number || ''),
+      about: new FormControl(order.about || ''),
+      date: new FormControl(order.date || ''),
+      filePath: new FormControl(order.filePath || ''),
+      categoryId: new FormControl(order.orderCategoryId || ''),
+      categoryName: new FormControl(order.orderCategoryName || ''),
+      action: new FormControl('existingRecord'),
+      isEditable: new FormControl(true),
+      isNewRow: new FormControl(false),
     });
   }
-
 
   private generateOrder(element): Order {
     return {
