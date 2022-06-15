@@ -82,14 +82,11 @@ export class OrderDialogComponent implements OnInit {
 
     this.uploadOrder();
 
-    // for (var pair of newOrder.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
-
   }
 
   uploadOrder() {
     let newOrder = this.generateOrderFormData();
+    
 
     this.fileService.uploadFile(newOrder, this.endPointPath, this.data.newRecord)
       .subscribe(
@@ -125,23 +122,30 @@ export class OrderDialogComponent implements OnInit {
   }
 
   private generateOrderFormData(): FormData {
+    let dateWithoutOffset =  new Date(this.orderForm.get('date').value.getTime() - (this.orderForm.get('date').value.getTimezoneOffset() * 60000)).toISOString();
+
     let formData = new FormData();
     formData.append('id', this.orderForm.get('id').value);
     formData.append('number', this.orderForm.get('number').value);
-    formData.append('date', new Date(this.orderForm.get('date').value).toISOString().replace('.000Z', ''));
+    formData.append('date', dateWithoutOffset);
     formData.append('about', this.orderForm.get('about').value);
     formData.append('orderCategoryId', this.orderForm.get('orderCategoryId').value.toString());
     formData.append('file', this.selectedFile);
     formData.append('filePath', this.orderForm.get('filePath').value);
 
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ', ' + pair[1]);
+    // }
     return formData;
   }
 
   private generateOrder(): Order {
+    let dateWithoutOffset =  new Date(this.orderForm.get('date').value.getTime() - (this.orderForm.get('date').value.getTimezoneOffset() * 60000)).toISOString();
+
     return {
       id: this.data.id,
       number: this.orderForm.get('number').value,
-      date: new Date(this.orderForm.get('date').value).toISOString().replace('.000Z', ''),
+      date: dateWithoutOffset,
       about: this.orderForm.get('about').value,
       orderCategoryId: this.orderForm.get('orderCategoryId').value,
       orderCategoryName: this.orderCategories[this.orderForm.get('orderCategoryId').value].name,

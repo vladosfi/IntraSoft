@@ -248,8 +248,8 @@ export class OrdersComponent implements OnInit {
         element.get('number').patchValue(result.number);
         element.get('about').patchValue(result.about);
         element.get('date').patchValue(result.date);
-        element.get('orderCategoryName').patchValue(result.orderCategoryName);
-        element.get('orderCategoryId').patchValue(result.orderCategoryId);
+        element.get('categoryName').patchValue(result.orderCategoryName);
+        element.get('categoryId').patchValue(result.orderCategoryId);
         element.get('action').patchValue('existingRecord');
         this.prepairTableView();
         this.snackbar.infoWitHide('Заповедта беше записана');
