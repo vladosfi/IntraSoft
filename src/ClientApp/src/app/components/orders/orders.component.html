@@ -12,7 +12,7 @@
 </div>
 <div class="mat-elevation-z8">
   <button title="Добави ред">
-    <mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon>
+    <mat-icon (click)="addNewRow()" class="add-button">add_box</mat-icon>
   </button>
   <br />
   <br />
@@ -89,15 +89,6 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Действие</th>
           <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
-            <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
-              (click)="saveVO(element)" *ngIf="!element.get('isEditable').value" color="primary">
-              <mat-icon>check_circle</mat-icon>
-            </button>
-
-            <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
-              color="warn" (click)="cancelSVO(element)" *ngIf="!element.get('isEditable').value">
-              <mat-icon>cancel</mat-icon>
-            </button>
 
             <button mat-icon-button class="material-icons app-toolbar-menu save-button"
               *ngIf="element.get('isEditable').value" matTooltip="Edit" color="primary" (click)="editSVO(element)">

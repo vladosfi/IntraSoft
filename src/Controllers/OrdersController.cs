@@ -110,8 +110,9 @@
             await this.orderService.CreateAsync(newOrderItem);
             await this.orderService.SaveChangesAsync();
 
-            var orderReadDto =
-                AutoMapperConfig.MapperInstance.Map<OrderReadDto>(newOrderItem);
+            var orderReadDto = AutoMapperConfig.MapperInstance.Map<OrderReadDto>(newOrderItem);
+
+            orderReadDto.OrderCategoryName = categoryFromRepo.Name;
 
             return this
                 .CreatedAtRoute(nameof(this.GetOrderById),

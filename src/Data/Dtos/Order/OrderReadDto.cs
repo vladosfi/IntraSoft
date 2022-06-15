@@ -20,6 +20,10 @@
 
         public string FileName => Path.GetFileName(this.FilePath);
 
+        public int OrderCategoryId { get; set; }
+        
+        public string OrderCategoryName { get; set; }
+
         public virtual OrderCategoryReadDto OrderCategory { get; set; }
     }
 }

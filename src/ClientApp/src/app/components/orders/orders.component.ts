@@ -164,6 +164,10 @@ export class OrdersComponent implements OnInit {
       ), //end of fb array
     }) // end of form group cretation
     this.isLoading = false;
+    this.prepairTableView();
+  }
+
+  prepairTableView() {
     this.dataSource = new MatTableDataSource((this.VOForm.get('VORows') as FormArray).controls);
     this.dataSource.paginator = this.paginator;
     this.onPaginateChange(this.paginator, this.paginatorList);
@@ -190,14 +194,15 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  openDialog() {
-
+  downloadFile(element) {
+    this.fileService.downloadFile(element.get('id').value, this.endPointPath);
   }
 
-  AddNewRow() {
+  addNewRow() {
     const dialogRef = this.dialog.open(OrderDialogComponent,
       {
         data: {
+          title: "Добавяне на заповед",
           number: 121212,
           about: 'asdasd',
           orderCategoryId: 1,
@@ -211,16 +216,11 @@ export class OrdersComponent implements OnInit {
       if (result) {
         const control = this.VOForm.get('VORows') as FormArray;
         control.insert(0, this.initiateNewRow(result));
-        this.dataSource = new MatTableDataSource(control.controls);
+        this.prepairTableView();
+        this.snackbar.infoWitHide('Заповедта беше записана');
       }
     });
   }
-
-
-  downloadFile(element) {
-    this.fileService.downloadFile(element.get('id').value, this.endPointPath);
-  }
-
 
   // this function will enabled the select field for editd
   editSVO(element) {
@@ -229,100 +229,35 @@ export class OrdersComponent implements OnInit {
     const dialogRef = this.dialog.open(OrderDialogComponent,
       {
         data: {
+          title: "Редактиране на заповед",
           id: order.id,
           number: order.number,
           about: order.about,
-          orderCategoryId: order.orderCategoryId ,
+          orderCategoryId: order.orderCategoryId,
           date: order.date,
-          filePath: order.filePath.split('\\').pop().split('/').pop(),
-          newRecord: true
+          filePath: order.filePath,
+          newRecord: false
         },
         width: '50%'
       });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result);
         element.get('isEditable').patchValue(true);
+        element.get('number').patchValue(result.number);
+        element.get('about').patchValue(result.about);
+        element.get('date').patchValue(result.date);
+        element.get('orderCategoryName').patchValue(result.orderCategoryName);
+        element.get('orderCategoryId').patchValue(result.orderCategoryId);
         element.get('action').patchValue('existingRecord');
-        this.prepareDataSource();
+        this.prepairTableView();
+        this.snackbar.infoWitHide('Заповедта беше записана');
       }
     });
   }
 
-  // At the file input element
-  onFileChange(event: any, element) {
-    if (event.target.files.length > 0) {
-      this.uploadFile = event.target.files[0];
-      element.get('filePath').patchValue(this.uploadFile.name);
-    }
-  }
-
-
-  saveVO(element) {
-
-    if (element.status !== 'VALID') {
-      this.snackbar.error('Невалидни данни!');
-      return;
-    }
-
-    let newOrder = this.generateOrder(element);
-    if (newOrder === null) return;
-
-    if (this.uploadFile == undefined && element.value.filePath == '') {
-      console.log("No file selected!");
-      return;
-    }
-
-    if (newOrder.orderCategoryId == null) {
-      console.log("No item ID!");
-      return;
-    }
-
-
-    let recordType = element.value.action;
-    const newRecord = recordType === 'newRecord' ? true : false;
-
-    let formData = new FormData();
-    formData.append('file', this.uploadFile);
-    formData.append('id', newOrder.id?.toString());
-    formData.append('number', newOrder.number);
-    formData.append('date', new Date(newOrder.date).toISOString());
-    formData.append('about', newOrder.about);
-    formData.append('filePath', newOrder.filePath);
-    formData.append('orderCategoryId', newOrder.orderCategoryId.toString());
-
-    this.fileService.uploadFile(formData, this.endPointPath, newRecord)
-      .subscribe(
-        {
-          next: (event) => {
-            if (event.type == HttpEventType.UploadProgress) {
-              const percentDone = Math.round(100 * event.loaded / event.total);
-              this.fileInfoMessage = `Файлът е ${percentDone}% качен.`;
-
-            } else if (event instanceof HttpResponse) {
-              this.fileInfoMessage = 'Файлът е качен!';
-              this.fileInfoMessage = event.body;
-              element.get('isEditable').patchValue(true);
-              element.get('action').patchValue('existingRecord');
-              element.get('filePath').disable(false);
-              element.get('date').disable(false);
-              element.get('categoryId').disable(false);
-              this.prepareDataSource();
-            }
-          },
-          error: (error) => {
-            this.snackbar.error(`Upload Error: ${JSON.stringify(error.message)}`);
-          }
-          ,
-          complete: () => {
-            //this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
-            this.snackbar.infoWitHide('Заповедта беше записана');
-          }
-        });
-  }
-
-
-  deleteSVO(element) {
+  private deleteSVO(element) {
     let id = element.value.id;
     let orderNumber = element.value.number;
 
@@ -350,14 +285,6 @@ export class OrdersComponent implements OnInit {
         console.log(`Dialog result is: ${result}`);
       }
     });
-  }
-
-  // On click of cancel button in the table (after click on edit) this method will call and reset the previous data
-  cancelSVO(element) {
-    this.prepareDataSource();
-    element.get('isEditable').patchValue(true);
-    element.get('date').disable(false);
-    element.get('categoryId').disable(false);
   }
 
   paginatorList: HTMLCollectionOf<Element>;
