@@ -68,11 +68,8 @@ export class OrderDialogComponent implements OnInit {
     }
   }
 
-
-
-
   onSaveClick(event: any) {
-
+    //console.log(this.orderCategories[this.orderForm.get('orderCategoryId').value]);
     if (this.orderForm.status !== 'VALID') {
       for (const field in this.orderForm.controls) { // 'field' is a string
         this.orderForm.controls[field].markAllAsTouched();
@@ -81,14 +78,13 @@ export class OrderDialogComponent implements OnInit {
     }
 
     this.uploadOrder();
-
   }
 
   uploadOrder() {
-    let newOrder = this.generateOrderFormData();
-    
+    let newOrder = this.generateOrder();
+    let formToSend = this.generateOrderFormData(newOrder);    
 
-    this.fileService.uploadFile(newOrder, this.endPointPath, this.data.newRecord)
+    this.fileService.uploadFile(formToSend, this.endPointPath, this.data.newRecord)
       .subscribe(
         {
           next: (event) => {
@@ -121,35 +117,39 @@ export class OrderDialogComponent implements OnInit {
     }
   }
 
-  private generateOrderFormData(): FormData {
-    let dateWithoutOffset =  new Date(this.orderForm.get('date').value.getTime() - (this.orderForm.get('date').value.getTimezoneOffset() * 60000)).toISOString();
-
+  private generateOrderFormData(order: Order): FormData {    
     let formData = new FormData();
-    formData.append('id', this.orderForm.get('id').value);
-    formData.append('number', this.orderForm.get('number').value);
-    formData.append('date', dateWithoutOffset);
-    formData.append('about', this.orderForm.get('about').value);
-    formData.append('orderCategoryId', this.orderForm.get('orderCategoryId').value.toString());
+    formData.append('id', order.id.toString());
+    formData.append('number', order.number);
+    formData.append('date', order.date);
+    formData.append('about', order.about);
+    formData.append('orderCategoryId', order.orderCategoryId.toString());
     formData.append('file', this.selectedFile);
-    formData.append('filePath', this.orderForm.get('filePath').value);
+    formData.append('filePath', order.filePath);
 
     // for (var pair of formData.entries()) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
+
     return formData;
   }
 
   private generateOrder(): Order {
-    let dateWithoutOffset =  new Date(this.orderForm.get('date').value.getTime() - (this.orderForm.get('date').value.getTimezoneOffset() * 60000)).toISOString();
+    let date = this.generateDateWithoutOffset(this.orderForm.get('date').value);
 
     return {
-      id: this.data.id,
+      id: this.data.id || this.orderForm.get('id').value,
       number: this.orderForm.get('number').value,
-      date: dateWithoutOffset,
+      date: date,
       about: this.orderForm.get('about').value,
       orderCategoryId: this.orderForm.get('orderCategoryId').value,
-      orderCategoryName: this.orderCategories[this.orderForm.get('orderCategoryId').value].name,
+      orderCategoryName: this.orderCategories[this.orderForm.get('orderCategoryId').value - 1].name,
       filePath: this.orderForm.get('filePath').value,
     } as Order;
+  }
+
+  private generateDateWithoutOffset(date){
+    date = new Date(date);    
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
   }
 }

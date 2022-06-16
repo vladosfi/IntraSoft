@@ -151,22 +151,24 @@
             }
             else
             {
-                if (itemFromRepo.OrderCategoryId != itemDto.OrderCategoryId)
-                {
-                    var fileName = FileService.GetFileName(itemFromRepo.FilePath);
+                // if (itemFromRepo.OrderCategoryId != itemDto.OrderCategoryId)
+                // {
+                    var srcFileName = FileService.GetFileName(itemFromRepo.FilePath);
+                    var destFileName = FileService.PathCombine(webRootPath,destPath);
+                    destFileName = FileService.PathCombine(destFileName,itemDto.Number + FileService.GetFileExtension(srcFileName));
 
                     var srcFile =  FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromRepo.Name);
-                    srcFile =  FileService.PathCombine(srcFile,fileName);
+                    srcFile =  FileService.PathCombine(srcFile,srcFileName);
 
                     var destFile = FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromQuery.Name);
-                    destFile = FileService.PathCombine(destFile,fileName);
+                    destFile = FileService.PathCombine(destFile,destFileName);
 
                     itemFromRepo.FilePath = destFile;
 
                     srcFile = FileService.PathCombine(webRootPath, srcFile);
                     destFile = FileService.PathCombine(webRootPath, destFile);
                     FileService.MoveFile(srcFile , destFile);
-                }
+                //}
             }
             
             itemFromRepo.OrderCategoryId = itemDto.OrderCategoryId;
