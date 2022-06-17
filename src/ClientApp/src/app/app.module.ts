@@ -38,6 +38,7 @@ import { registerLocaleData } from '@angular/common';
 import { OrdersComponent } from './components/orders/orders.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { OrderDialogComponent } from './components/orders/order-dialog/order-dialog.component';
+import { EmailComponent } from './components/email/email.component';
 
 registerLocaleData(bg);
 
@@ -66,6 +67,7 @@ registerLocaleData(bg);
     LastItemsComponent,
     OrdersComponent,
     OrderDialogComponent,
+    EmailComponent,
   ],
   entryComponents: [
     DeleteDialogComponent

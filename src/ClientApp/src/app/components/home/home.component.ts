@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   listTitle2: string = 'Last Orders';
   homeListItemsIsoServices: HomeListItem[] = []; 
   homeListItemsOrders: HomeListItem[] = []; 
+  
 
   constructor(private homeService: HomeService) { }
 

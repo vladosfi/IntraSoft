@@ -203,10 +203,6 @@ export class OrdersComponent implements OnInit {
       {
         data: {
           title: "Добавяне на заповед",
-          number: 121212,
-          about: 'asdasd',
-          orderCategoryId: 1,
-          date: new Date(),
           newRecord: true
         },
         width: '50%'
@@ -230,20 +226,14 @@ export class OrdersComponent implements OnInit {
       {
         data: {
           title: "Редактиране на заповед",
-          id: order.id,
-          number: order.number,
-          about: order.about,
-          orderCategoryId: order.orderCategoryId,
-          date: order.date,
-          filePath: order.filePath,
-          newRecord: false
+          newRecord: false,
+          order: order
         },
         width: '50%'
       });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
         element.get('isEditable').patchValue(true);
         element.get('number').patchValue(result.number);
         element.get('about').patchValue(result.about);

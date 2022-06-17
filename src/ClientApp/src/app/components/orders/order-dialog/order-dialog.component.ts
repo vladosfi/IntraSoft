@@ -48,15 +48,15 @@ export class OrderDialogComponent implements OnInit {
 
   prepairForm() {
     this.orderForm = this.fb.group({
-      id: new FormControl(this.data.id || ''),
-      number: new FormControl(this.data.number || '', Validators.required),
-      about: new FormControl(this.data.about || '', Validators.required),
-      date: new FormControl(this.data.date || '', Validators.required),
+      id: new FormControl(this.data.order?.id || ''),
+      number: new FormControl(this.data.order?.number || '', Validators.required),
+      about: new FormControl(this.data.order?.about || '', Validators.required),
+      date: new FormControl(this.data.order?.date || '', Validators.required),
       categories: new FormControl(this.orderCategories, Validators.required),
-      orderCategoryId: new FormControl({ value: this.data.orderCategoryId || '', disabled: false }),
-      orderCategoryName: new FormControl({ value: this.data.orderCategoryName || '', disabled: false }),
-      filePath: new FormControl(this.data.filePath?.split('\\').pop().split('/').pop() || '', Validators.required),
-      file: new FormControl(this.data.file || ''),
+      orderCategoryId: new FormControl({ value: this.data.order?.orderCategoryId || '', disabled: false }),
+      orderCategoryName: new FormControl({ value: this.data.order?.orderCategoryName || '', disabled: false }),
+      filePath: new FormControl(this.data.order?.filePath?.split('\\').pop().split('/').pop() || '', Validators.required),
+      file: new FormControl(this.data.order?.file || ''),
     });
   }
 

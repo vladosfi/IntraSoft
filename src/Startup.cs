@@ -6,6 +6,7 @@ namespace IntraSoft
     using IntraSoft.Data.Common.Repositories;
     using IntraSoft.Data.Repositories;
     using IntraSoft.Services.Data;
+    using IntraSoft.Services.Mail;
     using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -61,6 +62,13 @@ namespace IntraSoft
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+       
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.Configure<FormOptions>(o => {        
+                o.ValueLengthLimit = int.MaxValue;        
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+                });
 
             // Application services
             services.AddTransient<IMenuService, MenuService>();
@@ -73,6 +81,8 @@ namespace IntraSoft
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IOrderCategoryService, OrderCategoryService>();
             services.AddTransient<IOrderService, OrderService>();
+    
+            services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 
 
             services.AddControllersWithViews();

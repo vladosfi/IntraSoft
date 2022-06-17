@@ -1,0 +1,91 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+
+<form [formGroup]="emailForm" autocomplete="off" *ngIf="emailForm">
+  <div class="content form-group">
+    <mat-dialog-content>
+      <div class="row">
+        <label for="recipients">Получатели</label>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Въведете е-майл на получателия</mat-label>
+          <input
+            [disableControl]="false"
+            matInput
+            formControlName="recipients"
+          />
+          <mat-error *ngIf="emailForm.get('recipients').hasError('required')">
+            Полето е задължително
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <label for="subject">Относно</label>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Въведете тема на съобщението</mat-label>
+          <input [disableControl]="false" matInput formControlName="subject" />
+          <mat-error *ngIf="emailForm.get('subject').hasError('required')">
+            Полето е задължително
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <label for="content">Съдържание</label>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Въведете текста за съобщението</mat-label>
+          <textarea
+            matInput
+            formControlName="content"
+          ></textarea>
+          <mat-error *ngIf="emailForm.get('content').hasError('required')">
+            Полето е задължително
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <label>Файлове</label>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Изберете файл/ове</mat-label>
+          <button mat-icon-button matPrefix (click)="f_input.click()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+          <input
+            type="text"
+            formControlName="filePath"
+            [readonly]="true"
+            matInput
+          />
+          <input
+            type="file"
+            multiple
+            hidden
+            [readonly]="true"
+            #f_input
+            (change)="onFileChange(f_input.files)"
+          />
+          <small class="form-text text-muted">{{ fileInfoMessage }}</small>
+          <mat-error *ngIf="emailForm?.invalid">
+            <div *ngIf="emailForm.get('filePath')?.errors?.required">
+              Полето е задължително
+            </div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <div class="row">
+        <mat-dialog-actions align="end">
+            <button             
+            [disabled]="emailForm?.invalid"
+            mat-raised-button color="primary" 
+            (click)="onSend()"
+            >
+            Изпрати
+        </button>
+          </mat-dialog-actions>
+    </div>
+  </div>
+</form>
+
+
