@@ -1,5 +1,6 @@
-h1 {
+h1{
   text-align: center;
+  padding: 20px;
 }
 
 a {
@@ -137,15 +138,17 @@ tr.element-row:not(.expanded-row):active {
 .add-button {
   color: #3498DB;
 }
+.export-button {
+  color: #3498DB;
+}
 
-.mat-elevation-z8>button {
+.mat-elevation-z8 > button {
   float: right;
-  padding: 0px 0px 0px 0px;
-  border: #3498DB 1px solid;
-  border-radius: 3px;
-  border-spacing: 10px;
-  font-size: 0px;
-  margin: 3px;
+  border-color: gainsboro;
+  border-style: solid;
+  padding: 5px 5px 0px 5px;
+  font-size: 14px;
+  margin-left: 10px;
 }
 
 .mat-elevation-z8>button::after {

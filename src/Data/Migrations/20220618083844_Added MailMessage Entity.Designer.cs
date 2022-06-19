@@ -3,6 +3,7 @@ using System;
 using IntraSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntraSoft.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220618083844_Added MailMessage Entity")]
+    partial class AddedMailMessageEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -268,9 +270,6 @@ namespace IntraSoft.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ErrorMessage")
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
@@ -284,9 +283,6 @@ namespace IntraSoft.Data.Migrations
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Success")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

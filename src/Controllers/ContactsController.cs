@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Contact;
     using IntraSoft.Data.Models;
-    using IntraSoft.Services.Data;
+    using IntraSoft.Services.Data.Contact;
     using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Mvc;
 

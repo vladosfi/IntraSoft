@@ -1,11 +1,14 @@
 <h1>{{ title }}</h1>
 <div class="mat-elevation-z8">
-  <button title="Добави ред">
-    <mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon>
+  <button title="Добави ред" (click)="AddNewRow()">
+    <mat-icon class="add-button">add_box</mat-icon>
+  </button>
+  <button title="Експортиране в Excel" (click)="exportContacts()">
+    <mat-icon class="export-button">file_download</mat-icon>
   </button>
   <br />
   <br />
-
+  
   <mat-form-field style="width: 40%;">
     <mat-label>Филтриране</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Въведете текст за търсене" #input />

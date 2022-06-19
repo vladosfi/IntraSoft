@@ -139,6 +139,10 @@ export class ContactComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  exportContacts(){
+    this.contactService.exportToExcel();
+  }
+
   // @ViewChild('table') table: MatTable<PeriodicElement>;
   AddNewRow() {
     // Do not add new record if last is not added correctly

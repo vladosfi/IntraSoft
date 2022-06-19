@@ -1,5 +1,15 @@
 h1{
     text-align: center;
+    padding: 20px;
+}
+
+
+hr{
+    margin-bottom: 50px;
+}
+
+textarea{
+    min-height: 160px;
 }
 
 .content{
@@ -7,6 +17,4 @@ h1{
     padding: 30px;
 }
 
-textarea{
-    min-height: 160px;
-}
+

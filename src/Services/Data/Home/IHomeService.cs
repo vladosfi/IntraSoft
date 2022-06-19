@@ -1,8 +1,7 @@
-namespace IntraSoft.Services.Data
+namespace IntraSoft.Services.Data.Home
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using IntraSoft.Data.Models;
 
     public interface IHomeService
     {

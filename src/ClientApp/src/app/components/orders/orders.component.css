@@ -1,5 +1,6 @@
-h1 {
+h1{
   text-align: center;
+  padding: 20px;
 }
 
 mat-button-toggle-group {
@@ -134,12 +135,13 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
   color: #3498DB;
 }
 
-
-.mat-elevation-z8>button {
+.mat-elevation-z8 > button {
   float: right;
-  border-color: #3498DB;
+  border-color: gainsboro;
+  border-style: solid;
   padding: 5px 5px 0px 5px;
   font-size: 14px;
+  margin-left: 10px;
 }
 
 .mat-elevation-z8>button::after {

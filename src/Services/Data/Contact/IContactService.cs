@@ -1,4 +1,4 @@
-namespace IntraSoft.Services.Data
+namespace IntraSoft.Services.Data.Contact
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -7,6 +7,8 @@ namespace IntraSoft.Services.Data
     public interface IContactService
     {
         Task<IEnumerable<T>> GetAllAsync<T>();
+
+        Task<IEnumerable<T>> GetAllForExportAsync<T>();
 
         Task<int> CreateAsync(Contact item);
 

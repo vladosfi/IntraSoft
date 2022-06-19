@@ -3,9 +3,12 @@
   width: 80%;
   flex-direction: column;
 }
-.content {
-  margin-top: 35px;
+
+.content{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 30px;
 }
+
 
 
 

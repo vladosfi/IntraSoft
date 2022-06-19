@@ -4,13 +4,13 @@ namespace IntraSoft.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using IntraSoft.Data.Dtos.Home;
-    using IntraSoft.Data.Dtos.Order;
-    using IntraSoft.Services.Data;
+    using IntraSoft.Data.Dtos.MailMessage;
+    using IntraSoft.Data.Models;
+    using IntraSoft.Services.Data.MailMessage;
     using IntraSoft.Services.Mail;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using MimeKit;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -18,8 +18,11 @@ namespace IntraSoft.Controllers
     {
         private readonly IEmailSender emailSender;
 
-        public MailController(IEmailSender emailSender)
+        private readonly IMailMessageService mailMessageService;
+
+        public MailController(IEmailSender emailSender, IMailMessageService mailMessageService)
         {
+            this.mailMessageService = mailMessageService;
             this.emailSender = emailSender;
         }
 
@@ -37,7 +40,8 @@ namespace IntraSoft.Controllers
             return Enumerable
                 .Range(1, 5)
                 .Select(index =>
-                    new {
+                    new
+                    {
                         Date = DateTime.Now.AddDays(index),
                         TemperatureC = rng.Next(-20, 55)
                     })
@@ -45,25 +49,46 @@ namespace IntraSoft.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm]Message inputMessage)
+        public async Task<IActionResult> Post([FromForm] MailMessageCreateDto inputMessage)
         {
-            
+
+            var mailMessage = AutoMapperConfig.MapperInstance.Map<MailMessage>(inputMessage);
+            mailMessage.Success = false;
+
             var defaultRecipients = new string[] { "vgivanov@varna.bg", "vgivanov@varna.bg" };
-            defaultRecipients = inputMessage.Recipients == null ? defaultRecipients : inputMessage.Recipients.Split(';').ToArray() ;
+            defaultRecipients = inputMessage.Recipients == null ? defaultRecipients : inputMessage.Recipients.Split(';').ToArray();
 
             var subject = inputMessage.Subject;
             var content = inputMessage.Content;
             var files = Request.Form.Files.Any() ? Request.Form.Files : new FormFileCollection();
 
-            var message = new Message(defaultRecipients, subject ,content, files);
+            try
+            {
+                var message = new Message(defaultRecipients, subject, content, files);
 
-            var serverResponse =  await this.emailSender.SendEmailAsync(message);
+                var serverResponse = await this.emailSender.SendEmailAsync(message);
 
-            if(!serverResponse.ToLower().Contains("2.0.0 ok")){
-                return this.BadRequest();
+                if (!serverResponse.ToLower().Contains("2.0.0 ok"))
+                {
+                    return this.BadRequest();
+                }
+
+                mailMessage.Success = true;
+
+                return this.Ok();
             }
-            
-            return this.Ok();
+            catch (Exception ex)
+            {
+
+                mailMessage.ErrorMessage = ex.Message;
+                throw;
+            }
+            finally
+            {
+                await this.mailMessageService.CreateAsync(mailMessage);
+                await this.mailMessageService.SaveChangesAsync();
+            }
+
         }
     }
 }

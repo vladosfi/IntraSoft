@@ -9,6 +9,10 @@ using Microsoft.Extensions.Hosting;
 using System.Security;
 using IntraSoft.Data.Models;
 using IntraSoft.Services.Data;
+using IntraSoft.Services.Data.Contact;
+using IntraSoft.Services.Data.Order;
+using IntraSoft.Services.Data.OrderCategory;
+using IntraSoft.Services.Data.Menu;
 
 namespace IntraSoft.Controllers
 {
@@ -66,7 +70,7 @@ namespace IntraSoft.Controllers
             {
                 Menus = importedMenus,
                 Departments = importedDepartments,
-                Contacts = importedDepartments,
+                Contacts = importedContacts,
                 IsoServices = importedIsoServices,
                 IsoFileCategories = importedIsoFileCategories,
                 OrderCategories = importedOrderCategories,

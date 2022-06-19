@@ -27,5 +27,6 @@
         "vue",
         "xml",
         "yaml"
-    ]
+    ],
+    "angular.enable-strict-mode-prompt": false
 }

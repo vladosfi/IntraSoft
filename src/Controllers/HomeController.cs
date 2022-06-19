@@ -2,8 +2,7 @@
 {
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Home;
-    using IntraSoft.Data.Dtos.Order;
-    using IntraSoft.Services.Data;
+    using IntraSoft.Services.Data.Home;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]

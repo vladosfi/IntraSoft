@@ -1,4 +1,4 @@
-namespace IntraSoft.Services.Data
+namespace IntraSoft.Services.Data.Menu
 {
     using System;
     using System.Collections.Generic;

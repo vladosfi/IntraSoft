@@ -1,10 +1,10 @@
-﻿namespace IntraSoft.Services.Data
+﻿namespace IntraSoft.Services.Data.Contact
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using IntraSoft.Data;
     using IntraSoft.Data.Common.Repositories;
+    using IntraSoft.Data.Dtos.Contact;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
@@ -25,12 +25,36 @@
             return contactItem.Id;
         }
 
+
+        public async Task<IEnumerable<T>> GetAllForExportAsync<T>()
+        {
+            IQueryable<Contact> query =
+                this.contactRepo
+                .All()
+                .Select(c => new Contact()
+                {
+                    FirstName = c.FirstName,
+                    MiddleName = c.MiddleName,
+                    LastName = c.LastName,
+                    Email = c.Email,
+                    Phone = c.Phone,
+                    DepartmentId = c.DepartmentId,
+                    Department = c.Department,
+                })
+                .OrderBy(x => x.DepartmentId)
+                .AsNoTracking()
+                .AsSplitQuery();
+
+            return await query.To<T>().ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
             IQueryable<Contact> query =
                 this.contactRepo
                 .All()
-                .Select(c => new Contact(){
+                .Select(c => new Contact()
+                {
                     Id = c.Id,
                     FirstName = c.FirstName,
                     MiddleName = c.MiddleName,

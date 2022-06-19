@@ -1,4 +1,4 @@
-﻿namespace IntraSoft.Services.Data
+﻿namespace IntraSoft.Services.Data.Order
 {
     using System.Collections.Generic;
     using System.Linq;

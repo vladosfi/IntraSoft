@@ -6,6 +6,12 @@ namespace IntraSoft
     using IntraSoft.Data.Common.Repositories;
     using IntraSoft.Data.Repositories;
     using IntraSoft.Services.Data;
+    using IntraSoft.Services.Data.Contact;
+    using IntraSoft.Services.Data.Home;
+    using IntraSoft.Services.Data.MailMessage;
+    using IntraSoft.Services.Data.Menu;
+    using IntraSoft.Services.Data.Order;
+    using IntraSoft.Services.Data.OrderCategory;
     using IntraSoft.Services.Mail;
     using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Builder;
@@ -26,7 +32,7 @@ namespace IntraSoft
             this.Configuration = configuration;
             this.currentEnvironment = env;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -46,29 +52,30 @@ namespace IntraSoft
            {
                o.ValueLengthLimit = int.MaxValue;
                o.MultipartBodyLengthLimit = int.MaxValue;
-               o.MemoryBufferThreshold = int.MaxValue;  
+               o.MemoryBufferThreshold = int.MaxValue;
            });
 
             object p = services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
+
             services.Configure<FormOptions>(options =>
             {
                 // Set the limit size to 20 MB
-                options.MultipartBodyLengthLimit = 20*1024*1024;
+                options.MultipartBodyLengthLimit = 20 * 1024 * 1024;
             });
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
-       
+
             services.AddScoped<IEmailSender, EmailSender>();
-            services.Configure<FormOptions>(o => {        
-                o.ValueLengthLimit = int.MaxValue;        
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
-                });
+            });
 
             // Application services
             services.AddTransient<IMenuService, MenuService>();
@@ -81,7 +88,8 @@ namespace IntraSoft
             services.AddTransient<IHomeService, HomeService>();
             services.AddTransient<IOrderCategoryService, OrderCategoryService>();
             services.AddTransient<IOrderService, OrderService>();
-    
+            services.AddTransient<IMailMessageService, MailMessageService>();
+
             services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 
 
