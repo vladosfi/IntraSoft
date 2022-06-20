@@ -28,7 +28,7 @@ export class SnackbarService {
   infoWitHide(message: string) {
     return this._snackBar.open(message, 'OK', {
       panelClass: ['snackbar-info'],
-      duration: 3000,
+      duration: 5000,
     })
   }
 }

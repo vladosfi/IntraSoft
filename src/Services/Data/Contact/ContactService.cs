@@ -36,8 +36,12 @@
                     FirstName = c.FirstName,
                     MiddleName = c.MiddleName,
                     LastName = c.LastName,
-                    Email = c.Email,
+                    Position = c.Position,
+                    Room = c.Room,
                     Phone = c.Phone,
+                    PrivatePhone = c.PrivatePhone,
+                    WorkPhone = c.WorkPhone,
+                    Email = c.Email,
                     DepartmentId = c.DepartmentId,
                     Department = c.Department,
                 })
@@ -59,8 +63,12 @@
                     FirstName = c.FirstName,
                     MiddleName = c.MiddleName,
                     LastName = c.LastName,
-                    Email = c.Email,
+                    Position = c.Position,
+                    Room = c.Room,
                     Phone = c.Phone,
+                    WorkPhone = c.WorkPhone,
+                    PrivatePhone = c.PrivatePhone,
+                    Email = c.Email,
                     DepartmentId = c.DepartmentId,
                 })
                 .OrderBy(x => x.DepartmentId)

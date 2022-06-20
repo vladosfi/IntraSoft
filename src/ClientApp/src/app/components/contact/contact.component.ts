@@ -26,9 +26,17 @@ import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
   styleUrls: ['./contact.component.css'],
 })
 export class ContactComponent implements OnInit {
+  minWorkPhoneLen = 9;
+  maxWorkPhoneLen = 10;
+  minPrivatePhoneLen = 9;
+  maxPrivatePhoneLen = 10;
+  phoneLen = 6;
+  positionMaxLen = 100;
+  roomMaxLen = 50;
+
   contacts: Contact[] = [];
   departments: Department[] = [];
-  displayedColumns: string[] = ['id', 'fullName', 'phone', 'email', 'departments', 'action'];
+  displayedColumns: string[] = ['id', 'fullName', 'position', 'room', 'phone', 'workPhone', 'privatePhone', 'email', 'departments', 'action'];
   dataSource = new MatTableDataSource<any>();
   title = 'Контакти';
   isLoading = true;
@@ -96,7 +104,11 @@ export class ContactComponent implements OnInit {
           this.fb.group({
             id: new FormControl(val.id),
             fullName: new FormControl(val.fullName),
+            position: new FormControl(val.position),
+            room: new FormControl(val.room),
             phone: new FormControl(val.phone),
+            workPhone: new FormControl(val.workPhone),
+            privatePhone: new FormControl(val.privatePhone),
             email: new FormControl(val.email, Validators.email),
             departmentId: new FormControl({ value: val.departmentId, disabled: true }),
             departments: new FormControl(this.departments),
@@ -265,9 +277,13 @@ export class ContactComponent implements OnInit {
   private initiateNewRow(): FormGroup {
     return this.fb.group({
       id: new FormControl(),
-      fullName: new FormControl('', [Validators.required, fullNameValidator()]),
-      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(9), Validators.maxLength(10)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      fullName: new FormControl('', [Validators.required, Validators.maxLength(300), fullNameValidator()]),
+      position: new FormControl('', [Validators.required, Validators.maxLength(this.positionMaxLen)]),
+      room: new FormControl('', [Validators.required, Validators.maxLength(this.roomMaxLen)]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(this.phoneLen), Validators.maxLength(this.phoneLen)]),
+      workPhone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(this.minWorkPhoneLen), Validators.maxLength(this.maxWorkPhoneLen)]),
+      privatePhone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(this.maxPrivatePhoneLen), Validators.maxLength(this.maxPrivatePhoneLen)]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.email]),
       departmentId: new FormControl('', Validators.required),
       action: new FormControl('newRecord'),
       isEditable: new FormControl(false),
@@ -289,7 +305,11 @@ export class ContactComponent implements OnInit {
       firstName: names[0],
       middleName: names[1],
       lastName: names[2],
+      position: element.value.position,
+      room: element.value.room,
       phone: element.value.phone,
+      workPhone: element.value.workPhone,
+      privatePhone: element.value.privatePhone,
       email: element.value.email,
       departmentId: element.value.departmentId,
     } as Contact;

@@ -35,6 +35,7 @@ export class EmailComponent implements OnInit {
       filePath: new FormControl(''),
       file: new FormControl(''),
     });
+    
   }
 
   onFileChange(l: FileList): void {
@@ -50,17 +51,18 @@ export class EmailComponent implements OnInit {
 
   onSend() {
     let formToSend = this.generateFormData();    
+    this.emailForm.reset();
 
     this.fileService.uploadFile(formToSend, this.endPointPath, true)
       .subscribe(
         {
           next: (event) => {
             if (event.type == HttpEventType.UploadProgress) {
-              const percentDone = Math.round(100 * event.loaded / event.total);
+              //const percentDone = Math.round(100 * event.loaded / event.total);
               // this.fileInfoMessage = `Изпращане ${percentDone}%`;
 
             } else if (event instanceof HttpResponse) {
-              // this.fileInfoMessage = 'Писмото е изпратено!';
+              // this.fileInfoMessage = 'Съобщението е изпратено!';
               // this.fileInfoMessage = event.body;
             }
           },
@@ -70,21 +72,23 @@ export class EmailComponent implements OnInit {
           ,
           complete: () => {
             // this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
-            this.snackbar.infoWitHide(`Съобщението беше изпратено`);
+            // this.snackbar.infoWitHide(`Съобщението беше изпратено`);
+            this.fileInfoMessage = 'Съобщението e изпратено!';
+            this.prepairForm();
           }
         });
   }
 
   generateFormData(): FormData { 
     var formData = new FormData();
+
     this.file_list = [];
     if(this.file_store){
       for (let i = 0; i < this.file_store.length; i++) {
         formData.append("attachments", this.file_store[i], this.file_store[i].name);
         this.file_list.push(this.file_store[i].name);
       }
-    }
-    
+    }    
     
     formData.append('recipients', this.emailForm.controls['recipients'].value);
     formData.append('subject', this.emailForm.controls['subject'].value);

@@ -50,12 +50,16 @@ namespace IntraSoft.Controllers
 
             using (var workbook = new ExcelPackage())
             {
-                string headerRange = "A1:D1";
+                string headerRange = "A1:H1";
                 var contactWorksheet = workbook.Workbook.Worksheets.Add("Контакти");
                 contactWorksheet.Cells[1, 1].Value = "Име";
-                contactWorksheet.Cells[1, 2].Value = "Телефон";
-                contactWorksheet.Cells[1, 3].Value = "Е-маил";
-                contactWorksheet.Cells[1, 4].Value = "Дирекция";
+                contactWorksheet.Cells[1, 2].Value = "Длъжност";
+                contactWorksheet.Cells[1, 3].Value = "Стая";
+                contactWorksheet.Cells[1, 4].Value = "Телефон";
+                contactWorksheet.Cells[1, 5].Value = "Служебен Телефон";
+                contactWorksheet.Cells[1, 6].Value = "Личен Телефон";
+                contactWorksheet.Cells[1, 7].Value = "Е-маил";
+                contactWorksheet.Cells[1, 8].Value = "Дирекция";
                 contactWorksheet.Cells[2, 1].LoadFromCollection(contactsFromRepo, false);
                 contactWorksheet.DefaultColWidth = 20;
 

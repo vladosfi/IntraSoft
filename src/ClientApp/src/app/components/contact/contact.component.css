@@ -16,7 +16,7 @@ table {
 
 .mat-form-field {
   font-size: 14px;
-  width: 100%;
+  width: 120px;
 }
 
 
@@ -38,28 +38,54 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 .mat-column-fullName {
   padding-left: 16px;
   text-transform: uppercase;
-  width: 30%;
+  width: 10%;
+}
+
+.mat-column-position {
+  padding-left: 16px;
+  text-transform: uppercase;
+  width: 10%;
 }
 
 .mat-column-phone {
   text-transform: uppercase;
-  width: 15%;
+  width: 5%;
+}
+
+.mat-column-workPhone {
+  text-transform: uppercase;
+  width: 5%;
+}
+
+.mat-column-privatePhone {
+  text-transform: uppercase;
+  width: 5%;
+}
+
+.mat-column-room {
+  text-transform: uppercase;
+  width: 3%;
 }
 
 .mat-column-email {
   width: 32px;
   text-align: left;
   text-transform: uppercase;
-  width: 15%;
+  width: 10%;
 }
 
 .mat-column-departments {
   width: 32px;
   text-align: left;
   text-transform: uppercase;
-  width: 18%;
+  width: 10%;
 }
 
+.mat-column-action {
+  text-align: left;
+  text-transform: uppercase;
+  width: 7%;
+}
 
 .mat-select {
   width: 95% !important;
@@ -70,10 +96,8 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 }
 
 
-.mat-column-action {
-  text-align: left;
-  text-transform: uppercase;
-  width: 10%;
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+  padding-right: 0px;
 }
 
 

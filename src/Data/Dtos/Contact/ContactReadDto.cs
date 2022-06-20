@@ -14,7 +14,15 @@
 
         public string LastName { get; set; }
 
+        public string Position { get; set; }
+        
+        public string Room { get; set; }
+        
         public string Phone { get; set; }
+
+        public string WorkPhone { get; set; }
+        
+        public string PrivatePhone { get; set; }
 
         public string Email { get; set; }
 
