@@ -40,7 +40,7 @@
 
             var readedFile = await FileService.ReadFileAsync(fullPath);
             var fileName = FileService.GetFileName(fullPath);
-            var ext = FileService.GetFileExtension(fullPath);
+            var ext = FileService.GetFileExtensionFromPath(fullPath);
 
             // To download or open file 
             if (open == true)

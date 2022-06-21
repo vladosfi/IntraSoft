@@ -51,7 +51,6 @@ export class EmailComponent implements OnInit {
 
   onSend() {
     let formToSend = this.generateFormData();    
-    this.emailForm.reset();
 
     this.fileService.uploadFile(formToSend, this.endPointPath, true)
       .subscribe(
@@ -74,12 +73,20 @@ export class EmailComponent implements OnInit {
             // this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
             // this.snackbar.infoWitHide(`Съобщението беше изпратено`);
             this.fileInfoMessage = 'Съобщението e изпратено!';
-            this.prepairForm();
+            this.resetForm();
           }
         });
   }
 
-  generateFormData(): FormData { 
+  private resetForm(){
+    this.emailForm.reset();
+           
+    Object.keys(this.emailForm.controls).forEach(key => {
+      this.emailForm.controls[key].setErrors(null)
+    });
+  }
+
+  private generateFormData(): FormData { 
     var formData = new FormData();
 
     this.file_list = [];

@@ -26,52 +26,56 @@ namespace IntraSoft.Services.Common
         }
 
         //Create file
-        public static async Task<string>
+        public static async Task
         CreateAsync(
             IFormFile file,
-            string filePath,
-            string fileName = null
+            string filePath
         )
         {
-            var fullPath = Path.GetFullPath(filePath);
-            filePath = fullPath.Substring(fullPath.Length - filePath.Length);
+            // var fullPath = Path.GetFullPath(filePath);
+            // filePath = fullPath.Substring(fullPath.Length - filePath.Length);
 
-            if (fileName != null)
-            {
-                fileName = fileName + Path.GetExtension(file.FileName);
-            }
-            else
-            {
-                // Generate unique file name if uniqueFileName is empty
-                fileName = StringOperations.GetUniqueFileName(file.FileName);
-            }
+            // if (fileName != null)
+            // {
+            //     fileName = fileName + Path.GetExtension(file.FileName);
+            // }
+            // else
+            // {
+            //     // Generate unique file name if uniqueFileName is empty
+            //     fileName = StringOperations.GetUniqueFileName(file.FileName);
+            // }
 
             // Throw error if directory does not exist
-            if (!Directory.Exists(filePath))
+            var direcrory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(direcrory))
             {
                 throw new Exception(DIRECTORY_DOES_NOT_EXIST);
             }
 
-            var filePathWithFileName = Path.Combine(filePath, fileName);
-
             // Throw error if file exist
-            if (File.Exists(filePathWithFileName))
+            if (File.Exists(filePath))
             {
                 throw new Exception(FILE_NAME_EXIST);
             }
 
-            var fs = new FileStream(filePathWithFileName, FileMode.Create);
+            var fs = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(fs);
             await fs.DisposeAsync();
-
-            return filePathWithFileName;
         }
 
-        //Get file extension
-        public static string GetFileExtension(string path)
+        //Get file extension from path
+        public static string GetFileExtensionFromPath(string path)
         {
             return Path.GetExtension(path).ToLowerInvariant();
         }
+
+        
+        //Get file extension from path
+        public static string GetFileExtensionFromFile(IFormFile file)
+        {
+            return Path.GetExtension(file.FileName).ToLowerInvariant();
+        }
+        
 
         // Combine file path
         public static string PathCombine(string pathOne, string pathTwo)

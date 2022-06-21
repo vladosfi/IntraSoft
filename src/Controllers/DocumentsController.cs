@@ -42,7 +42,7 @@
 
             var readedFile = await FileService.ReadFileAsync(fullPath);
             var fileName = FileService.GetFileName(fullPath);
-            var ext = FileService.GetFileExtension(fullPath);
+            var ext = FileService.GetFileExtensionFromPath(fullPath);
 
             // To download or open file 
             if (open == true)
@@ -66,8 +66,11 @@
             }
 
             fileInput.Path = FileService.PathCombine(webRootPath, MAIN_MENU_DIRECTORY);
-            var filePathWithFileName = await FileService.CreateAsync(fileInput.File, fileInput.Path);
-            var filePath = FileService.PathCombine(MAIN_MENU_DIRECTORY, FileService.GetFileName(filePathWithFileName));
+            // Generate unique file name if uniqueFileName is empty
+            var fileNameWithExt = StringOperations.GetUniqueFileName(fileInput.File.FileName);
+            var fullPath = FileService.PathCombine(fileInput.Path, fileNameWithExt);
+            await FileService.CreateAsync(fileInput.File, fullPath);
+            var filePath = FileService.PathCombine(MAIN_MENU_DIRECTORY, fileNameWithExt);
 
             // Save uniqueFileName to db table
             var document =

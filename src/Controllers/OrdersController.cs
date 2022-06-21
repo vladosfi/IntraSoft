@@ -5,7 +5,6 @@
     using IntraSoft.Data.Dtos.OrderCategory;
     using IntraSoft.Data.Models;
     using IntraSoft.Services.Common;
-    using IntraSoft.Services.Data;
     using IntraSoft.Services.Data.Order;
     using IntraSoft.Services.Data.OrderCategory;
     using IntraSoft.Services.Mapping;
@@ -73,7 +72,7 @@
 
             var readedFile = await FileService.ReadFileAsync(fullPath);
             var fileName = FileService.GetFileName(fullPath);
-            var ext = FileService.GetFileExtension(fullPath);
+            var ext = FileService.GetFileExtensionFromPath(fullPath);
 
             // To download or open file
 
@@ -103,11 +102,14 @@
             var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
 
             var destPath = FileService.PathCombine(MAIN_ORDER_DIRECTORY,categoryFromRepo.Name);
-            itemDto.FilePath = FileService.PathCombine(webRootPath, destPath);
+            int year = itemDto.Date.Year;
+            destPath = FileService.PathCombine(destPath, year.ToString());
+            var destPathWithFileName = FileService.PathCombine(destPath, itemDto.Number);
+            var destPathWithFileNameAndExtension = destPathWithFileName + FileService.GetFileExtensionFromFile(itemDto.File);
+            var fullPath = FileService.PathCombine(webRootPath, destPathWithFileNameAndExtension);
 
-            var filePathWithFileName = await FileService.CreateAsync(itemDto.File, itemDto.FilePath, itemDto.Number);
-            
-            newOrderItem.FilePath = FileService.PathCombine(destPath, FileService.GetFileName(filePathWithFileName));            
+            await FileService.CreateAsync(itemDto.File, fullPath);
+            newOrderItem.FilePath = destPathWithFileNameAndExtension;  
 
             await this.orderService.CreateAsync(newOrderItem);
             await this.orderService.SaveChangesAsync();
@@ -135,42 +137,43 @@
 
             var categoryFromRepo = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemFromRepo.OrderCategoryId);
             var categoryFromQuery = await this.orderCategoryService.GetByIdAsync<OrderCategoryReadDto>(itemDto.OrderCategoryId);
-            var destPath = FileService.PathCombine(MAIN_ORDER_DIRECTORY,categoryFromQuery.Name);
+
+            var newPath = FileService.PathCombine(MAIN_ORDER_DIRECTORY,categoryFromQuery.Name);
+            // uploads\заповеди\Гл. Арх ОВ\
+            
+            int year = itemDto.Date.Year;
+            newPath = FileService.PathCombine(newPath, year.ToString());
+            // uploads\заповеди\Гл. Арх ОВ\2017
+            
+            var oldPath = itemFromRepo.FilePath;
 
             itemFromRepo.About = itemDto.About;
             itemFromRepo.Date = itemDto.Date;
             itemFromRepo.Number = itemDto.Number;
-            
-
 
             if (itemDto.File != null)
             {
-                FileService.Delete(webRootPath, itemFromRepo.FilePath);
+                FileService.Delete(webRootPath, oldPath);
 
-                itemFromRepo.FilePath = FileService.PathCombine(webRootPath,destPath);
-                var filePathWithFileName = await FileService.CreateAsync(itemDto.File, itemFromRepo.FilePath, itemFromRepo.Number);
-                itemFromRepo.FilePath = FileService.PathCombine(destPath, FileService.GetFileName(filePathWithFileName));
+                var newPathWithFileName = FileService.PathCombine(newPath, itemDto.Number);
+                // \uploads\заповеди\Гл. Арх ОВ\2017\fileName        
+
+                var newPathWithFileNameAndExtension = newPathWithFileName + FileService.GetFileExtensionFromFile(itemDto.File);
+                // \uploads\заповеди\Гл. Арх ОВ\2017\fileName.pdf
+
+                itemFromRepo.FilePath = newPathWithFileNameAndExtension;
+                newPathWithFileNameAndExtension = FileService.PathCombine(webRootPath, newPathWithFileNameAndExtension);       
+                await FileService.CreateAsync(itemDto.File, newPathWithFileNameAndExtension);            
             }
             else
             {
-                // if (itemFromRepo.OrderCategoryId != itemDto.OrderCategoryId)
-                // {
-                    var srcFileName = FileService.GetFileName(itemFromRepo.FilePath);
-                    var destFileName = FileService.PathCombine(webRootPath,destPath);
-                    destFileName = FileService.PathCombine(destFileName,itemDto.Number + FileService.GetFileExtension(srcFileName));
-
-                    var srcFile =  FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromRepo.Name);
-                    srcFile =  FileService.PathCombine(srcFile,srcFileName);
-
-                    var destFile = FileService.PathCombine(MAIN_ORDER_DIRECTORY, categoryFromQuery.Name);
-                    destFile = FileService.PathCombine(destFile,destFileName);
-
-                    itemFromRepo.FilePath = destFile;
-
-                    srcFile = FileService.PathCombine(webRootPath, srcFile);
-                    destFile = FileService.PathCombine(webRootPath, destFile);
-                    FileService.MoveFile(srcFile , destFile);
-                //}
+                var newFileName = itemDto.Number + FileService.GetFileExtensionFromPath(oldPath);
+                newPath = FileService.PathCombine(newPath, newFileName);
+                itemFromRepo.FilePath = newPath;
+                var destFile = FileService.PathCombine(webRootPath,newPath);
+                oldPath = FileService.PathCombine(webRootPath, oldPath);
+                
+                FileService.MoveFile(oldPath , destFile);
             }
             
             itemFromRepo.OrderCategoryId = itemDto.OrderCategoryId;
