@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Department } from 'src/app/core/interfaces/Department';
 import { DepartmentService } from 'src/app/core/services/department.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FileService } from 'src/app/core/services/file.service';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -47,7 +47,7 @@ export class IsoListComponent implements OnInit {
 
   constructor(
     private departmentService: DepartmentService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
     private dialog: MatDialog,
     private fileService: FileService,
     private fb: FormBuilder,
@@ -64,9 +64,6 @@ export class IsoListComponent implements OnInit {
       {
         next: (result) => {
           this.departments = result;
-        },
-        error: (error) => {
-          this.snackbar.error('Грешка при получаване на данни за дирекцията');
         }
       });
 
@@ -76,9 +73,6 @@ export class IsoListComponent implements OnInit {
           this.allIsoServices = result;
           this.isLoading = false;
           this.prepareDataSource();
-        },
-        error: (error) => {
-          this.snackbar.error('Грешка при получаване на данни за услугите');
         }
       });
   }
@@ -176,7 +170,7 @@ export class IsoListComponent implements OnInit {
 
   saveVO(element) {
     if (element.status !== 'VALID') {
-      this.snackbar.error('Невалидни данни!');
+      this.snackbar.infoWitHide('Невалидни данни!');
       return;
     }
     let isoServiceItem = this.generateServiceElement(element);
@@ -190,10 +184,7 @@ export class IsoListComponent implements OnInit {
           element.get('isEditable').patchValue(true);
           element.get('action').patchValue('existingRecord');
           element.get('departmentId').disable(false);
-        },
-        error: (error) => {
-          this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
-        },
+        }
       });
     } else {
       this.isoService.updateItem(isoServiceItem).subscribe({
@@ -201,10 +192,7 @@ export class IsoListComponent implements OnInit {
           this.snackbar.success('Успешно обновяване на записа');
           element.get('isEditable').patchValue(true);
           element.get('departmentId').disable(false);
-        },
-        error: (error) => {
-          this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
-        },
+        }
       });
     }
   }
@@ -229,9 +217,6 @@ export class IsoListComponent implements OnInit {
             next: () => {
               this.dataSource.data = this.dataSource.data.filter(item => item != element);
               this.snackbar.success('Услугата беше изтрита');
-            },
-            error: (error) => {
-              this.snackbar.error('Грешка при изтриване на услуга!');
             }
           });
       } else {
@@ -267,9 +252,6 @@ export class IsoListComponent implements OnInit {
             next: () => {
               this.updateServiceItem(element);
               this.snackbar.success('Файлът беше изтрит');
-            },
-            error: (error) => {
-              this.snackbar.error('Грешка при изтриване на файл!');
             }
           });
       } else {

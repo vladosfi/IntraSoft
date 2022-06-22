@@ -11,7 +11,7 @@ import {
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
-import { SnackbarService } from 'src/app/core/services/snackbar.service'
+import { NotificationService } from 'src/app/core/services/notification.service'
 import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component'
 import { Order, OrderCategory } from 'src/app/core/interfaces/Order'
 import { OrderService } from 'src/app/core/services/order.service'
@@ -56,7 +56,7 @@ export class OrdersComponent implements OnInit {
     private fb: FormBuilder,
     private orderService: OrderService,
     private orderCategoryService: OrderCategoryService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
     private dialog: MatDialog,
     private datePipe: DatePipe,
     private ref: ChangeDetectorRef,
@@ -79,9 +79,6 @@ export class OrdersComponent implements OnInit {
           //   o.shortDate = this.datePipe.transform(o.date, 'dd-MM-yyyy', 'bg-BG');
           // })
           this.prepareDataSource();
-        },
-        error: (error) => {
-          this.snackbar.error('Грешка при получаване на данни за заповедите');
         }
       });
 
@@ -266,9 +263,6 @@ export class OrdersComponent implements OnInit {
             next: () => {
               this.dataSource.data = this.dataSource.data.filter(item => item != element);
               this.snackbar.success('Записът беше изтрит');
-            },
-            error: (error) => {
-              this.snackbar.error('Грешка при изтриване на запис!');
             }
           });
       } else {

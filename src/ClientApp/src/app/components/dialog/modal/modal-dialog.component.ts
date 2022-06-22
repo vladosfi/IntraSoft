@@ -120,9 +120,6 @@ export class ModalDialogComponent implements OnInit {
       .subscribe({
         next: (result) => {
           this.isoServiceItem = Object.assign(this.isoServiceItem, result);
-        },
-        error: (error) => {
-          console.error('Failed to save iso service!');
         }
       });
 

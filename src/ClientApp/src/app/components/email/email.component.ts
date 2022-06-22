@@ -2,7 +2,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-email',
@@ -20,7 +20,7 @@ export class EmailComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private fileService: FileService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class EmailComponent implements OnInit {
       filePath: new FormControl(''),
       file: new FormControl(''),
     });
-    
+
   }
 
   onFileChange(l: FileList): void {
@@ -50,7 +50,7 @@ export class EmailComponent implements OnInit {
   }
 
   onSend() {
-    let formToSend = this.generateFormData();    
+    let formToSend = this.generateFormData();
 
     this.fileService.uploadFile(formToSend, this.endPointPath, true)
       .subscribe(
@@ -65,10 +65,6 @@ export class EmailComponent implements OnInit {
               // this.fileInfoMessage = event.body;
             }
           },
-          error: (error) => {
-            this.snackbar.error(`Грешка при изпращане`);
-          }
-          ,
           complete: () => {
             // this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
             // this.snackbar.infoWitHide(`Съобщението беше изпратено`);
@@ -78,30 +74,30 @@ export class EmailComponent implements OnInit {
         });
   }
 
-  private resetForm(){
+  private resetForm() {
     this.emailForm.reset();
-           
+
     Object.keys(this.emailForm.controls).forEach(key => {
       this.emailForm.controls[key].setErrors(null)
     });
   }
 
-  private generateFormData(): FormData { 
+  private generateFormData(): FormData {
     var formData = new FormData();
 
     this.file_list = [];
-    if(this.file_store){
+    if (this.file_store) {
       for (let i = 0; i < this.file_store.length; i++) {
         formData.append("attachments", this.file_store[i], this.file_store[i].name);
         this.file_list.push(this.file_store[i].name);
       }
-    }    
-    
+    }
+
     formData.append('recipients', this.emailForm.controls['recipients'].value);
     formData.append('subject', this.emailForm.controls['subject'].value);
     formData.append('content', this.emailForm.controls['content'].value);
 
     return formData;
-  }  
+  }
 
 }

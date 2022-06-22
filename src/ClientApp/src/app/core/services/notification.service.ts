@@ -4,13 +4,12 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 @Injectable({
   providedIn: 'root',
 })
-export class SnackbarService {
+export class NotificationService {
   constructor(private _snackBar: MatSnackBar) {}
 
   error(message: string) {
-    return this._snackBar.open(message, undefined, {
+    return this._snackBar.open(message, 'X', {
       panelClass: ['snackbar-error'],
-      duration: 10000,
     })
   }
 

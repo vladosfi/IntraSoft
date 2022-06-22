@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Menu } from '../../../core/interfaces/Menu';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuService } from 'src/app/core/services/menu.service';
 import { EMPTY } from 'rxjs/internal/observable/empty';
@@ -26,7 +26,7 @@ export class SingleMenuItemComponent implements OnInit, OnDestroy {
   
   constructor(
     private shareDataService: ShareNavigationDataService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
     private dialog: MatDialog,
     private menuService: MenuService,) { }
 

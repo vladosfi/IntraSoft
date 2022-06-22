@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Order, OrderCategory } from 'src/app/core/interfaces/Order';
 import { FileService } from 'src/app/core/services/file.service';
 import { OrderCategoryService } from 'src/app/core/services/orderCategory.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-order-dialog',
@@ -25,7 +25,7 @@ export class OrderDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private orderCategoryService: OrderCategoryService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
     private fileService: FileService,
     private dialogRef: MatDialogRef<OrderDialogComponent>,
   ) {

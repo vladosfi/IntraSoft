@@ -80,6 +80,12 @@ code {
 
 .snackbar-error {
   background-color: red;
+  color: white;    
+}
+
+.snackbar-error button {
+  background-color:orangered;
+  color: white;
 }
 
 .snackbar-success {

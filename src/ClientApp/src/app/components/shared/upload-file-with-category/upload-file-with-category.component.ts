@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { IFileDocument } from 'src/app/core/interfaces/FileDocument';
 import { FileService } from 'src/app/core/services/file.service';
-import { SnackbarService } from 'src/app/core/services/snackbar.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { IIsoFileCategory } from 'src/app/core/interfaces/IsoFileCategory';
 
 @Component({
@@ -31,7 +31,7 @@ export class UploadFileWithCategoryComponent implements OnInit {
 
   constructor(
     private fileService: FileService,
-    private snackbar: SnackbarService) { }
+    private snackbar: NotificationService) { }
 
   ngOnInit(): void {
     this.deleteButtonText = this.file?.fileName;
@@ -60,9 +60,6 @@ export class UploadFileWithCategoryComponent implements OnInit {
           this.fileInfoMessage = '';
           this.fileId = null;
           this.form.controls['file'].setValue(null);
-        },
-        error: (error) => {
-          this.snackbar.error('Failed to delete File!');
         }
       });
   }
@@ -115,10 +112,6 @@ export class UploadFileWithCategoryComponent implements OnInit {
               this.fileId = event.body;
             }
           },
-          error: (error) => {
-            this.snackbar.error(`Upload Error: ${JSON.stringify(error.message)}`);
-          }
-          ,
           complete: () => {
             this.fileInfoMessage = 'Upload done: ID - ' + this.fileInfoMessage;
           }

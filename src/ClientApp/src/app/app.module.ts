@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -39,6 +39,8 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { OrderDialogComponent } from './components/orders/order-dialog/order-dialog.component';
 import { EmailComponent } from './components/email/email.component';
+import { ServerErrorInterceptor } from './server-error.interceptor';
+import { GlobalErrorHandler } from './global-error-handler';
 
 registerLocaleData(bg);
 
@@ -90,6 +92,8 @@ registerLocaleData(bg);
     {
       provide: LOCALE_ID, useValue: 'bg-BG'
     },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
     DatePipe
     
   ],

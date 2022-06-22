@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
 import { Department } from 'src/app/core/interfaces/Department'
 import { DepartmentService } from 'src/app/core/services/department.service'
-import { SnackbarService } from 'src/app/core/services/snackbar.service'
+import { NotificationService } from 'src/app/core/services/notification.service'
 import { fullNameValidator } from 'src/app/components/validators/validators'
 import { Contact } from '../../core/interfaces/Contact'
 import { ContactService } from '../../core/services/contact.service'
@@ -50,7 +50,7 @@ export class ContactComponent implements OnInit {
     private fb: FormBuilder,
     private contactService: ContactService,
     private departmentService: DepartmentService,
-    private snackbar: SnackbarService,
+    private snackbar: NotificationService,
     private dialog: MatDialog,
   ) { }
 
@@ -59,9 +59,6 @@ export class ContactComponent implements OnInit {
       {
         next: (result) => {
           this.departments = result;
-        },
-        error: (error) => {
-          this.snackbar.error('Грешка при получаване на данни за дирекцията');
         }
       });
 
@@ -73,9 +70,6 @@ export class ContactComponent implements OnInit {
             (x) => (x.fullName = [x.firstName, x.middleName, x.lastName].join(' ')),
           )
           this.prepareDataSource();
-        },
-        error: (error) => {
-          this.snackbar.error('Грешка при получаване на данни за контактите');
         }
       });
   }
@@ -180,7 +174,7 @@ export class ContactComponent implements OnInit {
 
   saveVO(element) {
     if (element.status !== 'VALID') {
-      this.snackbar.error('Невалидни данни!');
+      this.snackbar.infoWitHide('Невалидни данни!');
       return;
     }
 
@@ -196,10 +190,7 @@ export class ContactComponent implements OnInit {
           element.get('isEditable').patchValue(true);
           element.get('action').patchValue('existingRecord');
           element.get('departmentId').disable(true);
-        },
-        error: (error) => {
-          this.snackbar.error('Възникна грешка при добавяне на записа! ' + error.message);
-        },
+        }
       });
     } else {
       this.contactService.updateItem(contact).subscribe({
@@ -207,10 +198,7 @@ export class ContactComponent implements OnInit {
           this.snackbar.success('Успешно обновяване на записа');
           element.get('isEditable').patchValue(true);
           element.get('departmentId').disable(true);
-        },
-        error: (error) => {
-          this.snackbar.error('Възникна грешка при обновяване на записа! ' + error.message);
-        },
+        }
       });
     }
   }
@@ -235,9 +223,6 @@ export class ContactComponent implements OnInit {
             next: () => {
               this.dataSource.data = this.dataSource.data.filter(item => item != element);
               this.snackbar.success('Контакта беше изтрит');
-            },
-            error: (error) => {
-              this.snackbar.error('Грешка при изтриване на кoнтакт!');
             }
           });
       } else {
