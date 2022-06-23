@@ -47,6 +47,7 @@
       <mat-sidenav-content>
         <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
         <main class="wrapper">
+          <button (click)="buttonClickHandler()">Test Logging</button>
           <router-outlet></router-outlet>
         </main>
       </mat-sidenav-content>

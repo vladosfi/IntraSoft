@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { JL } from 'jsnlog';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -11,5 +12,16 @@ export class AppComponent {
 
   dismissSidebar() {
     this.openedSubject.next(false);
+  }
+
+
+  _logger: JL.JSNLog;
+
+  constructor(@Inject('JSNLOG') jl: JL.JSNLog) {
+    this._logger = jl;
+  }
+
+  buttonClickHandler() {
+    this._logger().error("Hi from the client");
   }
 }

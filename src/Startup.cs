@@ -14,6 +14,7 @@ namespace IntraSoft
     using IntraSoft.Services.Data.OrderCategory;
     using IntraSoft.Services.Mail;
     using IntraSoft.Services.Mapping;
+    using JSNLog;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http.Features;
@@ -22,6 +23,7 @@ namespace IntraSoft
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
 
     public class Startup
     {
@@ -103,7 +105,7 @@ namespace IntraSoft
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             AutoMapperConfig.RegisterMappings(typeof(ApplicationDbContext).GetTypeInfo().Assembly);
 
@@ -118,6 +120,14 @@ namespace IntraSoft
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var jsnlogConfiguration = new JsnlogConfiguration
+            {
+                corsAllowedOriginsRegex = ".*",
+                defaultAjaxUrl = "logging",
+                //serverSideMessageFormat = "%date | %requestId | %userAgent| %logger | %url | %userHostAddress | %level | %message",
+            };
+            app.UseJSNLog(new LoggingAdapter(loggerFactory), jsnlogConfiguration);
 
 
             app.UseHttpsRedirection();

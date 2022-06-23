@@ -41,8 +41,18 @@ import { OrderDialogComponent } from './components/orders/order-dialog/order-dia
 import { EmailComponent } from './components/email/email.component';
 import { ServerErrorInterceptor } from './server-error.interceptor';
 import { GlobalErrorHandler } from './global-error-handler';
+import { JL } from 'jsnlog';
 
 registerLocaleData(bg);
+
+// configure the JL logger
+var logger = JL();
+logger.setOptions({
+  'appenders': [
+      JL.createAjaxAppender('ajax')
+        .setOptions({'url': 'http://localhost:5000/logging'})]
+    });
+
 
 @NgModule({
   declarations: [
@@ -94,8 +104,9 @@ registerLocaleData(bg);
     },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
+    { provide: 'JSNLOG', useValue: JL },
     DatePipe
-    
+
   ],
   bootstrap: [AppComponent]
 })

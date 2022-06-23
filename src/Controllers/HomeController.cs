@@ -1,14 +1,32 @@
 ﻿namespace IntraSoft.Controllers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Home;
     using IntraSoft.Services.Data.Home;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
-    {
+     {
+        // private readonly ILogger<HomeController> _logger;
+        // public HomeController(ILogger<HomeController> logger)
+        // {
+        //     _logger = logger;
+        // }
+        // [HttpGet]
+        // public IEnumerable<string> Get()
+        // {
+        //     _logger.LogDebug("This is a debug message");
+        //     _logger.LogInformation("This is an info message");  
+        //     _logger.LogWarning("This is a warning message ");
+        //     _logger.LogError(new Exception(), "This is an error message");
+        //     return new string[] { "Cool", "Weather" };
+        // }
+        
         private readonly IHomeService homeService;
 
         public HomeController(IHomeService homeService)
