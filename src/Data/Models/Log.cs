@@ -21,5 +21,8 @@ namespace IntraSoft.Data.Models
 
         [MaxLength(250)]
         public string Url { get; set; }
+
+        [MaxLength(100)]
+        public string HostName { get; set; }
     }
 }
