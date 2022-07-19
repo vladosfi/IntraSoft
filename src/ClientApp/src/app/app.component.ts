@@ -20,8 +20,4 @@ export class AppComponent {
   constructor(@Inject('JSNLOG') jl: JL.JSNLog) {
     this._logger = jl;
   }
-
-  buttonClickHandler() {
-    this._logger().error("Hi from the client");
-  }
 }

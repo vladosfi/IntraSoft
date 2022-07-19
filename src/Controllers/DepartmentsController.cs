@@ -19,7 +19,7 @@
             this.departmentService = departmentService;
         }
 
-        //// GET: api/<ValuesController>
+        //// GET: api/<DepartmentsController>
         // [HttpGet, Route(nameof(GetAllWithIsoServices))]
         // public async Task<IActionResult> GetAllWithIsoServices()
         // {
@@ -35,7 +35,7 @@
         // }
 
 
-        //// GET: api/<ValuesController>
+        //// GET: api/<DepartmentsController>
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery]bool? withoutDirectionDepartment = false)
         {
@@ -57,7 +57,7 @@
             return this.Ok(departmentsReadDto);
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/<DepartmentsController>/5
         [HttpGet("{id}", Name = nameof(GetDepartmentById))]
         public async Task<ActionResult<DepartmentReadDto>> GetDepartmentById(int id)
         {
@@ -71,7 +71,7 @@
             return this.Ok(departmentItems);
         }
 
-        // POST api/<ValuesController>
+        // POST api/<DepartmentsController>
         [HttpPost]
         public async Task<ActionResult<DepartmentCreateDto>> Post([FromBody] DepartmentCreateDto departmentItemDto)
         {
@@ -108,7 +108,7 @@
             return this.NoContent();
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<DepartmentsController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

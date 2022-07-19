@@ -42,6 +42,7 @@ import { EmailComponent } from './components/email/email.component';
 import { ServerErrorInterceptor } from './server-error.interceptor';
 import { GlobalErrorHandler } from './global-error-handler';
 import { JL } from 'jsnlog';
+import { ErrorLogsComponent } from './components/error-logs/error-logs.component';
 
 registerLocaleData(bg);
 
@@ -80,6 +81,7 @@ logger.setOptions({
     OrdersComponent,
     OrderDialogComponent,
     EmailComponent,
+    ErrorLogsComponent,
   ],
   entryComponents: [
     DeleteDialogComponent

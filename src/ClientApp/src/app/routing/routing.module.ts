@@ -9,6 +9,7 @@ import { NotFoundComponent } from '../components/not-found/not-found.component';
 import { IsoListComponent } from '../components/iso-list/iso-list.component';
 import { OrdersComponent } from '../components/orders/orders.component';
 import { EmailComponent } from '../components/email/email.component';
+import { ErrorLogsComponent } from '../components/error-logs/error-logs.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'iso-list', component: IsoListComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'email', component: EmailComponent },
+  { path: 'logs', component: ErrorLogsComponent },
   { path: '**', component: NotFoundComponent },
   //{ path: 'admin/menu/:id', component: SingleMenuItemComponent },
 ];

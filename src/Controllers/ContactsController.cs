@@ -18,7 +18,7 @@
             this.contactService = contactService;
         }
 
-        //// GET: api/<ValuesController>
+        //// GET: api/<ContactsController>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -32,7 +32,7 @@
             return this.Ok(contactsReadDto);
         }
 
-        // GET api/<ValuesController>/5
+        // GET api/<ContactsController>/5
         [HttpGet("{id}", Name = nameof(GetContactById))]
         public async Task<ActionResult<ContactReadDto>> GetContactById(int id)
         {
@@ -46,7 +46,7 @@
             return this.Ok(contactItems);
         }
 
-        // POST api/<ValuesController>
+        // POST api/<ContactsController>
         [HttpPost]
         public async Task<ActionResult<ContactCreateDto>> Post([FromBody] ContactCreateDto contactItemDto)
         {
@@ -82,7 +82,7 @@
             return this.NoContent();
         }
 
-        // DELETE api/<ValuesController>/5
+        // DELETE api/<ContactsController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

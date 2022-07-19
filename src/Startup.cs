@@ -7,6 +7,7 @@ namespace IntraSoft
     using IntraSoft.Data.Repositories;
     using IntraSoft.Services.Data;
     using IntraSoft.Services.Data.Contact;
+    using IntraSoft.Services.Data.ErrorLogs;
     using IntraSoft.Services.Data.Home;
     using IntraSoft.Services.Data.MailMessage;
     using IntraSoft.Services.Data.Menu;
@@ -91,6 +92,7 @@ namespace IntraSoft
             services.AddTransient<IOrderCategoryService, OrderCategoryService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IMailMessageService, MailMessageService>();
+            services.AddTransient<IErrorLogService, ErrorLogService>();
 
             services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 

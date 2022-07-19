@@ -7,8 +7,8 @@ import { Contact } from '../interfaces/Contact'
   providedIn: 'root',
 })
 export class ContactService {
-  endPoint = this.baseUrl + 'api/contacts'
-  endPointExportToExcel = this.baseUrl + 'api/export/file'
+  endPoint = this.baseUrl + 'api/contacts';
+  endPointExportToExcel = this.baseUrl + 'api/export/file';
   private renderer: Renderer2;
 
   constructor(
