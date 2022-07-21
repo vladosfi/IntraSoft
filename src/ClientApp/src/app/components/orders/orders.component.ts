@@ -82,7 +82,7 @@ export class OrdersComponent implements OnInit {
         }
       });
 
-    this.datePipeString = this.datePipe.transform(Date.now(), 'dd-MMM-yyyy', 'bg-BG');
+    //this.datePipeString = this.datePipe.transform(Date.now(), 'dd-MMM-yyyy', 'bg-BG');
     //console.log(this.datePipeString);
   }
 

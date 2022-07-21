@@ -32,4 +32,7 @@ export class ErrorService {
     return this.http.get<ErrorLog>(this.endPoint, { params });
   }
 
+  deleteItem(logId: number): any {
+    return this.http.delete(this.endPoint + `/${logId}`);
+  }
 }

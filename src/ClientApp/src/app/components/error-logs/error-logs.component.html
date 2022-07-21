@@ -1,45 +1,114 @@
 <button (click)="buttonClickHandler()">Test Logging</button>
 
-
 <div class="example-header" fxLayout="row">
   <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    <input
+      matInput
+      (keyup)="applyFilter($event.target.value)"
+      placeholder="Filter"
+    />
   </mat-form-field>
 </div>
 
 <div class="example-container mat-elevation-z8">
-
   <mat-table [dataSource]="dataSource" matSort>
-
     <!-- ID Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row" data-label="id"> {{row.cnt}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="id">{{ row.id }}</mat-cell>
     </ng-container>
 
-    <!-- Progress Column -->
-    <ng-container matColumnDef="progress">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Progress </mat-header-cell>
-      <mat-cell *matCellDef="let row" data-label="progress"> {{row.progress}}% </mat-cell>
+    <!-- Level Column -->
+    <ng-container matColumnDef="level">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Level</mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="level">
+        {{ row.level }}
+      </mat-cell>
     </ng-container>
-
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let row" data-label="name"> {{row.name}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="name">
+        {{ row.name }}
+      </mat-cell>
+    </ng-container>
+    <!-- Message Column -->
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Message
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="message">
+        {{ row.message }}
+      </mat-cell>
     </ng-container>
 
-    <!-- Color Column -->
-    <ng-container matColumnDef="color">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color" data-label="color"> {{row.color}} </mat-cell>
+    <!-- StackTrace Column -->
+    <ng-container matColumnDef="stackTrace">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        StackTrace
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="stackTrace">
+        {{ row.stackTrace }}
+      </mat-cell>
+    </ng-container>
+    <!-- Exception Column -->
+    <ng-container matColumnDef="exception">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Exception
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="exception">
+        {{ row.exception }}
+      </mat-cell>
+    </ng-container>
+    <!-- Logger Column -->
+    <ng-container matColumnDef="logger">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Logger
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="logger">
+        {{ row.logger }}
+      </mat-cell>
+    </ng-container>
+    <!-- url Column -->
+    <ng-container matColumnDef="url">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Url
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="url">{{ row.url }}</mat-cell>
+    </ng-container>
+    <!-- hostName Column -->
+    <ng-container matColumnDef="hostName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        HostName
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="hostName">
+        {{ row.hostName }}
+      </mat-cell>
+    </ng-container>
+    <!-- createdOn Column -->
+    <ng-container matColumnDef="createdOn">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        CreatedOn
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="createdOn">
+        {{ row.createdOn | date:'dd.MM.yyyy':'bg-BG'}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Action
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" data-label="action">
+        <button mat-icon-button (click)="onDelete(row)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
-    </mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 </div>
-
