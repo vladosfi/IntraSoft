@@ -66,6 +66,7 @@ dlldata.c
 *.svclog
 *.scc
 
+
 # Chutzpah Test files
 _Chutzpah*
 
@@ -230,3 +231,7 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# Ignore DB temp files
+*.db-shm
+*.db-wal
