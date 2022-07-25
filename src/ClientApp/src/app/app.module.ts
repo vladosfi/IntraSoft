@@ -43,6 +43,7 @@ import { ServerErrorInterceptor } from './server-error.interceptor';
 import { GlobalErrorHandler } from './global-error-handler';
 import { JL } from 'jsnlog';
 import { ErrorLogsComponent } from './components/error-logs/error-logs.component';
+import { StateNewspaperComponent } from './components/state-newspaper/state-newspaper.component';
 
 registerLocaleData(bg);
 
@@ -82,6 +83,7 @@ logger.setOptions({
     OrderDialogComponent,
     EmailComponent,
     ErrorLogsComponent,
+    StateNewspaperComponent,
   ],
   entryComponents: [
     DeleteDialogComponent

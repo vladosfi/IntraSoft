@@ -13,6 +13,7 @@ namespace IntraSoft
     using IntraSoft.Services.Data.Menu;
     using IntraSoft.Services.Data.Order;
     using IntraSoft.Services.Data.OrderCategory;
+    using IntraSoft.Services.Data.StateNewspaper;
     using IntraSoft.Services.Mail;
     using IntraSoft.Services.Mapping;
     using JSNLog;
@@ -93,6 +94,7 @@ namespace IntraSoft
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IMailMessageService, MailMessageService>();
             services.AddTransient<IErrorLogService, ErrorLogService>();
+            services.AddTransient<IStateNewspaperService, StateNewspaperService>();
 
             services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 

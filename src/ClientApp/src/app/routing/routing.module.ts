@@ -10,6 +10,7 @@ import { IsoListComponent } from '../components/iso-list/iso-list.component';
 import { OrdersComponent } from '../components/orders/orders.component';
 import { EmailComponent } from '../components/email/email.component';
 import { ErrorLogsComponent } from '../components/error-logs/error-logs.component';
+import { StateNewspaperComponent } from '../components/state-newspaper/state-newspaper.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'email', component: EmailComponent },
   { path: 'logs', component: ErrorLogsComponent },
+  { path: 'state-newspaper', component: StateNewspaperComponent },
   { path: '**', component: NotFoundComponent },
   //{ path: 'admin/menu/:id', component: SingleMenuItemComponent },
 ];

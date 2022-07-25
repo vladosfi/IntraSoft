@@ -8,7 +8,7 @@
   </button>
   <br />
   <br />
-  
+
   <mat-form-field style="width: 40%;">
     <mat-label>Филтриране</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Въведете текст за търсене" #input />
@@ -57,8 +57,8 @@
               ">
               <input matInput type="text" formControlName="position" [readonly]="element.get('isEditable').value"/>
               <mat-error *ngIf="element?.invalid">
-                <div *ngIf="element.get('room')?.hasError('required')">Въведете стая</div>  
-                <div *ngIf="element.get('room')?.errors?.maxlength">Въведете длъжност /не повече от {{positionMaxLen}} символа/</div>  
+                <div *ngIf="element.get('room')?.hasError('required')">Въведете длъжност</div>
+                <div *ngIf="element.get('room')?.errors?.maxlength">Въведете длъжност /не повече от {{positionMaxLen}} символа/</div>
               </mat-error>
             </mat-form-field>
           </td>
@@ -71,8 +71,8 @@
                     <mat-form-field [appearance]="element.get('isEditable').value ? 'none' : 'legacy'">
                       <input matInput type="text" formControlName="room" [readonly]="element.get('isEditable').value"/>
                       <mat-error *ngIf="element?.invalid">
-                        <div *ngIf="element.get('room')?.hasError('required')">Въведете стая</div>  
-                        <div *ngIf="element.get('room')?.errors?.maxlength">Въведете стая /не повече от {{roomMaxLen}} символа/</div>  
+                        <div *ngIf="element.get('room')?.hasError('required')">Въведете стая</div>
+                        <div *ngIf="element.get('room')?.errors?.maxlength">Въведете стая /не повече от {{roomMaxLen}} символа/</div>
                       </mat-error>
                     </mat-form-field>
                   </td>
