@@ -44,6 +44,8 @@ import { GlobalErrorHandler } from './global-error-handler';
 import { JL } from 'jsnlog';
 import { ErrorLogsComponent } from './components/error-logs/error-logs.component';
 import { StateNewspaperComponent } from './components/state-newspaper/state-newspaper.component';
+import { StateNewspaperModalDialogComponent } from './components/state-newspaper/state-newspaper/state-newspaper-modal.component';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 registerLocaleData(bg);
 
@@ -84,6 +86,7 @@ logger.setOptions({
     EmailComponent,
     ErrorLogsComponent,
     StateNewspaperComponent,
+    StateNewspaperModalDialogComponent,
   ],
   entryComponents: [
     DeleteDialogComponent
@@ -98,6 +101,7 @@ logger.setOptions({
     MaterialModule,
     IMaskModule,
     MatNativeDateModule,
+    EditorModule,
   ],
   providers: [
     {

@@ -1,0 +1,30 @@
+
+
+mat-card{
+  margin: 15px 0;
+}
+
+
+section {
+  display: table;
+}
+
+.button-row {
+  display: table-cell;
+}
+
+.button-row .mat-button-base {
+  margin: 8px 0px 8px 0;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 120px;
+}

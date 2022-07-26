@@ -22,6 +22,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatGridListModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatCardModule,
   ],
   exports: [
     MatTabsModule,
@@ -74,6 +76,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatGridListModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatCardModule,
   ],
 })
 export class MaterialModule { }

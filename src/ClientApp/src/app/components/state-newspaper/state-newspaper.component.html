@@ -1,1 +1,24 @@
-<p>state-newspaper works!</p>
+<div class="content">
+  <section class="flex-container">
+    <div class="button-row">
+          <button mat-mini-fab (click)="onAdd()" color="primary">
+            <mat-icon>add_box</mat-icon>
+          </button>
+    </div>
+  </section>
+  <!-- <mat-divider></mat-divider> -->
+
+
+  <mat-card  *ngFor="let stateNewspaper of stateNewspapers" class="card-state-newspaper">
+    <mat-card-title>{{stateNewspaper.title}}</mat-card-title>
+    <!-- <mat-card-subtitle>{{stateNewspaper.id}}</mat-card-subtitle> -->
+    <mat-card-content>
+      <p>{{stateNewspaper.content}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-raised-button href="{{stateNewspaper.link}}" target="_blank">Отваряна на линка</a>
+      <button mat-button (click)="onEdit(stateNewspaper.id)">Редактиране</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

@@ -20,6 +20,11 @@ export class StateNewspaperService {
     .pipe(map(result => result as StateNewspaper[]));
   }
 
+  getItemById<StateNewspaper>(id: number): Observable<StateNewspaper> {
+    var params = new HttpParams();
+    return this.http.get<StateNewspaper>(this.endPoint + '/' + id, { params }).pipe(map(result => result as StateNewspaper));
+  }
+
   deleteItem(itemId: number): any {
     return this.http.delete(this.endPoint + `/${itemId}`);
   }

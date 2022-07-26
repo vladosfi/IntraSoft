@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>{{ data.modalTitle }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="title">Заглавие</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете заглавие</mat-label>
+        <input matInput formControlName="title" />
+        <!-- <mat-error *ngIf="form.get('title').hasError('required')">
+          Моля въведете заглавие
+        </mat-error> -->
+      </mat-form-field>
+
+      <label for="content">Съдържание</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете съдържание</mat-label>
+        <input matInput formControlName="content" />
+      </mat-form-field>
+
+      <label for="link">Връзка</label>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Въведете връзка</mat-label>
+        <input matInput formControlName="link" />
+      </mat-form-field>
+
+
+      <label for="content"><h1>Съдържание</h1></label>
+      <editor
+      apiKey="bt44n22c2q1k6fg6rk0x81ds13l0vreoo3j4uebarrbd736h"
+      plugins="wordcount"
+      toolbar="undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat"
+    ></editor>
+
+
+
+
+      <!-- {{ form.value | json }}
+      {{ form.valid }} -->
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions >
+  <button mat-raised-button mat-dialog-close (click)="onCancelClick()">
+    Cancel
+  </button>
+  <button
+  [disabled]="!form.valid"
+    color="primary"
+    mat-raised-button
+    (click)="onSaveClick()"
+  >
+    Save
+  </button>
+  <!-- <button *ngIf="!stateNewspaper?.id"
+    color="primary"
+    mat-raised-button
+    cdkFocusInitial
+    [mat-dialog-close]="true"
+    [mat-dialog-close]="data.title"
+
+  >
+    OK
+  </button> -->
+</mat-dialog-actions>
