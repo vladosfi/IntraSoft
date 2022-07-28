@@ -13,6 +13,11 @@
         public string Recipients { get; set; }
 
         [Required]
+        [MinLength(5)]
+        [EmailAddress]
+        public string From { get; set; }
+
+        [Required]
         public string Subject { get; set; }
 
         [Required]

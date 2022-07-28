@@ -11,11 +11,11 @@
         </mat-error> -->
       </mat-form-field>
 
-      <label for="content">Съдържание</label>
+      <!-- <label for="content">Съдържание</label>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>Въведете съдържание</mat-label>
         <input matInput formControlName="content" />
-      </mat-form-field>
+      </mat-form-field> -->
 
       <label for="link">Връзка</label>
       <mat-form-field class="full-width" appearance="fill">
@@ -23,16 +23,29 @@
         <input matInput formControlName="link" />
       </mat-form-field>
 
+      <!-- <label for="content"><h1>Съдържание</h1></label>
+      <editor
+      plugins="table | image | wordcount | link"
+      toolbar="table | image | link | undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat"
+      image_title= true
+      automatic_uploads= true
+      file_picker_types= "file image media"
+    ></editor> -->
 
       <label for="content"><h1>Съдържание</h1></label>
       <editor
-      apiKey="bt44n22c2q1k6fg6rk0x81ds13l0vreoo3j4uebarrbd736h"
-      plugins="wordcount"
-      toolbar="undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat"
-    ></editor>
-
-
-
+        formControlName="content"
+        [init]="{
+          height: 500,
+          menubar: false,
+          image_title: true,
+          automatic_uploads: true,
+          file_picker_types: 'file image media',
+          plugins: ['table', 'image', 'media', 'wordcount', 'link', 'code', 'charmap'],
+          toolbar:
+            'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat charmap | media image link code| table tabledelete'
+        }"
+      ></editor>
 
       <!-- {{ form.value | json }}
       {{ form.valid }} -->
@@ -40,12 +53,12 @@
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions >
+<mat-dialog-actions>
   <button mat-raised-button mat-dialog-close (click)="onCancelClick()">
     Cancel
   </button>
   <button
-  [disabled]="!form.valid"
+    [disabled]="!form.valid"
     color="primary"
     mat-raised-button
     (click)="onSaveClick()"

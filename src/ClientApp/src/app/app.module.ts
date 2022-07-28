@@ -45,7 +45,7 @@ import { JL } from 'jsnlog';
 import { ErrorLogsComponent } from './components/error-logs/error-logs.component';
 import { StateNewspaperComponent } from './components/state-newspaper/state-newspaper.component';
 import { StateNewspaperModalDialogComponent } from './components/state-newspaper/state-newspaper/state-newspaper-modal.component';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 registerLocaleData(bg);
 
@@ -113,8 +113,8 @@ logger.setOptions({
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
     { provide: 'JSNLOG', useValue: JL },
-    DatePipe
-
+    DatePipe,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
   bootstrap: [AppComponent]
 })

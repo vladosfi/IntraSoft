@@ -14,6 +14,8 @@ namespace IntraSoft.Services.Mail
 
         public List<MailboxAddress> To { get; set; }
 
+        public string From { get; set; }
+        
         public string Recipients { get; set; }
 
         public string Subject { get; set; }
@@ -23,10 +25,11 @@ namespace IntraSoft.Services.Mail
         public IFormFileCollection Attachments { get; set; }
 
 
-        public Message(IEnumerable<string> to, string subject, string content, IFormFileCollection attachments)
+        public Message(IEnumerable<string> to, string from, string subject, string content, IFormFileCollection attachments)
         {
             To = new List<MailboxAddress>();
             To.AddRange(to.Select(x => new MailboxAddress(string.Empty, x)));
+            From = from;
             Subject = subject;
             Content = content;
             Attachments = attachments;

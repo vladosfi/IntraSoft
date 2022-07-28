@@ -35,7 +35,7 @@ namespace IntraSoft.Services.Mail
             var emailMessage = new MimeMessage();
             emailMessage
                 .From
-                .Add(new MailboxAddress("Район Аспарухово", emailConfig.From));
+                .Add(new MailboxAddress("Район Аспарухово", message.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
 

@@ -29,12 +29,15 @@ export class EmailComponent implements OnInit {
 
   prepairForm() {
     this.emailForm = this.fb.group({
+      from: new FormControl('asparuhovo@varna.bg', [Validators.required, Validators.minLength(5), Validators.pattern(/^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4};?)+$/)]),
       recipients: new FormControl('', [Validators.required, Validators.minLength(5), Validators.pattern(/^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4};?)+$/)]),
       subject: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
       filePath: new FormControl(''),
       file: new FormControl(''),
     });
+
+    this.emailForm.controls['from'].disable();
 
   }
 
@@ -70,6 +73,7 @@ export class EmailComponent implements OnInit {
             // this.snackbar.infoWitHide(`Съобщението беше изпратено`);
             this.fileInfoMessage = 'Съобщението e изпратено!';
             this.resetForm();
+            this.prepairForm();
           }
         });
   }
@@ -93,6 +97,7 @@ export class EmailComponent implements OnInit {
       }
     }
 
+    formData.append('from', this.emailForm.controls['from'].value);
     formData.append('recipients', this.emailForm.controls['recipients'].value);
     formData.append('subject', this.emailForm.controls['subject'].value);
     formData.append('content', this.emailForm.controls['content'].value);

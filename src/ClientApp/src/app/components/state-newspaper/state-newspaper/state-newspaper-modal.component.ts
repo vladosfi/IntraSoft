@@ -31,13 +31,13 @@ export class StateNewspaperModalDialogComponent implements OnInit {
     private fb: FormBuilder,
   ) {
 
-    if(this.data.currentStateNewspaperId != null){
+    if (this.data.currentStateNewspaperId != null) {
       this.stateNewspaperService.getItemById(this.data.currentStateNewspaperId).subscribe(
         {
           next: (result) => {
             this.stateNewspaper = result as StateNewspaper;
-            this.data.title =this.stateNewspaper.title;
-            this.data.content =this.stateNewspaper.link;
+            this.data.title = this.stateNewspaper.title;
+            this.data.content = this.stateNewspaper.link;
           }
         });
     }
@@ -64,8 +64,40 @@ export class StateNewspaperModalDialogComponent implements OnInit {
 
   onSaveClick(): void {
     // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
 
-    this.dialogRef.close();
+    const { id, title, content, link } = this.form.value;
+
+    this.stateNewspaper = Object.assign({},
+      {
+        id: id == null ? null : id,
+        title: title,
+        content: content,
+        link: link,
+      });
+
+
+    if (id == null) {
+      this.stateNewspaperService.createItem(this.stateNewspaper)
+        .subscribe({
+          next: (result) => {
+            this.stateNewspaper = Object.assign(this.stateNewspaper, result);
+            this.onCancelClick();
+          }
+        });
+    }
+    else {
+      this.stateNewspaperService.updateItem(this.stateNewspaper)
+        .subscribe({
+          next: (result) => {
+            this.stateNewspaper = Object.assign(this.stateNewspaper, result);
+            this.onCancelClick();
+          }
+        });
+    }
+
   }
 
   onCancelClick(): void {

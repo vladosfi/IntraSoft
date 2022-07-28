@@ -33,6 +33,7 @@ namespace IntraSoft.Controllers
             var rng = new Random();
             var message =
                 new Message(new string[] { "vgivanov@varna.bg" },
+                    "vgivanov@varna.bg",
                     "Test email",
                     "This is the content from our email.",
                     null);
@@ -58,13 +59,14 @@ namespace IntraSoft.Controllers
             var defaultRecipients = new string[] { "vgivanov@varna.bg", "vgivanov@varna.bg" };
             defaultRecipients = inputMessage.Recipients == null ? defaultRecipients : inputMessage.Recipients.Split(';').ToArray();
 
+            var from = inputMessage.From;
             var subject = inputMessage.Subject;
             var content = inputMessage.Content;
             var files = Request.Form.Files.Any() ? Request.Form.Files : new FormFileCollection();
 
             try
             {
-                var message = new Message(defaultRecipients, subject, content, files);
+                var message = new Message(defaultRecipients, from, subject, content, files);
 
                 var serverResponse = await this.emailSender.SendEmailAsync(message);
 
@@ -79,7 +81,6 @@ namespace IntraSoft.Controllers
             }
             catch (Exception ex)
             {
-
                 mailMessage.ErrorMessage = ex.Message;
                 throw;
             }
