@@ -14,7 +14,7 @@ import { StateNewspaperModalDialogComponent } from './state-newspaper/state-news
 export class StateNewspaperComponent implements OnInit {
    stateNewspapers: StateNewspaper[] = [];
    pageTitle = 'ДЪРЖАВЕН ВЕСТНИК'
-   lastChanged = Date.now();
+   lastChanged;
 
   constructor(
     private stateNewspaperService: StateNewspaperService,
@@ -31,6 +31,10 @@ export class StateNewspaperComponent implements OnInit {
       {
         next: (result) => {
           this.stateNewspapers = result as StateNewspaper[];
+
+          if(this.stateNewspapers.length > 0){
+            this.lastChanged = this.stateNewspapers[0].createdOn;
+          }
         }
       });
   }

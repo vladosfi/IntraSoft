@@ -48,7 +48,7 @@
             IQueryable<StateNewspaper> query =
                 this.stateNewspaperRepo
                 .All()
-                .OrderBy(x => x.Id)
+                .OrderByDescending(x => x.CreatedOn)
                 .AsNoTracking()
                 .AsSplitQuery();
 

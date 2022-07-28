@@ -1,5 +1,7 @@
 namespace IntraSoft.Data.Dtos.StateNewspaper
 {
+    using System;
+    
     using IntraSoft.Services.Mapping;
     using IntraSoft.Data.Models;
 
@@ -12,5 +14,7 @@ namespace IntraSoft.Data.Dtos.StateNewspaper
         public string Content { get; set; }
 
         public string Link { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

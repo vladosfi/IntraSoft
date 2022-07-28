@@ -3,5 +3,6 @@ export interface StateNewspaper {
   title: string;
   content: string;
   link: string;
+  createdOn: string;
 }
 

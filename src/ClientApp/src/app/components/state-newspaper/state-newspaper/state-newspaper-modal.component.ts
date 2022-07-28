@@ -10,6 +10,7 @@ export interface DialogData {
   content: string;
   link: string;
   stateNewspaperId: number;
+  createdOn: string;
 }
 
 
@@ -39,6 +40,7 @@ export class StateNewspaperModalDialogComponent implements OnInit {
             this.data.title = this.stateNewspaper.title;
             this.data.content = this.stateNewspaper.content;
             this.data.link = this.stateNewspaper.link;
+            this.data.createdOn = this.stateNewspaper.createdOn;
             this.prepairForm();
           }
         });
@@ -68,6 +70,7 @@ export class StateNewspaperModalDialogComponent implements OnInit {
       title: new FormControl(this.data.title = ! null ? this.data.title : '', Validators.required),
       content: new FormControl(this.data.content = ! null ? this.data.content : '', Validators.required),
       link: new FormControl(this.data.link = ! null ? this.data.link : '', Validators.required),
+      createdOn: new FormControl(this.data.createdOn = ! null ? this.data.createdOn : '', Validators.required),
     });
   }
 
@@ -85,6 +88,7 @@ export class StateNewspaperModalDialogComponent implements OnInit {
         title: title,
         content: content,
         link: link,
+        createdOn: null,
       });
 
 
