@@ -46,6 +46,7 @@ import { ErrorLogsComponent } from './components/error-logs/error-logs.component
 import { StateNewspaperComponent } from './components/state-newspaper/state-newspaper.component';
 import { StateNewspaperModalDialogComponent } from './components/state-newspaper/state-newspaper/state-newspaper-modal.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { SanitizeHtmlPipe } from './core/pipes/sanitizeHtmlPipe';
 
 registerLocaleData(bg);
 
@@ -87,6 +88,7 @@ logger.setOptions({
     ErrorLogsComponent,
     StateNewspaperComponent,
     StateNewspaperModalDialogComponent,
+    SanitizeHtmlPipe,
   ],
   entryComponents: [
     DeleteDialogComponent
@@ -114,6 +116,7 @@ logger.setOptions({
     { provide: HTTP_INTERCEPTORS, useClass: ServerErrorInterceptor, multi: true },
     { provide: 'JSNLOG', useValue: JL },
     DatePipe,
+    SanitizeHtmlPipe,
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
   bootstrap: [AppComponent]

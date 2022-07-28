@@ -1,24 +1,75 @@
-<div class="content">
-  <section class="flex-container">
-    <div class="button-row">
-          <button mat-mini-fab (click)="onAdd()" color="primary">
-            <mat-icon>add_box</mat-icon>
-          </button>
+<div class="container">
+  <div class="row">
+
+    <div class="media g-mb-30 media-comment">
+      <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+        <div class="pull-left m-r-md">
+          <i class="fa fa-globe text-navy mid-icon"></i>
+        </div>
+        <h1>{{pageTitle}}</h1>
+        <div class="flex-container">
+        <small class="text-muted">
+          <span>Последна промяна: {{lastChanged | date:'medium'}}</span>
+        </small>
+
+          <span>
+            <a (click)="onAdd()" style="-webkit-text-fill-color: steelblue">
+              <mat-icon class="customIconSize">add_box</mat-icon>
+            </a>
+        </span>
+      </div>
+
+
+
+      </div>
     </div>
-  </section>
-  <!-- <mat-divider></mat-divider> -->
 
+    <div *ngFor="let stateNewspaper of stateNewspapers" class="col-md-12">
+      <div class="media g-mb-30 media-comment">
+        <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+          <div class="g-mb-15 g-mb-10">
+            <a href="{{ stateNewspaper.link }}" target="_blank">
+              <h2 class="h5 g-color-gray-dark-v1 mb-0">
+                <mat-card-title>{{ stateNewspaper.title }}</mat-card-title>
+              </h2>
+            </a>
+            <span class="g-color-gray-dark-v4 g-font-size-12">5 days ago</span>
+          </div>
 
-  <mat-card  *ngFor="let stateNewspaper of stateNewspapers" class="card-state-newspaper">
-    <mat-card-title>{{stateNewspaper.title}}</mat-card-title>
-    <!-- <mat-card-subtitle>{{stateNewspaper.id}}</mat-card-subtitle> -->
-    <mat-card-content>
-      <p>{{stateNewspaper.content}}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <a mat-raised-button href="{{stateNewspaper.link}}" target="_blank">Отваряне на линка</a>
-      <button mat-button (click)="onEdit(stateNewspaper.id)">Редактиране</button>
-    </mat-card-actions>
-  </mat-card>
+          <p [innerHTML]="stateNewspaper.content | sanitizeHtml"></p>
+          <hr />
+          <ul class="list-inline d-sm-flex my-0 flex-end">
+            <li class="list-inline-item g-mr-20">
+              <a
+                href="{{ stateNewspaper.link }}"
+                target="_blank"
+                title="Отваряне на линка"
+                style="-webkit-text-fill-color: steelblue;"
+              >
+                <mat-icon>remove_red_eye</mat-icon>
+              </a>
+            </li>
+            <li class="list-inline-item g-mr-20">
+              <a
+                title="Редактиране"
+                style="-webkit-text-fill-color: goldenrod;"
+                (click)="onEdit(stateNewspaper.id)"
+              >
+                <mat-icon>edit</mat-icon>
+              </a>
+            </li>
+            <li class="list-inline-item ml-auto">
+              <a
+                title="Изтриване"
+                style="-webkit-text-fill-color: red;"
+                (click)="onDelete(stateNewspaper.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-

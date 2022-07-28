@@ -9,7 +9,7 @@ export interface DialogData {
   title: string;
   content: string;
   link: string;
-  currentStateNewspaperId: number;
+  stateNewspaperId: number;
 }
 
 
@@ -31,18 +31,28 @@ export class StateNewspaperModalDialogComponent implements OnInit {
     private fb: FormBuilder,
   ) {
 
-    if (this.data.currentStateNewspaperId != null) {
-      this.stateNewspaperService.getItemById(this.data.currentStateNewspaperId).subscribe(
+    if (this.data.stateNewspaperId != 0) {
+      this.stateNewspaperService.getItemById(this.data.stateNewspaperId).subscribe(
         {
           next: (result) => {
             this.stateNewspaper = result as StateNewspaper;
             this.data.title = this.stateNewspaper.title;
-            this.data.content = this.stateNewspaper.link;
+            this.data.content = this.stateNewspaper.content;
+            this.data.link = this.stateNewspaper.link;
+            this.prepairForm();
           }
         });
     }
   }
 
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      id: new FormControl(0 , Validators.required),
+      title: new FormControl('', Validators.required),
+      content: new FormControl('', Validators.required),
+      link: new FormControl('', Validators.required),
+    });
+  }
 
   buttonCategories(): FormArray {
     return this.form.get("buttonCategories") as FormArray
@@ -52,10 +62,9 @@ export class StateNewspaperModalDialogComponent implements OnInit {
     console.log(this.form.value);
   }
 
-
-
-  ngOnInit(): void {
+  prepairForm() {
     this.form = this.fb.group({
+      id: new FormControl(this.data.stateNewspaperId = !0 ? this.data.stateNewspaperId : 0, Validators.required),
       title: new FormControl(this.data.title = ! null ? this.data.title : '', Validators.required),
       content: new FormControl(this.data.content = ! null ? this.data.content : '', Validators.required),
       link: new FormControl(this.data.link = ! null ? this.data.link : '', Validators.required),
@@ -72,14 +81,14 @@ export class StateNewspaperModalDialogComponent implements OnInit {
 
     this.stateNewspaper = Object.assign({},
       {
-        id: id == null ? null : id,
+        id: id == 0 ? 0 : id,
         title: title,
         content: content,
         link: link,
       });
 
 
-    if (id == null) {
+    if (id == 0) {
       this.stateNewspaperService.createItem(this.stateNewspaper)
         .subscribe({
           next: (result) => {

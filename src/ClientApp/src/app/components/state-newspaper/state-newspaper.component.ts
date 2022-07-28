@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StateNewspaper } from 'src/app/core/interfaces/StateNewspaper';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { StateNewspaperService } from 'src/app/core/services/state-newspaper.service';
+import { DeleteDialogComponent } from '../dialog/delete/delete-dialog.component';
 import { StateNewspaperModalDialogComponent } from './state-newspaper/state-newspaper-modal.component';
 
 @Component({
@@ -11,10 +13,13 @@ import { StateNewspaperModalDialogComponent } from './state-newspaper/state-news
 })
 export class StateNewspaperComponent implements OnInit {
    stateNewspapers: StateNewspaper[] = [];
+   pageTitle = 'ДЪРЖАВЕН ВЕСТНИК'
+   lastChanged = Date.now();
 
   constructor(
     private stateNewspaperService: StateNewspaperService,
     private dialog: MatDialog,
+    private snackbar: NotificationService,
     ) { }
 
   ngOnInit(): void {
@@ -26,21 +31,15 @@ export class StateNewspaperComponent implements OnInit {
       {
         next: (result) => {
           this.stateNewspapers = result as StateNewspaper[];
-          console.log(this.stateNewspapers);
         }
       });
   }
 
-  onEdit(stateNewspaperId: number){
+  onEdit(id: number){
     const dialogRef = this.dialog.open(StateNewspaperModalDialogComponent,
       {
         data: {
-          stateNewspaperId: stateNewspaperId,
-          modalTitle: "Редактиране",
-          title: "Заглавие",
-          content: "Съдържание",
-          link: "линк",
-          newRecord: false
+          stateNewspaperId: id,
         },
         width: '70%'
       });
@@ -55,8 +54,42 @@ export class StateNewspaperComponent implements OnInit {
     });
   }
 
+  // To Do
+  onDelete(id: number): void{
+
+    if (!id) {
+      return;
+    }
+
+    let dialogRef = this.dialog.open(DeleteDialogComponent, { data: { name: 'Сигурни ли сте, че искате да изтриете записа за: ' + id + '?' } });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'true') {
+        this.stateNewspaperService.deleteItem(id)
+          .subscribe({
+            next: () => {
+              this.stateNewspapers = this.stateNewspapers.filter(item => item.id != id);
+              this.snackbar.success('Записът беше изтрит');
+            }
+          });
+      } else {
+        console.log(`Dialog result is: ${result}`);
+      }
+    });
+  }
+
   onAdd(){
-    window.alert('Add');
+    const dialogRef = this.dialog.open(StateNewspaperModalDialogComponent,
+      {
+        data: {
+          stateNewspaperId: 0,
+        },
+        width: '70%'
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+      }
+    });
 
   }
 
