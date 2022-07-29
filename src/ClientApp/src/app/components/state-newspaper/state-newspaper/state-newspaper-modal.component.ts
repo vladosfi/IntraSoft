@@ -56,10 +56,6 @@ export class StateNewspaperModalDialogComponent implements OnInit {
     });
   }
 
-  buttonCategories(): FormArray {
-    return this.form.get("buttonCategories") as FormArray
-  }
-
   onSubmit() {
     console.log(this.form.value);
   }

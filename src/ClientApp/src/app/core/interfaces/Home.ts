@@ -1,6 +1,8 @@
 export interface HomeItem {
   orders: HomeOrder[];
   isoServices: HomeIsoService[];
+  stateNewspapers: HomeStateNewspapers[];
+  content: string;
 }
 
 export interface HomeIsoService {
@@ -10,6 +12,12 @@ export interface HomeIsoService {
   createdOn: string;
 }
 
+export interface HomeStateNewspapers {
+  id: number;
+  title: string;
+  content: string;
+  createdOn: string;
+}
 
 export interface HomeOrder {
   id: number;

@@ -14,10 +14,15 @@ export class HomeService {
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  getIsoServices(): Observable<HomeItem> {
+  getHomeItems(): Observable<HomeItem> {
     var params = new HttpParams();
 
     return this.http.get<HomeItem>(this.endPoint, { params })
       .pipe(map(result => result as HomeItem));
+  }
+
+  updateItem(item: HomeItem): Observable<HomeItem> {
+    return this.http
+      .put<HomeItem>(this.endPoint, item);
   }
 }

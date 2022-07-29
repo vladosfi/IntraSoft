@@ -48,6 +48,8 @@
         public DbSet<Log> Logs { get; set; }
 
         public DbSet<StateNewspaper> StateNewspapers { get; set; }
+        
+        public DbSet<Home> Home { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

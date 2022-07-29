@@ -1,12 +1,10 @@
 ﻿namespace IntraSoft.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Home;
+    using IntraSoft.Data.Dtos.StateNewspaper;
     using IntraSoft.Services.Data.Home;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -40,15 +38,19 @@
         {
             var lastServicesReadDto = await this.homeService.GetLastServices<HomeIsoServicesReadDto>();
             var lastOrdersReadDto = await this.homeService.GetLastOrders<HomeOrdersReadDto>();
+            var lastStateNewspaperReadDto = await this.homeService.GetLastStateNewspapers<StateNewspaperReadDto>();
+            var content = await this.homeService.GetContent<HomeReadDto>();
 
-            if (lastServicesReadDto == null && lastOrdersReadDto == null)
+            if (lastServicesReadDto == null && lastOrdersReadDto == null && lastStateNewspaperReadDto == null)
             {
                 return this.NoContent();
             }
 
             var homeReadDto = new HomeReadDto{
                 IsoServices = lastServicesReadDto,
-                Orders = lastOrdersReadDto 
+                Orders = lastOrdersReadDto,
+                StateNewspapers = lastStateNewspaperReadDto ,
+                Content = content.Content,
             };
 
             return this.Ok(homeReadDto);

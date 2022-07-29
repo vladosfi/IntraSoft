@@ -155,6 +155,33 @@ namespace IntraSoft.Data.Migrations
                     b.ToTable("Documents");
                 });
 
+            modelBuilder.Entity("IntraSoft.Data.Models.Home", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Home");
+                });
+
             modelBuilder.Entity("IntraSoft.Data.Models.IsoFile", b =>
                 {
                     b.Property<int>("Id")

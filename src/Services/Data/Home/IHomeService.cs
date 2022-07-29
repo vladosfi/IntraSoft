@@ -6,6 +6,11 @@ namespace IntraSoft.Services.Data.Home
     public interface IHomeService
     {
         Task<IEnumerable<T>> GetLastServices<T>();
+
         Task<IEnumerable<T>> GetLastOrders<T>();
+
+        Task<IEnumerable<T>> GetLastStateNewspapers<T>();
+
+        Task<T> GetContent<T>();
     }
 }

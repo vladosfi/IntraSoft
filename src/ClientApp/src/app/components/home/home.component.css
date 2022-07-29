@@ -1,3 +1,6 @@
+h1{
+  text-align: center;
+}
 section div p {
   color: #3f51b5;
   font-size: 30px;
@@ -12,6 +15,9 @@ section div + p {
   padding-bottom: 20px;
 }
 
+table{
+  max-width: 100%;
+}
 mat-tab-group {
   text-align: center;
 }
@@ -20,6 +26,28 @@ mat-tab-group {
     padding-top: 20px;
   }
 
-  .list-item{
-    margin: 30px 0;
+  .list-item:not(:first-child){
+    margin: 30px 0 0 0;
   }
+
+/*  Float Icon */
+  .float{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color: steelblue;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+  }
+
+  .my-float{
+    margin-top:22px;
+  }
+
+  .mat-icon {
+    padding-top: 18px;
+}

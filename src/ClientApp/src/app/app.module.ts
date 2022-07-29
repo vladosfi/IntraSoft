@@ -47,6 +47,7 @@ import { StateNewspaperComponent } from './components/state-newspaper/state-news
 import { StateNewspaperModalDialogComponent } from './components/state-newspaper/state-newspaper/state-newspaper-modal.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SanitizeHtmlPipe } from './core/pipes/sanitizeHtmlPipe';
+import { HomeModalDialogComponent } from './components/home/modal/home-modal.component';
 
 registerLocaleData(bg);
 
@@ -89,6 +90,7 @@ logger.setOptions({
     StateNewspaperComponent,
     StateNewspaperModalDialogComponent,
     SanitizeHtmlPipe,
+    HomeModalDialogComponent,
   ],
   entryComponents: [
     DeleteDialogComponent

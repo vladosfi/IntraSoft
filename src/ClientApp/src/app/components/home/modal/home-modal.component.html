@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>{{ data?.title }}</h1>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="content"><h1>Съдържание</h1></label>
+      <editor
+        formControlName="content"
+        [init]="{
+          height: 300,
+          menubar: false,
+          image_title: true,
+          automatic_uploads: true,
+          file_picker_types: 'file image media',
+          plugins: ['table', 'image', 'media', 'wordcount', 'link', 'code', 'charmap'],
+          toolbar:
+            'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat charmap | media image link code| table tabledelete'
+        }"
+      ></editor>
+
+      <!-- {{ form.value | json }}
+      {{ form.valid }} -->
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close (click)="onCancelClick()">
+    Cancel
+  </button>
+  <button
+    [disabled]="!form.valid"
+    color="primary"
+    mat-raised-button
+    (click)="onSaveClick()"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

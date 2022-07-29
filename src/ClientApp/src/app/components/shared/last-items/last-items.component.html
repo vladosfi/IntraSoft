@@ -39,7 +39,7 @@
     [style.background]="item.color"
   >
     Data Structure
-     <span class="badge badge-success">{{ item.createdOn }}</span> 
+     <span class="badge badge-success">{{ item.createdOn }}</span>
     <div class="small text-muted">{{ item.createdOn }}</div>
   </li>
 </ul>-->
@@ -62,7 +62,7 @@
         <h5 class="mb-1">{{item.title}}</h5>
         <small class="text-muted">{{ item.date | date:'dd.MMM.yyyy':'bg-BG'}}</small>
       </div>
-      <p class="mb-1">{{ item.text }}</p>
+      <p class="mb-1" [innerHTML]="item.text | sanitizeHtml"></p>
       <!-- <small>More small text here.</small> -->
     </a>
   </div>

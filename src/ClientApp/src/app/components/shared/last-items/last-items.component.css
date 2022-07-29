@@ -7,3 +7,6 @@
 .small, small {
     font-size: .775em;
 }
+div{
+  overflow: hidden;
+}
