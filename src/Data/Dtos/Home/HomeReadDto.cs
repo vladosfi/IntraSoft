@@ -13,6 +13,8 @@
             this.StateNewspapers = new HashSet<StateNewspaperReadDto>();
         }
 
+        public int Id { get; set; }
+        
         public string Content { get; set; }
 
         public virtual IEnumerable<HomeOrdersReadDto> Orders { get; set; }

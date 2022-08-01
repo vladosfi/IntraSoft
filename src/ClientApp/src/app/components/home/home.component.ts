@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.content = result.content;
       }
     });
 

@@ -1,4 +1,5 @@
 export interface HomeItem {
+  id: number;
   orders: HomeOrder[];
   isoServices: HomeIsoService[];
   stateNewspapers: HomeStateNewspapers[];

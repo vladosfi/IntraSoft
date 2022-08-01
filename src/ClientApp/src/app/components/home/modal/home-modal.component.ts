@@ -18,6 +18,7 @@ export interface DialogData {
 export class HomeModalDialogComponent implements OnInit {
   homeItem: HomeItem = {} as HomeItem;
   form: FormGroup;
+  itemId = 1;
 
 
   constructor(
@@ -30,11 +31,12 @@ export class HomeModalDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.homeItem.content = this.data.content;
-    this.prepairForm();
 
     this.form = this.fb.group({
       content: new FormControl('', Validators.required),
     });
+
+    this.prepairForm();
   }
 
 
@@ -58,6 +60,7 @@ export class HomeModalDialogComponent implements OnInit {
 
     this.homeItem = Object.assign({},
       {
+        id: this.itemId,
         content: content,
         orders: null,
         isoServices: null,
@@ -76,6 +79,6 @@ export class HomeModalDialogComponent implements OnInit {
   }
 
   onCancelClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.homeItem);
   }
 }

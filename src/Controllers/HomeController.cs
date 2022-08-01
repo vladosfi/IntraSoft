@@ -3,7 +3,9 @@
     using System.Threading.Tasks;
     using IntraSoft.Data.Dtos.Home;
     using IntraSoft.Data.Dtos.StateNewspaper;
+    using IntraSoft.Data.Models;
     using IntraSoft.Services.Data.Home;
+    using IntraSoft.Services.Mapping;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -56,18 +58,56 @@
             return this.Ok(homeReadDto);
         }
 
-        // GET api/<ValuesController>/5
-        // [HttpGet("{id}", Name = nameof(GetContactById))]
-        // public async Task<ActionResult<ContactReadDto>> GetContactById(int id)
-        // {
-        //     var contactItems = await this.homeService.GetByIdAsync<ContactReadDto>(id);
+        // GET api/<HomeController>/5
+        [HttpGet("{id}", Name = nameof(GetHomeById))]
+        public async Task<ActionResult<HomeReadDto>> GetHomeById(int id)
+        {
+            var homeItem = await this.homeService.GetByIdAsync<HomeReadDto>(id);
 
-        //     if (contactItems == null)
-        //     {
-        //         return this.NotFound();
-        //     }
+            if (homeItem == null)
+            {
+                return this.NotFound();
+            }
 
-        //     return this.Ok(contactItems);
-        // }
+            return this.Ok(homeItem);
+        }
+
+
+        // POST api/<ContactsController>
+        [HttpPost]
+        public async Task<ActionResult<HomeCreateDto>> Post([FromBody] HomeCreateDto homeItemDto)
+        {
+            var newHomeItem = AutoMapperConfig.MapperInstance.Map<Home>(homeItemDto);
+
+            await this.homeService.CreateAsync(newHomeItem);
+
+            await this.homeService.SaveChangesAsync();
+            var homeReadDto = AutoMapperConfig.MapperInstance.Map<HomeReadDto>(newHomeItem);
+
+
+            return this.CreatedAtRoute(
+                nameof(this.GetHomeById),
+                new { Id = homeReadDto.Id },
+                homeReadDto);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCommand(int id, HomeUpdateDto homeItemUpdateDto)
+        {
+            var homeItemFromRepo = await this.homeService.GetByIdAsync(id);
+
+            if (homeItemFromRepo == null)
+            {
+                return this.NotFound();
+            }
+
+            AutoMapperConfig.MapperInstance.Map<HomeUpdateDto, Home>(homeItemUpdateDto, homeItemFromRepo);
+
+            this.homeService.Update(homeItemFromRepo);
+            await this.homeService.SaveChangesAsync();
+
+            return this.NoContent();
+        }
     }
 }

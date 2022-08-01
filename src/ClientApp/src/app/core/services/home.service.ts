@@ -23,6 +23,6 @@ export class HomeService {
 
   updateItem(item: HomeItem): Observable<HomeItem> {
     return this.http
-      .put<HomeItem>(this.endPoint, item);
+      .put<HomeItem>(this.endPoint + `/${item.id}`, item);
   }
 }
